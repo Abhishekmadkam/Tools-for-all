@@ -1,2 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZenToolo – All-in-One Online Tools Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --light-bg: #ffffff;
+            --card-bg: #f8fafc;
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-medium: #64748b;
+            --text-light: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, #4f46e5, #6366f1);
+            --gradient-accent: linear-gradient(135deg, #f59e0b, #f97316);
+            --gradient-success: linear-gradient(135deg, #10b981, #34d399);
+        }
 
-hi
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4, h5, .display-font {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.05;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -15px;
+            width: 100px;
+            height: 8px;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        .highlight-text {
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .lead-text {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .big-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        /* NAVBAR - Clean White */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-dark) !important;
+            letter-spacing: -1px;
+        }
+
+        .navbar-brand span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: var(--text-medium) !important;
+            font-weight: 600;
+            margin: 0 0.8rem;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary-custom {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 180px 20px 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: var(--text-medium);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .search-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            position: relative;
+        }
+
+        .search-box {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            color: var(--text-dark);
+            padding: 1.6rem 3rem 1.6rem 4rem;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        /* FEATURES BANNER */
+        .features-banner {
+            background: white;
+            color: var(--text-dark);
+            padding: 100px 30px;
+            border-radius: 24px;
+            margin-top: 80px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-banner:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: var(--primary);
+        }
+
+        /* SWIPER SLIDERS */
+        .tools-slider-container {
+            position: relative;
+            padding: 40px 0 80px;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+            padding: 30px 10px 60px !important;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+            background: white;
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            color: var(--primary) !important;
+            transition: all 0.3s;
+        }
+
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 1.5rem !important;
+            font-weight: 900;
+        }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background: var(--primary);
+            color: white !important;
+            transform: scale(1.1);
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px !important;
+            height: 12px !important;
+            background: var(--text-light) !important;
+            opacity: 0.5 !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary) !important;
+            opacity: 1 !important;
+        }
+
+        /* TOOL CARDS - Clean White */
+        .tool-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            height: 100%;
+            border: 2px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            z-index: 1;
+            box-shadow: var(--card-shadow);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .tool-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            transition: all 0.4s;
+        }
+
+        .tool-card:hover .tool-icon {
+            transform: scale(1.2);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tool-card h4 {
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+            font-size: 1.6rem;
+        }
+
+        .tool-card p {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* CATEGORY TABS */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 3rem 0 4rem;
+        }
+
+        .category-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: var(--text-medium);
+            font-weight: 800;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .category-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+        }
+
+        .category-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        /* STATS SECTION */
+        .stats-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 5rem 2rem;
+            margin: 5rem 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            color: var(--text-medium);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* HIGHLIGHT CARDS */
+        .highlight-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.4s;
+            height: 100%;
+            box-shadow: var(--card-shadow);
+        }
+
+        .highlight-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .highlight-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.4s;
+        }
+
+        .highlight-card:hover .highlight-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .highlight-card h4 {
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-size: 1.8rem;
+        }
+
+        .highlight-card p {
+            color: var(--text-medium);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 5rem 0 3rem;
+            margin-top: 6rem;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-logo span {
+            background: linear-gradient(135deg, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            margin: 0 1.2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            color: #94a3b8;
+            margin-top: 3rem;
+            font-size: 0.95rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .hero-title { font-size: 3.8rem; }
+            .section-title { font-size: 3rem; }
+            .big-number { font-size: 3.5rem; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-title { font-size: 3.2rem; }
+            .section-title { font-size: 2.5rem; }
+            .hero { padding: 150px 20px 100px; }
+            .lead-text { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+            .section-title { font-size: 2.2rem; }
+            .lead-text { font-size: 1.2rem; }
+            .category-tabs { gap: 0.7rem; }
+            .category-btn { padding: 0.8rem 1.5rem; font-size: 0.95rem; }
+            .search-box { padding: 1.4rem 2rem 1.4rem 3.5rem; font-size: 1.1rem; }
+            .big-number { font-size: 3rem; }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero { padding: 130px 15px 80px; }
+            .features-banner { padding: 70px 20px; }
+            .tool-card { padding: 2rem 1.5rem; }
+            .hero-subtitle { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="#"><span>Zen</span>Toolo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#all-tools">Tools</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sliders">Top Tools</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="#all-tools" class="btn btn-primary-custom">Start Free</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title">Powerful Tools.<br><span>Simplified Experience.</span></h1>
+            <p class="lead-text hero-subtitle">Access 150+ professional tools for productivity, creativity, and development. All in one clean, intuitive platform.</p>
+            <div class="search-container">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" id="search" class="form-control search-box" placeholder="Search for tools, categories, or functions...">
+            </div>
+            <p class="text-medium">No login required • 100% secure • Works on all devices</p>
+        </div>
+    </section>
+
+    <!-- FEATURES BANNER -->
+    <section class="container" id="features">
+        <div class="features-banner">
+            <h2 class="mb-4">Everything You Need In One Place</h2>
+            <p class="lead-text">From AI-powered writing assistants to secure file converters, ZenToolo provides enterprise-level tools with a simple, beautiful interface. No downloads, no accounts, no limits.</p>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="container">
+        <div class="stats-section">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 stat-item">
+                    <div class="big-number">150+</div>
+                    <div class="stat-label">Premium Tools</div>
+                </div>
+                <div 

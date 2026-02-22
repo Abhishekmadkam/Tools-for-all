@@ -641,12 +641,477 @@
         </div>
     </section>
 
-    <!-- STATS -->
-    <section class="container">
-        <div class="stats-section">
-            <div class="row text-center">
-                <div class="col-md-3 col-6 stat-item">
-                    <div class="big-number">150+</div>
-                    <div class="stat-label">Premium Tools</div>
+
+
+    <!-- TOOLS SLIDERS -->
+    <section class="container tools-slider-container" id="sliders">
+        <div class="section-title mb-5 text-center">
+            <h2><span>Most Popular</span> Tools</h2>
+            <p class="lead-text mt-3">Quick access to our most-used utilities</p>
+        </div>
+
+        <!-- Swiper 1 -->
+        <div class="swiper popularSwiper mb-5">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-fonts"></i></div>
+                        <h4>Text Tools</h4>
+                        <p>Grammar, counter, formatter</p>
+                    </div>
                 </div>
-                <div 
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-calculator"></i></div>
+                        <h4>Calculators</h4>
+                        <p>Finance, age, scientific</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-image"></i></div>
+                        <h4>Image Tools</h4>
+                        <p>Resize, compress, convert</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                        <h4>PDF Tools</h4>
+                        <p>Merge, split, compress</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
+                        <h4>Developer Tools</h4>
+                        <p>JSON, minifier, formatter</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-cpu"></i></div>
+                        <h4>AI Tools</h4>
+                        <p>Writer, generator, assistant</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Swiper 2 -->
+        <div class="section-title mb-5 text-center mt-5">
+            <h2><span>New & Updated</span> Tools</h2>
+            <p class="lead-text mt-3">Fresh additions to our toolkit</p>
+        </div>
+
+        <div class="swiper newToolsSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <span class="tool-badge">NEW</span>
+                        <div class="tool-icon"><i class="bi bi-robot"></i></div>
+                        <h4>AI Assistant</h4>
+                        <p>Chat, write, generate content</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <span class="tool-badge">UPDATED</span>
+                        <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
+                        <h4>Security Tools</h4>
+                        <p>Password, hash, encryption</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
+                        <h4>Data Tools</h4>
+                        <p>Visualization, analysis, CSV</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-globe"></i></div>
+                        <h4>Network Tools</h4>
+                        <p>IP lookup, speed test, ping</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
+                        <h4>Online Editors</h4>
+                        <p>Text, code, markdown editor</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="bi bi-hash"></i></div>
+                        <h4>SEO Tools</h4>
+                        <p>Keywords, analyzer, generator</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- CATEGORY TABS -->
+    <div class="container" id="categories">
+        <div class="section-title mb-5 text-center">
+            <h2>Browse By <span>Category</span></h2>
+            <p class="lead-text mt-3">Find exactly what you need</p>
+        </div>
+        <div class="category-tabs">
+            <button class="category-btn active" data-category="all">All Tools</button>
+            <button class="category-btn" data-category="text">Text & Writing</button>
+            <button class="category-btn" data-category="calc">Calculators</button>
+            <button class="category-btn" data-category="image">Image Tools</button>
+            <button class="category-btn" data-category="pdf">PDF Tools</button>
+            <button class="category-btn" data-category="business">Business</button>
+            <button class="category-btn" data-category="dev">Developer</button>
+            <button class="category-btn" data-category="ai">AI & ML</button>
+        </div>
+    </div>
+
+    <!-- ALL TOOLS SECTION -->
+    <section class="container" id="all-tools">
+        <div class="row g-4" id="toolList">
+            <!-- CORE TOOLS -->
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
+                <a href="tools/text-tools.html" class="tool-card">
+                    <span class="tool-badge">POPULAR</span>
+                    <div class="tool-icon"><i class="bi bi-fonts"></i></div>
+                    <h4>Text & Writing</h4>
+                    <p>Grammar checker, paraphrasing, word counter, text analyzer</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="calc">
+                <a href="tools/calculator.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-calculator"></i></div>
+                    <h4>Calculators</h4>
+                    <p>Financial, scientific, age, EMI, GST, investment calculators</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="image">
+                <a href="tools/image-tools.html" class="tool-card">
+                    <span class="tool-badge">NEW</span>
+                    <div class="tool-icon"><i class="bi bi-image"></i></div>
+                    <h4>Image Tools</h4>
+                    <p>Resize, compress, convert, optimize, edit, watermark</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
+                <a href="tools/resume-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-file-earmark-person"></i></div>
+                    <h4>Resume & Career</h4>
+                    <p>Resume builder, cover letters, portfolio generator</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="pdf">
+                <a href="tools/pdf-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                    <h4>PDF Tools</h4>
+                    <p>Merge, split, compress, convert, edit, protect, OCR</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
+                <a href="tools/business-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-briefcase"></i></div>
+                    <h4>Business Tools</h4>
+                    <p>Invoice generator, quotation maker, contract templates</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
+                <a href="tools/developer-tools.html" class="tool-card">
+                    <span class="tool-badge">DEV</span>
+                    <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
+                    <h4>Developer Tools</h4>
+                    <p>JSON formatter, code minifier, base64, regex tester</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
+                <a href="tools/file-utilities.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-folder"></i></div>
+                    <h4>File Utilities</h4>
+                    <p>File converter, renamer, compressor, ZIP tools</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
+                <a href="tools/ai-utilities.html" class="tool-card">
+                    <span class="tool-badge">AI</span>
+                    <div class="tool-icon"><i class="bi bi-cpu"></i></div>
+                    <h4>AI Utilities</h4>
+                    <p>AI writer, content rewriter, idea generator, chatbot</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
+                <a href="tools/online-editors.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
+                    <h4>Online Editors</h4>
+                    <p>Rich text editor, code editor, markdown editor, LaTeX</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
+                <a href="tools/student-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-mortarboard"></i></div>
+                    <h4>Student Tools</h4>
+                    <p>Citation generator, essay helper, plagiarism checker</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
+                <a href="tools/converters.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-arrow-left-right"></i></div>
+                    <h4>Converters</h4>
+                    <p>Unit converter, currency converter, file format converter</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
+                <a href="tools/network-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-globe"></i></div>
+                    <h4>Network Tools</h4>
+                    <p>IP lookup, DNS checker, speed test, ping, traceroute</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
+                <a href="tools/seo-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-hash"></i></div>
+                    <h4>SEO Tools</h4>
+                    <p>Meta tag generator, keyword analyzer, backlink checker</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
+                <a href="tools/security-tools.html" class="tool-card">
+                    <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
+                    <h4>Security Tools</h4>
+                    <p>Password generator, hash generator, encryption, SSL</p>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
+                <a href="tools/data-tools.html" class="tool-card">
+                    <span class="tool-badge">NEW</span>
+                    <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
+                    <h4>Data & Analytics</h4>
+                    <p>Data visualization, chart generator, CSV tools, analytics</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="container mt-5">
+        <div class="section-title mb-5 text-center">
+            <h2>Why Choose <span>ZenToolo</span>?</h2>
+            <p class="lead-text mt-3">Built for professionals who demand excellence</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="highlight-card">
+                    <div class="highlight-icon"><i class="bi bi-lightning-charge"></i></div>
+                    <h4>Lightning Fast</h4>
+                    <p>Optimized for speed with CDN acceleration and minimal latency</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="highlight-card">
+                    <div class="highlight-icon"><i class="bi bi-shield-check"></i></div>
+                    <h4>Secure & Private</h4>
+                    <p>End-to-end encryption with no data storage on our servers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="highlight-card">
+                    <div class="highlight-icon"><i class="bi bi-phone"></i></div>
+                    <h4>Fully Responsive</h4>
+                    <p>Perfect experience on desktop, tablet, and mobile devices</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="highlight-card">
+                    <div class="highlight-icon"><i class="bi bi-gem"></i></div>
+                    <h4>Premium Quality</h4>
+                    <p>Enterprise-grade tools with premium features at no cost</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo text-center"><span>Zen</span>Toolo</div>
+            <div class="footer-links mb-4 text-center">
+                <a href="#all-tools">All Tools</a>
+                <a href="#categories">Categories</a>
+                <a href="#sliders">Top Tools</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="copyright text-center">
+                © 2025 ZenToolo Platform • Professional Online Tools Suite • All Rights Reserved
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script>
+        // Initialize Swiper sliders
+        const popularSwiper = new Swiper('.popularSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+            },
+        });
+
+        const newToolsSwiper = new Swiper('.newToolsSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+            },
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNavbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Search Functionality
+        const search = document.getElementById("search");
+        const tools = document.querySelectorAll(".tool");
+        const categoryBtns = document.querySelectorAll(".category-btn");
+
+        search.addEventListener("input", () => {
+            const query = search.value.toLowerCase().trim();
+            tools.forEach(tool => {
+                const toolText = tool.textContent.toLowerCase();
+                const toolTitle = tool.querySelector('h4').textContent.toLowerCase();
+                const toolDesc = tool.querySelector('p').textContent.toLowerCase();
+                
+                if (toolText.includes(query) || toolTitle.includes(query) || toolDesc.includes(query)) {
+                    tool.style.display = "block";
+                    setTimeout(() => {
+                        tool.style.opacity = "1";
+                        tool.style.transform = "translateY(0)";
+                    }, 10);
+                } else {
+                    tool.style.opacity = "0";
+                    tool.style.transform = "translateY(10px)";
+                    setTimeout(() => {
+                        tool.style.display = "none";
+                    }, 300);
+                }
+            });
+        });
+
+        // Enhanced Category Filter
+        categoryBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                // Update active button
+                categoryBtns.forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+                
+                const category = this.getAttribute("data-category");
+                
+                // Filter tools
+                tools.forEach(tool => {
+                    const toolCategory = tool.getAttribute("data-category");
+                    
+                    if (category === "all" || toolCategory === category) {
+                        tool.style.display = "block";
+                        setTimeout(() => {
+                            tool.style.opacity = "1";
+                            tool.style.transform = "translateY(0)";
+                        }, 10);
+                    } else {
+                        tool.style.opacity = "0";
+                        tool.style.transform = "translateY(10px)";
+                        setTimeout(() => {
+                            tool.style.display = "none";
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Add animation to tool cards on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate tool cards sequentially
+            const toolCards = document.querySelectorAll('.tool-card');
+            toolCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = "1";
+                    card.style.transform = "translateY(0)";
+                }, 100 + (index * 50));
+            });
+            
+            // Initialize with fade-in effect
+            toolCards.forEach(card => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(20px)";
+                card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            });
+        });
+    </script>
+</body>
+</html>

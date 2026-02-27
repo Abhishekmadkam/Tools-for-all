@@ -5,6 +5,31 @@
     <title>ZenToolo – All-in-One Online Tools Platform</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <!-- SEO Meta Tags for Google -->
+    <meta name="description" content="Access 150+ professional tools for productivity, creativity, and development. Free online tools for text, images, PDF, calculators, AI and more.">
+    <meta name="keywords" content="online tools, text tools, image tools, PDF tools, calculators, developer tools, AI tools, free tools">
+    <meta name="author" content="ZenToolo">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://zentoolo.com">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="ZenToolo - All-in-One Online Tools Platform">
+    <meta property="og:description" content="Access 150+ professional tools for productivity, creativity, and development. Free online tools for everyone.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zentoolo.com">
+    <meta property="og:image" content="https://zentoolo.com/og-image.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ZenToolo - All-in-One Online Tools Platform">
+    <meta name="twitter:description" content="Access 150+ professional tools for productivity, creativity, and development.">
+    <meta name="twitter:image" content="https://zentoolo.com/twitter-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -16,6 +41,36 @@
     
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <!-- JSON-LD Structured Data for Google Rich Results -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ZenToolo",
+        "url": "https://zentoolo.com",
+        "description": "All-in-One Online Tools Platform with 150+ professional tools",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://zentoolo.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ZenToolo",
+        "url": "https://zentoolo.com",
+        "logo": "https://zentoolo.com/logo.png",
+        "sameAs": [
+            "https://twitter.com/zentoolo",
+            "https://facebook.com/zentoolo"
+        ]
+    }
+    </script>
     
     <style>
         :root {
@@ -835,7 +890,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="#"><span>Zen</span>Toolo</a>
+            <a class="navbar-brand" href="/"><span>Zen</span>Toolo</a>
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -885,7 +940,7 @@
         <div class="swiper popularSwiper mb-5">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <a href="tools/text-tools.html">
+                    <a href="/tools/text-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-fonts"></i></div>
                             <h4>Text Tools</h4>
@@ -894,7 +949,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/calculator.html">
+                    <a href="/tools/calculator.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-calculator"></i></div>
                             <h4>Calculators</h4>
@@ -903,7 +958,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/image-tools.html">
+                    <a href="/tools/image-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-image"></i></div>
                             <h4>Image Tools</h4>
@@ -912,7 +967,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/pdf-tools.html">
+                    <a href="/tools/pdf-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
                             <h4>PDF Tools</h4>
@@ -921,7 +976,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/developer-tools.html">
+                    <a href="/tools/developer-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
                             <h4>Developer Tools</h4>
@@ -930,7 +985,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/ai-utilities.html">
+                    <a href="/tools/ai-utilities.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-cpu"></i></div>
                             <h4>AI Tools</h4>
@@ -953,7 +1008,7 @@
         <div class="swiper newToolsSwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <a href="tools/ai-utilities.html">
+                    <a href="/tools/ai-utilities.html">
                         <div class="tool-card">
                             <span class="tool-badge">NEW</span>
                             <div class="tool-icon"><i class="bi bi-robot"></i></div>
@@ -963,7 +1018,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/security-tools.html">
+                    <a href="/tools/security-tools.html">
                         <div class="tool-card">
                             <span class="tool-badge">UPDATED</span>
                             <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
@@ -973,7 +1028,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/data-tools.html">
+                    <a href="/tools/data-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
                             <h4>Data Tools</h4>
@@ -982,7 +1037,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/network-tools.html">
+                    <a href="/tools/network-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-globe"></i></div>
                             <h4>Network Tools</h4>
@@ -991,7 +1046,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/online-editors.html">
+                    <a href="/tools/online-editors.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
                             <h4>Online Editors</h4>
@@ -1000,7 +1055,7 @@
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="tools/seo-tools.html">
+                    <a href="/tools/seo-tools.html">
                         <div class="tool-card">
                             <div class="tool-icon"><i class="bi bi-hash"></i></div>
                             <h4>SEO Tools</h4>
@@ -1038,7 +1093,7 @@
         <div class="row g-4" id="toolList">
             <!-- CORE TOOLS -->
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
-                <a href="tools/text-tools.html" class="tool-card">
+                <a href="/tools/text-tools.html" class="tool-card">
                     <span class="tool-badge">POPULAR</span>
                     <div class="tool-icon"><i class="bi bi-fonts"></i></div>
                     <h4>Text & Writing</h4>
@@ -1047,7 +1102,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="calc">
-                <a href="tools/calculator.html" class="tool-card">
+                <a href="/tools/calculator.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-calculator"></i></div>
                     <h4>Calculators</h4>
                     <p>Financial, scientific, age, EMI, GST, investment calculators</p>
@@ -1055,7 +1110,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="image">
-                <a href="tools/image-tools.html" class="tool-card">
+                <a href="/tools/image-tools.html" class="tool-card">
                     <span class="tool-badge">NEW</span>
                     <div class="tool-icon"><i class="bi bi-image"></i></div>
                     <h4>Image Tools</h4>
@@ -1064,7 +1119,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="tools/resume-tools.html" class="tool-card">
+                <a href="/tools/resume-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-file-earmark-person"></i></div>
                     <h4>Resume & Career</h4>
                     <p>Resume builder, cover letters, portfolio generator</p>
@@ -1072,7 +1127,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="pdf">
-                <a href="tools/pdf-tools.html" class="tool-card">
+                <a href="/tools/pdf-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
                     <h4>PDF Tools</h4>
                     <p>Merge, split, compress, convert, edit, protect, OCR</p>
@@ -1080,7 +1135,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="tools/business-tools.html" class="tool-card">
+                <a href="/tools/business-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-briefcase"></i></div>
                     <h4>Business Tools</h4>
                     <p>Invoice generator, quotation maker, contract templates</p>
@@ -1088,7 +1143,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="tools/developer-tools.html" class="tool-card">
+                <a href="/tools/developer-tools.html" class="tool-card">
                     <span class="tool-badge">DEV</span>
                     <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
                     <h4>Developer Tools</h4>
@@ -1097,7 +1152,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="tools/file-utilities.html" class="tool-card">
+                <a href="/tools/file-utilities.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-folder"></i></div>
                     <h4>File Utilities</h4>
                     <p>File converter, renamer, compressor, ZIP tools</p>
@@ -1105,7 +1160,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
-                <a href="tools/ai-utilities.html" class="tool-card">
+                <a href="/tools/ai-utilities.html" class="tool-card">
                     <span class="tool-badge">AI</span>
                     <div class="tool-icon"><i class="bi bi-cpu"></i></div>
                     <h4>AI Utilities</h4>
@@ -1114,7 +1169,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
-                <a href="tools/online-editors.html" class="tool-card">
+                <a href="/tools/online-editors.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
                     <h4>Online Editors</h4>
                     <p>Rich text editor, code editor, markdown editor, LaTeX</p>
@@ -1122,7 +1177,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="tools/student-tools.html" class="tool-card">
+                <a href="/tools/student-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-mortarboard"></i></div>
                     <h4>Student Tools</h4>
                     <p>Citation generator, essay helper, plagiarism checker</p>
@@ -1130,7 +1185,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="tools/converters.html" class="tool-card">
+                <a href="/tools/converters.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-arrow-left-right"></i></div>
                     <h4>Converters</h4>
                     <p>Unit converter, currency converter, file format converter</p>
@@ -1138,7 +1193,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="tools/network-tools.html" class="tool-card">
+                <a href="/tools/network-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-globe"></i></div>
                     <h4>Network Tools</h4>
                     <p>IP lookup, DNS checker, speed test, ping, traceroute</p>
@@ -1146,7 +1201,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="tools/seo-tools.html" class="tool-card">
+                <a href="/tools/seo-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-hash"></i></div>
                     <h4>SEO Tools</h4>
                     <p>Meta tag generator, keyword analyzer, backlink checker</p>
@@ -1154,7 +1209,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="tools/security-tools.html" class="tool-card">
+                <a href="/tools/security-tools.html" class="tool-card">
                     <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
                     <h4>Security Tools</h4>
                     <p>Password generator, hash generator, encryption, SSL</p>
@@ -1162,7 +1217,7 @@
             </div>
 
             <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
-                <a href="tools/data-tools.html" class="tool-card">
+                <a href="/tools/data-tools.html" class="tool-card">
                     <span class="tool-badge">NEW</span>
                     <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
                     <h4>Data & Analytics</h4>
@@ -1215,12 +1270,12 @@
         <div class="container">
             <div class="footer-logo text-center"><span>Zen</span>Toolo</div>
             <div class="footer-links mb-4 text-center">
-                <a href="#all-tools">All Tools</a>
-                <a href="#categories">Categories</a>
-                <a href="#sliders">Top Tools</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+                <a href="/#all-tools">All Tools</a>
+                <a href="/#categories">Categories</a>
+                <a href="/#sliders">Top Tools</a>
+                <a href="/privacy-policy.html">Privacy Policy</a>
+                <a href="/terms-of-service.html">Terms of Service</a>
+                <a href="/contact.html">Contact</a>
             </div>
             <p class="copyright text-center">
                 © 2025 ZenToolo Platform • Professional Online Tools Suite • All Rights Reserved

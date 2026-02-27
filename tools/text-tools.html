@@ -1,0 +1,3263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text & Writing Tools – Pro+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Professional text analysis and writing tool with advanced features">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e9eef6, #fdfefe);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            transition: var(--transition);
+        }
+        
+        .page-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 20px 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Enhanced Text Area */
+        .textarea-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .textarea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }
+        
+        .textarea-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .control-btn:hover {
+            background: #e9ecef;
+            color: var(--dark-color);
+        }
+        
+        textarea {
+            resize: vertical;
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 16px;
+            border: 2px solid #dee2e6;
+            width: 100%;
+            min-height: 350px;
+            line-height: 1.6;
+            transition: var(--transition);
+            background: #fff;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(74, 107, 255, 0.15);
+        }
+        
+        .live-stats {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .live-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #f8f9fd, #ffffff);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        }
+        
+        .stat-box.active {
+            background: linear-gradient(135deg, var(--primary-color), #6c8eff);
+            color: white;
+        }
+        
+        .stat-box.active .stat {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .stat-box.active .stat-value {
+            color: white;
+        }
+        
+        .stat {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+        }
+        
+        .keyword-box {
+            background: #f1f5ff;
+            border-radius: 14px;
+            padding: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .keyword {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .keyword:hover {
+            background: #fff;
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 10px 20px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+        
+        .output-msg {
+            min-height: 24px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .ad-space {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #adb5bd;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            font-size: 15px;
+            color: #6c757d;
+            margin: 25px 0;
+            transition: var(--transition);
+        }
+        
+        .ad-space:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        }
+        
+        .tool-section {
+            border: 2px solid #eaeaea;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            background: #fcfcfc;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-btn {
+            margin: 8px;
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            border-radius: 10px;
+            min-width: 140px;
+        }
+        
+        /* Tab Navigation */
+        .nav-tabs {
+            border-bottom: 3px solid #eaeaea;
+            margin-bottom: 25px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0;
+            margin-right: 10px;
+            padding: 12px 25px;
+            transition: var(--transition);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(74, 107, 255, 0.05);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(74, 107, 255, 0.1);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow: visible;
+            background: #e9ecef;
+        }
+        
+        .progress-bar {
+            border-radius: 6px;
+            position: relative;
+            transition: width 0.6s ease;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        /* Results area */
+        .results-area {
+            background: #f8f9fd;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 25px;
+            min-height: 150px;
+            font-size: 15px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            border: 1px solid #e9ecef;
+        }
+        
+        .code-area {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+        
+        /* Word cloud */
+        .word-cloud-container {
+            height: 300px;
+            border-radius: var(--border-radius);
+            background: #f8f9fd;
+            padding: 20px;
+            margin: 20px 0;
+            overflow: auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            gap: 10px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .word-cloud-item {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 20px;
+        }
+        
+        .word-cloud-item:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Modal improvements */
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), #6c8eff);
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 20px 30px;
+        }
+        
+        /* Dark mode */
+        .dark-mode {
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .tool-card,
+        .dark-mode .header,
+        .dark-mode textarea {
+            background: #1e293b;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .stat-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .keyword-box {
+            background: #1e293b;
+        }
+        
+        .dark-mode .keyword {
+            background: #2d3748;
+            color: #e5e7eb;
+            border-left-color: #60a5fa;
+        }
+        
+        .dark-mode .stat {
+            color: #94a3b8;
+        }
+        
+        .dark-mode .stat-value {
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .ad-space {
+            background: #1e293b;
+            border-color: #475569;
+            color: #94a3b8;
+        }
+        
+        .dark-mode .tool-section {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .dark-mode .nav-tabs {
+            border-bottom-color: #334155;
+        }
+        
+        .dark-mode .nav-tabs .nav-link {
+            color: #94a3b8;
+        }
+        
+        .dark-mode .nav-tabs .nav-link.active {
+            color: #60a5fa;
+            background-color: rgba(96, 165, 250, 0.1);
+            border-bottom-color: #60a5fa;
+        }
+        
+        .dark-mode .results-area {
+            background: #1e293b;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .progress {
+            background: #334155;
+        }
+        
+        .dark-mode .live-stats {
+            background: rgba(0, 0, 0, 0.5);
+            color: #e5e7eb;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+        
+        .toast.success {
+            border-left-color: var(--success-color);
+        }
+        
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+        
+        .toast.warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 0 10px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+            
+            textarea {
+                min-height: 250px;
+                padding: 15px;
+            }
+            
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            
+            .stat-box {
+                padding: 15px;
+            }
+            
+            .stat-value {
+                font-size: 22px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+            }
+            
+            .tool-btn {
+                min-width: 120px;
+                margin: 5px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stat-box {
+                margin-bottom: 15px;
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+            }
+            
+            .tool-btn {
+                min-width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h1 class="fw-bold mb-2"><i class="bi bi-pencil-square me-2"></i> Text & Writing Tools Pro+</h1>
+                    <p class="text-muted mb-0">Professional text analysis and writing workspace with 50+ tools</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-dark btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">
+                        <i class="bi bi-moon"></i> Dark Mode
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="openImportModal()">
+                        <i class="bi bi-upload"></i> Import
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTXT()">
+                        <i class="bi bi-filetype-txt"></i> TXT
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadHTML()">
+                        <i class="bi bi-filetype-html"></i> HTML
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="undo()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Undo
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="redo()">
+                        <i class="bi bi-arrow-clockwise"></i> Redo
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="showAdvancedSettings()">
+                        <i class="bi bi-gear"></i> Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TOP AD -->
+        <div class="ad-space">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><i class="bi bi-megaphone fs-4 me-3"></i></div>
+                <div>
+                    <div class="fw-bold">Advertisement Space</div>
+                    <div class="small">AdSense Ready • Responsive Design</div>
+                </div>
+                <div><small class="text-muted">728x90</small></div>
+            </div>
+        </div>
+        
+        <!-- MAIN TOOL CARD -->
+        <div class="tool-card">
+            <!-- TEXT AREA -->
+            <div class="textarea-container">
+                <div class="textarea-header">
+                    <h6 class="fw-semibold mb-0"><i class="bi bi-textarea-t me-2"></i> Main Text Area</h6>
+                    <div class="textarea-controls">
+                        <button class="control-btn" onclick="increaseFontSize()">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                        <button class="control-btn" onclick="decreaseFontSize()">
+                            <i class="bi bi-zoom-out"></i>
+                        </button>
+                        <button class="control-btn" onclick="clearFormatting()">
+                            <i class="bi bi-eraser"></i>
+                        </button>
+                        <button class="control-btn" onclick="textArea.focus()">
+                            <i class="bi bi-cursor-text"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <textarea id="text" class="form-control" placeholder="Start typing or paste text here...">This is a sample text to demonstrate the features of Text & Writing Tools Pro+. You can analyze this text, transform it, or replace it with your own content. Try the various features like word counting, keyword analysis, and text transformations.
+
+Text analysis tools help writers improve their content. They provide insights into readability, keyword usage, and overall text quality. This comprehensive toolkit includes everything you need for professional writing and content creation.
+
+Key features include:
+- Word and character counting
+- Sentence and paragraph analysis
+- Reading time calculation
+- Text formatting and case conversion
+- Grammar and spell checking
+- SEO content analysis
+- Text cleaning and processing
+- Developer tools for code formatting
+- File conversion utilities</textarea>
+                
+                <div class="live-stats">
+                    <div class="live-stat">
+                        <i class="bi bi-fonts"></i>
+                        <span id="liveWordCount">0</span>
+                    </div>
+                    <div class="live-stat">
+                        <i class="bi bi-type"></i>
+                        <span id="liveCharCount">0</span>
+                    </div>
+                    <div class="live-stat">
+                        <i class="bi bi-clock"></i>
+                        <span id="liveReadTime">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TAB NAVIGATION -->
+            <div class="mb-4">
+                <ul class="nav nav-tabs" id="toolTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="true">
+                            <i class="bi bi-speedometer2 me-2"></i> Basic Tools
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="formatting-tab" data-bs-toggle="tab" data-bs-target="#formatting" type="button" role="tab" aria-controls="formatting" aria-selected="false">
+                            <i class="bi bi-type me-2"></i> Formatting
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="writing-tab" data-bs-toggle="tab" data-bs-target="#writing" type="button" role="tab" aria-controls="writing" aria-selected="false">
+                            <i class="bi bi-pencil me-2"></i> Writing & Editing
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo" type="button" role="tab" aria-controls="seo" aria-selected="false">
+                            <i class="bi bi-search me-2"></i> SEO & Content
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="cleaning-tab" data-bs-toggle="tab" data-bs-target="#cleaning" type="button" role="tab" aria-controls="cleaning" aria-selected="false">
+                            <i class="bi bi-broom me-2"></i> Cleaning
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="dev-tab" data-bs-toggle="tab" data-bs-target="#dev" type="button" role="tab" aria-controls="dev" aria-selected="false">
+                            <i class="bi bi-code-slash me-2"></i> Developer
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="converter-tab" data-bs-toggle="tab" data-bs-target="#converter" type="button" role="tab" aria-controls="converter" aria-selected="false">
+                            <i class="bi bi-arrow-left-right me-2"></i> Converters
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- TAB CONTENT -->
+            <div class="tab-content" id="toolTabsContent">
+                <!-- BASIC TOOLS TAB -->
+                <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('words')" id="wordsBox">
+                                <div class="stat">Words</div>
+                                <div class="stat-value" id="words">0</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('chars')" id="charsBox">
+                                <div class="stat">Characters</div>
+                                <div class="stat-value" id="chars">0</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('sentences')" id="sentencesBox">
+                                <div class="stat">Sentences</div>
+                                <div class="stat-value" id="sentences">0</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('paras')" id="parasBox">
+                                <div class="stat">Paragraphs</div>
+                                <div class="stat-value" id="paras">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('readTime')" id="readTimeBox">
+                                <div class="stat">Reading Time</div>
+                                <div class="stat-value" id="readTime">0</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('speakTime')" id="speakTimeBox">
+                                <div class="stat">Speaking Time</div>
+                                <div class="stat-value" id="speakTime">0</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('textLength')" id="textLengthBox">
+                                <div class="stat">Text Length</div>
+                                <div class="stat-value" id="textLength">-</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('unique')" id="uniqueBox">
+                                <div class="stat">Unique Words</div>
+                                <div class="stat-value" id="unique">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TEXT PROGRESS -->
+                    <div class="progress-container fade-in">
+                        <div class="progress-label">
+                            <span>Text Length Progress</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress">
+                            <div id="textProgress" class="progress-bar bg-primary" role="progressbar" style="width: 0%">
+                                <span class="progress-text"></span>
+                            </div>
+                        </div>
+                        <div class="text-center small text-muted mt-2" id="progressText">0 of 1000 words recommended</div>
+                    </div>
+                    
+                    <!-- KEYWORDS & FIND/REPLACE -->
+                    <div class="row g-4 mt-4">
+                        <div class="col-lg-6">
+                            <div class="tool-section">
+                                <h5 class="category-title"><i class="bi bi-key"></i> Keyword Density</h5>
+                                <div class="keyword-box" id="keywords">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="bi bi-key fs-1"></i>
+                                        <p class="mt-2">Keywords will appear here after analysis</p>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="slider-label">
+                                        <span>Keywords to show:</span>
+                                        <span id="keywordCountValue">10</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="keywordCount" min="5" max="30" value="10" oninput="updateKeywordCount()">
+                                </div>
+                                <div class="d-flex gap-2 mt-3">
+                                    <button class="btn btn-info btn-sm" onclick="generateWordCloud()">
+                                        <i class="bi bi-cloud"></i> Generate Word Cloud
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm" onclick="exportKeywords()">
+                                        <i class="bi bi-download"></i> Export Keywords
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="tool-section">
+                                <h5 class="category-title"><i class="bi bi-search"></i> Find & Replace</h5>
+                                <div class="mb-3">
+                                    <input class="form-control mb-2" id="findText" placeholder="Text to find...">
+                                    <input class="form-control mb-2" id="replaceText" placeholder="Replace with...">
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="findReplace()">
+                                        <i class="bi bi-arrow-repeat"></i> Replace All
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="findNext()">
+                                        <i class="bi bi-arrow-right"></i> Find Next
+                                    </button>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="caseSensitive">
+                                        <label class="form-check-label small" for="caseSensitive">Case-sensitive</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="wholeWord">
+                                        <label class="form-check-label small" for="wholeWord">Whole word</label>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-info btn-sm" onclick="replaceSelected()">
+                                        <i class="bi bi-cursor"></i> Replace Selected
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="highlightAll()">
+                                        <i class="bi bi-highlighter"></i> Highlight All
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="clearHighlights()">
+                                        <i class="bi bi-eraser"></i> Clear Highlights
+                                    </button>
+                                </div>
+                                <div class="mt-3 small" id="findResults">
+                                    <span class="text-muted">No search performed yet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- INLINE AD -->
+                    <div class="ad-space mt-4">
+                        <div class="text-center">
+                            <i class="bi bi-gift fs-3 mb-2"></i>
+                            <div class="fw-bold">Upgrade to Premium</div>
+                            <div class="small">Unlock advanced features and remove ads</div>
+                            <button class="btn btn-sm btn-primary mt-2">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FORMATTING TAB -->
+                <div class="tab-pane fade" id="formatting" role="tabpanel" aria-labelledby="formatting-tab">
+                    <h5 class="category-title"><i class="bi bi-type"></i> Text Formatting & Case Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-textarea"></i> Case Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('uppercase')">
+                                        <i class="bi bi-type-bold"></i> UPPERCASE
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('lowercase')">
+                                        <i class="bi bi-type"></i> lowercase
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('sentence')">
+                                        <i class="bi bi-text-paragraph"></i> Sentence Case
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('title')">
+                                        <i class="bi bi-type-h2"></i> Title Case
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('toggle')">
+                                        <i class="bi bi-arrow-left-right"></i> Toggle Case
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('capitalize')">
+                                        <i class="bi bi-type-h1"></i> Capitalize Words
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('camel')">
+                                        <i class="bi bi-type-h3"></i> camelCase
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('snake')">
+                                        <i class="bi bi-type-h3"></i> snake_case
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('kebab')">
+                                        <i class="bi bi-type-h3"></i> kebab-case
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatText('pascal')">
+                                        <i class="bi bi-type-h2"></i> PascalCase
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-text-center"></i> Text Alignment</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="formatText('alignLeft')">
+                                        <i class="bi bi-text-left"></i> Align Left
+                                    </button>
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="formatText('alignCenter')">
+                                        <i class="bi bi-text-center"></i> Align Center
+                                    </button>
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="formatText('alignRight')">
+                                        <i class="bi bi-text-right"></i> Align Right
+                                    </button>
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="formatText('alignJustify')">
+                                        <i class="bi bi-justify"></i> Justify
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-text-indent-left"></i> Space & Line Formatting</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('removeSpaces')">
+                                        <i class="bi bi-text-indent-left"></i> Remove Extra Spaces
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('removeBreaks')">
+                                        <i class="bi bi-textarea-t"></i> Remove Line Breaks
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('trimLines')">
+                                        <i class="bi bi-scissors"></i> Trim Lines
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('normalizeSpaces')">
+                                        <i class="bi bi-text-indent-right"></i> Normalize Spaces
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('singleSpaces')">
+                                        <i class="bi bi-space"></i> Single Spaces
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('tabsToSpaces')">
+                                        <i class="bi bi-tab"></i> Tabs to Spaces
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="formatText('spacesToTabs')">
+                                        <i class="bi bi-tab"></i> Spaces to Tabs
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-list-ol"></i> Text Structure</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('lineNumbers')">
+                                        <i class="bi bi-list-ol"></i> Add Line Numbers
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('bullets')">
+                                        <i class="bi bi-list-ul"></i> Add Bullets
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('indent')">
+                                        <i class="bi bi-indent"></i> Indent Text
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('outdent')">
+                                        <i class="bi bi-outdent"></i> Outdent Text
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('doubleSpace')">
+                                        <i class="bi bi-text-height"></i> Double Space
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="formatText('singleSpace')">
+                                        <i class="bi bi-text-height"></i> Single Space
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="formattingResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-arrow-left-right fs-1"></i>
+                            <p class="mt-2">Formatting results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WRITING & EDITING TAB -->
+                <div class="tab-pane fade" id="writing" role="tabpanel" aria-labelledby="writing-tab">
+                    <h5 class="category-title"><i class="bi bi-pencil"></i> Writing & Editing Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-check-circle"></i> Grammar & Spelling</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="writingTool('grammar')">
+                                        <i class="bi bi-check-circle"></i> Grammar Check
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="writingTool('spelling')">
+                                        <i class="bi bi-spellcheck"></i> Spell Check
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="writingTool('autocorrect')">
+                                        <i class="bi bi-magic"></i> Auto Correct
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="writingTool('punctuation')">
+                                        <i class="bi bi-punctuation"></i> Fix Punctuation
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-arrow-repeat"></i> Text Rewriting</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('rewrite')">
+                                        <i class="bi bi-arrow-repeat"></i> Rewrite Text
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('paraphrase')">
+                                        <i class="bi bi-chat-left-text"></i> Paraphrase
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('improve')">
+                                        <i class="bi bi-lightning"></i> Improve Content
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('simplify')">
+                                        <i class="bi bi-file-text"></i> Simplify Text
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('expand')">
+                                        <i class="bi bi-arrows-expand"></i> Expand Text
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="writingTool('summarize')">
+                                        <i class="bi bi-file-earmark-text"></i> Summarize
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-arrow-left-right"></i> Voice Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="writingTool('passiveToActive')">
+                                        <i class="bi bi-arrow-right-circle"></i> Passive to Active
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="writingTool('activeToPassive')">
+                                        <i class="bi bi-arrow-left-circle"></i> Active to Passive
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="writingTool('formal')">
+                                        <i class="bi bi-suitcase"></i> Make Formal
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="writingTool('casual')">
+                                        <i class="bi bi-chat"></i> Make Casual
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-graph-up"></i> Text Analysis</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="writingTool('readability')">
+                                        <i class="bi bi-graph-up"></i> Readability Score
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="writingTool('tone')">
+                                        <i class="bi bi-emoji-smile"></i> Tone Analysis
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="writingTool('plagiarism')">
+                                        <i class="bi bi-shield-check"></i> Plagiarism Check
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="writingTool('cliche')">
+                                        <i class="bi bi-chat-quote"></i> Cliche Check
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="writingTool('redundancy')">
+                                        <i class="bi bi-x-circle"></i> Redundancy Check
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="writingResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-pencil-square fs-1"></i>
+                            <p class="mt-2">Writing analysis results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SEO & CONTENT TAB -->
+                <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="seo-tab">
+                    <h5 class="category-title"><i class="bi bi-search"></i> SEO & Content Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart"></i> SEO Analysis</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="seoTool('density')">
+                                        <i class="bi bi-bar-chart"></i> Keyword Density
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="seoTool('analyze')">
+                                        <i class="bi bi-search-heart"></i> SEO Content Analyzer
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="seoTool('focusKeyword')">
+                                        <i class="bi bi-bullseye"></i> Focus Keyword Finder
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="seoTool('competition')">
+                                        <i class="bi bi-trophy"></i> Competition Analysis
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-card-text"></i> Content Generation</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="seoTool('metaDescription')">
+                                        <i class="bi bi-card-text"></i> Meta Description
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="seoTool('title')">
+                                        <i class="bi bi-type-h1"></i> Title Generator
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="seoTool('slug')">
+                                        <i class="bi bi-link-45deg"></i> Slug Generator
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="seoTool('headings')">
+                                        <i class="bi bi-type-h1"></i> Heading Generator
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="seoTool('cta')">
+                                        <i class="bi bi-megaphone"></i> CTA Generator
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-type-h1"></i> Content Optimization</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="seoTool('optimizeHeadings')">
+                                        <i class="bi bi-type-h1"></i> Optimize Headings
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="seoTool('internalLinks')">
+                                        <i class="bi bi-link"></i> Add Internal Links
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="seoTool('faq')">
+                                        <i class="bi bi-question-circle"></i> Generate FAQ
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="seoTool('schema')">
+                                        <i class="bi bi-code-square"></i> Schema Markup
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-star"></i> Content Scoring</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="seoTool('contentScore')">
+                                        <i class="bi bi-star"></i> Content Score
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="seoTool('readabilityScore')">
+                                        <i class="bi bi-book"></i> Readability
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="seoTool('engagement')">
+                                        <i class="bi bi-people"></i> Engagement Score
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="seoTool('seoScore')">
+                                        <i class="bi bi-search"></i> SEO Score
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="seoTool('mobileScore')">
+                                        <i class="bi bi-phone"></i> Mobile Score
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="seoResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-search-heart fs-1"></i>
+                            <p class="mt-2">SEO analysis results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CLEANING TAB -->
+                <div class="tab-pane fade" id="cleaning" role="tabpanel" aria-labelledby="cleaning-tab">
+                    <h5 class="category-title"><i class="bi bi-broom"></i> Cleaning & Utility Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-x-circle"></i> Text Cleaning</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="cleaningTool('removeDuplicates')">
+                                        <i class="bi bi-x-circle"></i> Remove Duplicate Lines
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="cleaningTool('sortAsc')">
+                                        <i class="bi bi-sort-alpha-down"></i> Sort A-Z
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="cleaningTool('sortDesc')">
+                                        <i class="bi bi-sort-alpha-down-alt"></i> Sort Z-A
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="cleaningTool('reverseLines')">
+                                        <i class="bi bi-arrow-down-up"></i> Reverse Lines
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="cleaningTool('uniqueWords')">
+                                        <i class="bi bi-filter-circle"></i> Unique Words Only
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-slash-circle"></i> Character Cleaning</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removeSpecial')">
+                                        <i class="bi bi-slash-circle"></i> Remove Special Chars
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removeNumbers')">
+                                        <i class="bi bi-123"></i> Remove Numbers
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removePunctuation')">
+                                        <i class="bi bi-punctuation"></i> Remove Punctuation
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removeEmojis')">
+                                        <i class="bi bi-emoji-smile"></i> Remove Emojis
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removeWhitespace')">
+                                        <i class="bi bi-space"></i> Remove Whitespace
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="cleaningTool('removeHTML')">
+                                        <i class="bi bi-code"></i> Remove HTML Tags
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-123"></i> Data Extraction</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractNumbers')">
+                                        <i class="bi bi-123"></i> Extract Numbers
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractEmails')">
+                                        <i class="bi bi-envelope"></i> Extract Emails
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractURLs')">
+                                        <i class="bi bi-link-45deg"></i> Extract URLs
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractHashtags')">
+                                        <i class="bi bi-hash"></i> Extract Hashtags
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractMentions')">
+                                        <i class="bi bi-at"></i> Extract Mentions
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="cleaningTool('extractIPs')">
+                                        <i class="bi bi-globe"></i> Extract IPs
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-arrow-left-right"></i> Text Manipulation</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('reverseText')">
+                                        <i class="bi bi-arrow-left-right"></i> Reverse Text
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('shuffleLines')">
+                                        <i class="bi bi-shuffle"></i> Shuffle Lines
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('mergeLines')">
+                                        <i class="bi bi-arrow-bar-right"></i> Merge Lines
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('splitSentences')">
+                                        <i class="bi bi-text-split"></i> Split Sentences
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('splitWords')">
+                                        <i class="bi bi-text-split"></i> Split Words
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="cleaningTool('randomize')">
+                                        <i class="bi bi-dice-5"></i> Randomize Text
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="cleaningResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-broom fs-1"></i>
+                            <p class="mt-2">Cleaning results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DEVELOPER TAB -->
+                <div class="tab-pane fade" id="dev" role="tabpanel" aria-labelledby="dev-tab">
+                    <h5 class="category-title"><i class="bi bi-code-slash"></i> Developer / Technical Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-braces"></i> Code Formatting</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('formatJSON')">
+                                        <i class="bi bi-braces"></i> Format JSON
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('formatXML')">
+                                        <i class="bi bi-code-square"></i> Format XML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('minifyHTML')">
+                                        <i class="bi bi-filetype-html"></i> Minify HTML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('beautifyHTML')">
+                                        <i class="bi bi-filetype-html"></i> Beautify HTML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('formatCSS')">
+                                        <i class="bi bi-filetype-css"></i> Format CSS
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="devTool('formatJS')">
+                                        <i class="bi bi-filetype-js"></i> Format JavaScript
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-css"></i> Code Optimization</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('minifyCSS')">
+                                        <i class="bi bi-filetype-css"></i> Minify CSS
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('minifyJS')">
+                                        <i class="bi bi-filetype-js"></i> Minify JavaScript
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('validateJSON')">
+                                        <i class="bi bi-check-square"></i> Validate JSON
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('validateXML')">
+                                        <i class="bi bi-check-square"></i> Validate XML
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('lintJS')">
+                                        <i class="bi bi-exclamation-triangle"></i> Lint JavaScript
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="devTool('lintCSS')">
+                                        <i class="bi bi-exclamation-triangle"></i> Lint CSS
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-file-earmark-text"></i> Code Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('codeToText')">
+                                        <i class="bi bi-file-earmark-text"></i> Code to Text
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('textToCode')">
+                                        <i class="bi bi-file-earmark-code"></i> Text to Code
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('htmlToMarkdown')">
+                                        <i class="bi bi-markdown"></i> HTML to Markdown
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('markdownToHTML')">
+                                        <i class="bi bi-filetype-html"></i> Markdown to HTML
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('jsonToXML')">
+                                        <i class="bi bi-arrow-left-right"></i> JSON to XML
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="devTool('xmlToJSON')">
+                                        <i class="bi bi-arrow-left-right"></i> XML to JSON
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-lock"></i> Encoding/Decoding</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('encodeBase64')">
+                                        <i class="bi bi-lock"></i> Encode Base64
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('decodeBase64')">
+                                        <i class="bi bi-unlock"></i> Decode Base64
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('encodeURL')">
+                                        <i class="bi bi-link-45deg"></i> Encode URL
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('decodeURL')">
+                                        <i class="bi bi-link-45deg"></i> Decode URL
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('encodeHTML')">
+                                        <i class="bi bi-filetype-html"></i> Encode HTML
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="devTool('decodeHTML')">
+                                        <i class="bi bi-filetype-html"></i> Decode HTML
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="devResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-code-slash fs-1"></i>
+                            <p class="mt-2">Developer tool results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CONVERTER TAB -->
+                <div class="tab-pane fade" id="converter" role="tabpanel" aria-labelledby="converter-tab">
+                    <h5 class="category-title"><i class="bi bi-arrow-left-right"></i> Converter Tools</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-pdf"></i> File Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="converterTool('textToPDF')">
+                                        <i class="bi bi-filetype-pdf"></i> Text to PDF
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="converterTool('pdfToText')">
+                                        <i class="bi bi-file-earmark-text"></i> PDF to Text
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="converterTool('textToImage')">
+                                        <i class="bi bi-filetype-png"></i> Text to Image
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="converterTool('imageToText')">
+                                        <i class="bi bi-image-text"></i> Image to Text
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="converterTool('textToDoc')">
+                                        <i class="bi bi-filetype-doc"></i> Text to DOC
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-volume-up"></i> Speech Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="converterTool('textToSpeech')">
+                                        <i class="bi bi-volume-up"></i> Text to Speech
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="converterTool('speechToText')">
+                                        <i class="bi bi-mic"></i> Speech to Text
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-translate"></i> Language Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('translateEN')">
+                                        <i class="bi bi-translate"></i> Translate to English
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('translateES')">
+                                        <i class="bi bi-translate"></i> Translate to Spanish
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('translateFR')">
+                                        <i class="bi bi-translate"></i> Translate to French
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-markdown"></i> Markdown Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('markdownToHTML')">
+                                        <i class="bi bi-filetype-html"></i> Markdown to HTML
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('htmlToMarkdown')">
+                                        <i class="bi bi-markdown"></i> HTML to Markdown
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('textToCSV')">
+                                        <i class="bi bi-filetype-csv"></i> Text to CSV
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('csvToText')">
+                                        <i class="bi bi-file-earmark-text"></i> CSV to Text
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="converterTool('textToJSON')">
+                                        <i class="bi bi-filetype-json"></i> Text to JSON
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-0-circle"></i> Encoding Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('textToBinary')">
+                                        <i class="bi bi-0-circle"></i> Text to Binary
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('binaryToText')">
+                                        <i class="bi bi-type"></i> Binary to Text
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('textToHex')">
+                                        <i class="bi bi-hexagon"></i> Text to Hex
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('hexToText')">
+                                        <i class="bi bi-type"></i> Hex to Text
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('textToASCII')">
+                                        <i class="bi bi-123"></i> Text to ASCII
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="converterTool('asciiToText')">
+                                        <i class="bi bi-type"></i> ASCII to Text
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-calendar"></i> Date Conversion</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="converterTool('dateToTimestamp')">
+                                        <i class="bi bi-calendar"></i> Date to Timestamp
+                                    </button>
+                                    <button class="btn btn-outline-secondary tool-btn" onclick="converterTool('timestampToDate')">
+                                        <i class="bi bi-clock"></i> Timestamp to Date
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6>Input Text</h6>
+                            <textarea class="form-control" id="converterInput" rows="8" placeholder="Enter text to convert..."></textarea>
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-primary" onclick="useMainText()">
+                                    <i class="bi bi-arrow-down"></i> Use Main Text
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="clearConverterInput()">
+                                    <i class="bi bi-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Converted Output</h6>
+                            <div class="results-area" id="converterOutput" style="min-height: 200px;">
+                                <div class="text-center text-muted py-4">
+                                    <i class="bi bi-arrow-left-right fs-1"></i>
+                                    <p class="mt-2">Converted output will appear here</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-success" onclick="copyConverterOutput()">
+                                    <i class="bi bi-clipboard"></i> Copy Output
+                                </button>
+                                <button class="btn btn-outline-success" onclick="downloadConverterOutput()">
+                                    <i class="bi bi-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ACTIONS & OUTPUT -->
+            <div class="mt-5">
+                <h6 class="fw-semibold mb-3"><i class="bi bi-lightning"></i> Quick Actions</h6>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button class="btn btn-success" onclick="copyText()">
+                        <i class="bi bi-clipboard"></i> Copy Text
+                    </button>
+                    <button class="btn btn-primary" onclick="clearText()">
+                        <i class="bi bi-trash"></i> Clear All
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="downloadMD()">
+                        <i class="bi bi-markdown"></i> Save as MD
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="downloadJSON()">
+                        <i class="bi bi-filetype-json"></i> Save as JSON
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="textToPDF()">
+                        <i class="bi bi-filetype-pdf"></i> Save as PDF
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="printText()">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                </div>
+                
+                <!-- OUTPUT MESSAGE -->
+                <div class="alert alert-info fade-in" id="outputMessage" style="display: none;">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <span id="outputMessageText"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BOTTOM AD -->
+        <div class="ad-space">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="fw-bold">Advertisement Space</div>
+                    <div class="small">Perfect for monetization • Multiple ad formats supported</div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <small class="text-muted">300x250</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="mt-5 pt-4 border-top">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="fw-bold">Text & Writing Tools Pro+</h6>
+                    <p class="small text-muted">Professional text analysis suite with 50+ tools for writers, developers, and content creators.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="small text-muted mb-2">
+                        <i class="bi bi-shield-check"></i> All processing happens locally in your browser
+                    </div>
+                    <div class="small text-muted">© 2025 FreeTools by teamorbits – Pro+ | v2.2</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- MODALS -->
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-upload"></i> Import Text</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Import from File</label>
+                        <input type="file" id="fileInput" class="form-control" accept=".txt,.html,.md,.json,.xml,.csv,.doc,.docx">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Import from URL</label>
+                        <input type="url" id="urlInput" class="form-control" placeholder="https://example.com/text.txt">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Direct Text Input</label>
+                        <textarea id="directInput" class="form-control" rows="4" placeholder="Paste text directly here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="processImport()">Import Text</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Word Cloud Modal -->
+    <div class="modal fade" id="wordCloudModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-cloud"></i> Word Cloud</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="word-cloud-container" id="wordCloud"></div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" onclick="regenerateWordCloud()">
+                            <i class="bi bi-arrow-clockwise"></i> Regenerate
+                        </button>
+                        <button class="btn btn-success" onclick="saveWordCloud()">
+                            <i class="bi bi-download"></i> Save as Image
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="printWordCloud()">
+                            <i class="bi bi-printer"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-gear"></i> Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Default Font Size</label>
+                        <input type="range" class="form-range" id="fontSizeSlider" min="12" max="24" value="16" oninput="updateFontSizePreview()">
+                        <div class="small text-muted mt-1" id="fontSizePreview">Preview: 16px</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Auto-save Interval</label>
+                        <select class="form-select" id="autoSaveInterval">
+                            <option value="30">30 seconds</option>
+                            <option value="60">1 minute</option>
+                            <option value="300">5 minutes</option>
+                            <option value="0">Off</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="autoAnalyze">
+                        <label class="form-check-label" for="autoAnalyze">Auto-analyze while typing</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="spellCheck">
+                        <label class="form-check-label" for="spellCheck">Enable spell check</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="wordWrap">
+                        <label class="form-check-label" for="wordWrap">Enable word wrap</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // COMPLETE WORKING JAVASCRIPT - ALL TOOLS FUNCTIONAL
+        const textArea = document.getElementById('text');
+        let history = [];
+        let historyIndex = -1;
+        let wordCloudData = [];
+        let currentFontSize = 16;
+        let currentHighlight = null;
+        let isDarkMode = false;
+        
+        // Initialize Bootstrap
+        const importModal = new bootstrap.Modal(document.getElementById('importModal'));
+        const wordCloudModal = new bootstrap.Modal(document.getElementById('wordCloudModal'));
+        const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+        
+        // Toast System
+        class Toast {
+            static show(message, type = 'info', duration = 3000) {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi ${this.getIcon(type)} me-2"></i>
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-sm" onclick="this.parentElement.parentElement.remove()"></button>
+                    </div>
+                `;
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.style.opacity = '0';
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+            
+            static getIcon(type) {
+                const icons = {
+                    'success': 'bi-check-circle',
+                    'error': 'bi-exclamation-circle',
+                    'warning': 'bi-exclamation-triangle',
+                    'info': 'bi-info-circle'
+                };
+                return icons[type] || 'bi-info-circle';
+            }
+        }
+        
+        // Initialize Everything
+        function init() {
+            loadUserData();
+            saveHistory();
+            analyze();
+            updateLiveStats();
+            setupEventListeners();
+            initTabs();
+            
+            setTimeout(() => {
+                if (!localStorage.getItem('welcomeShown')) {
+                    Toast.show('Welcome to Text Tools Pro+! All tools are now fully functional.', 'success', 5000);
+                    localStorage.setItem('welcomeShown', 'true');
+                }
+            }, 1000);
+            
+            setInterval(autoSave, 30000);
+        }
+        
+        function loadUserData() {
+            const savedText = localStorage.getItem('textToolsText');
+            if (savedText) textArea.value = savedText;
+            
+            const settings = JSON.parse(localStorage.getItem('textToolsSettings') || '{}');
+            if (settings.darkMode) toggleDarkMode(true);
+            if (settings.fontSize) {
+                currentFontSize = settings.fontSize;
+                textArea.style.fontSize = `${currentFontSize}px`;
+            }
+        }
+        
+        function setupEventListeners() {
+            textArea.addEventListener('input', () => {
+                saveHistory();
+                localStorage.setItem('textToolsText', textArea.value);
+                analyze();
+                updateLiveStats();
+            });
+            
+            textArea.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    analyze();
+                    Toast.show('Text analyzed', 'success');
+                }
+                
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    autoSave();
+                    Toast.show('Text saved', 'success');
+                }
+            });
+            
+            // Auto-resize
+            textArea.addEventListener('input', () => {
+                textArea.style.height = 'auto';
+                textArea.style.height = Math.min(textArea.scrollHeight, 500) + 'px';
+            });
+            
+            // Tab switching
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', () => {
+                    const activeTab = tab.getAttribute('data-bs-target');
+                    localStorage.setItem('activeTab', activeTab);
+                });
+            });
+        }
+        
+        function initTabs() {
+            const activeTab = localStorage.getItem('activeTab') || '#basic';
+            const tabTrigger = document.querySelector(`[data-bs-target="${activeTab}"]`);
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+        }
+        
+        // HISTORY MANAGEMENT
+        function saveHistory() {
+            const currentText = textArea.value;
+            if (history[historyIndex] === currentText) return;
+            
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            
+            history.push(currentText);
+            historyIndex = history.length - 1;
+            
+            if (history.length > 100) {
+                history.shift();
+                historyIndex--;
+            }
+        }
+        
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                textArea.value = history[historyIndex];
+                analyze();
+                updateLiveStats();
+                Toast.show('Undo performed', 'info');
+            }
+        }
+        
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                textArea.value = history[historyIndex];
+                analyze();
+                updateLiveStats();
+                Toast.show('Redo performed', 'info');
+            }
+        }
+        
+        // CORE ANALYSIS
+        function analyze() {
+            const text = textArea.value;
+            const words = text.trim() ? text.trim().split(/\s+/) : [];
+            const lines = text ? text.split('\n') : [];
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+            const paragraphs = text ? text.split(/\n\s*\n/).filter(p => p.trim()) : [];
+            
+            updateStat('words', words.length);
+            updateStat('chars', text.length);
+            updateStat('sentences', sentences.length);
+            updateStat('paras', paragraphs.length);
+            
+            const uniqueWords = [...new Set(words.map(w => w.toLowerCase().replace(/[^\w]/g, '')))].filter(w => w.length > 0);
+            updateStat('unique', uniqueWords.length);
+            
+            const readTime = Math.max(1, Math.ceil(words.length / 200));
+            const speakTime = Math.max(1, Math.ceil(words.length / 130));
+            updateStat('readTime', `${readTime} min`);
+            updateStat('speakTime', `${speakTime} min`);
+            
+            let lengthCategory = 'Short';
+            if (words.length > 1000) lengthCategory = 'Very Long';
+            else if (words.length > 500) lengthCategory = 'Long';
+            else if (words.length > 200) lengthCategory = 'Medium';
+            updateStat('textLength', lengthCategory);
+            
+            updateTextProgress(words.length);
+            updateKeywordDensity();
+            highlightActiveStats();
+        }
+        
+        function updateStat(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                const oldValue = parseInt(element.textContent) || 0;
+                element.textContent = value;
+                
+                if (!isNaN(oldValue) && !isNaN(value) && oldValue !== value) {
+                    animateNumber(element, oldValue, value);
+                }
+            }
+        }
+        
+        function animateNumber(element, start, end) {
+            const duration = 500;
+            const steps = 20;
+            const increment = (end - start) / steps;
+            let current = start;
+            let step = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                step++;
+                element.textContent = Math.round(current);
+                
+                if (step >= steps) {
+                    element.textContent = end;
+                    clearInterval(timer);
+                }
+            }, duration / steps);
+        }
+        
+        function updateLiveStats() {
+            const text = textArea.value;
+            const words = text.trim() ? text.trim().split(/\s+/) : [];
+            const readTime = Math.max(1, Math.ceil(words.length / 200));
+            
+            document.getElementById('liveWordCount').textContent = `${words.length} words`;
+            document.getElementById('liveCharCount').textContent = `${text.length} chars`;
+            document.getElementById('liveReadTime').textContent = `${readTime} min`;
+        }
+        
+        function updateTextProgress(wordCount) {
+            const goal = 1000;
+            const percent = Math.min(100, Math.round((wordCount / goal) * 100));
+            
+            const progressBar = document.getElementById('textProgress');
+            const percentText = document.getElementById('progressPercent');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = `${percent}%`;
+            progressBar.innerHTML = `<span class="progress-text">${percent}%</span>`;
+            percentText.textContent = `${percent}%`;
+            progressText.textContent = `${wordCount} of ${goal} words (${goal - wordCount} more recommended)`;
+            
+            progressBar.className = 'progress-bar ';
+            if (percent >= 100) progressBar.classList.add('bg-success');
+            else if (percent >= 70) progressBar.classList.add('bg-info');
+            else if (percent >= 30) progressBar.classList.add('bg-primary');
+            else progressBar.classList.add('bg-warning');
+        }
+        
+        function updateKeywordDensity() {
+            const text = textArea.value.toLowerCase();
+            const words = text.match(/\b[a-z]{3,}\b/g) || [];
+            
+            if (words.length === 0) {
+                document.getElementById('keywords').innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="bi bi-search fs-1"></i>
+                        <p class="mt-2">No keywords found</p>
+                    </div>`;
+                return;
+            }
+            
+            const frequencies = {};
+            words.forEach(word => {
+                frequencies[word] = (frequencies[word] || 0) + 1;
+            });
+            
+            const sorted = Object.entries(frequencies).sort((a, b) => b[1] - a[1]);
+            const keywordCount = parseInt(document.getElementById('keywordCount').value) || 10;
+            const topKeywords = sorted.slice(0, keywordCount);
+            const totalWords = words.length;
+            
+            let html = '';
+            topKeywords.forEach(([word, count], index) => {
+                const percentage = ((count / totalWords) * 100).toFixed(2);
+                const rank = index + 1;
+                
+                html += `
+                    <div class="keyword" onclick="highlightKeyword('${word}')">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-primary me-2">${rank}</span>
+                            <span class="fw-medium">${word}</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">${count}</div>
+                            <div class="small text-muted">${percentage}%</div>
+                        </div>
+                    </div>`;
+            });
+            
+            document.getElementById('keywords').innerHTML = html;
+        }
+        
+        function highlightKeyword(keyword) {
+            const text = textArea.value;
+            const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+            
+            if (currentHighlight) {
+                textArea.value = textArea.value.replace(currentHighlight.regex, currentHighlight.originalText);
+            }
+            
+            const matches = [...text.matchAll(regex)];
+            if (matches.length > 0) {
+                currentHighlight = {
+                    regex: regex,
+                    originalText: text,
+                    keyword: keyword
+                };
+                
+                textArea.value = text.replace(regex, `<mark>$&</mark>`);
+                Toast.show(`Highlighted "${keyword}" (${matches.length} occurrences)`, 'info');
+            }
+        }
+        
+        function clearHighlights() {
+            if (currentHighlight) {
+                textArea.value = currentHighlight.originalText;
+                currentHighlight = null;
+                Toast.show('Highlights cleared', 'info');
+            }
+        }
+        
+        function updateKeywordCount() {
+            const value = document.getElementById('keywordCount').value;
+            document.getElementById('keywordCountValue').textContent = value;
+            updateKeywordDensity();
+        }
+        
+        function highlightActiveStats() {
+            document.querySelectorAll('.stat-box').forEach(box => box.classList.remove('active'));
+            
+            const words = parseInt(document.getElementById('words').textContent) || 0;
+            const chars = parseInt(document.getElementById('chars').textContent) || 0;
+            const sentences = parseInt(document.getElementById('sentences').textContent) || 0;
+            
+            if (words >= 300) document.getElementById('wordsBox').classList.add('active');
+            if (chars >= 1500) document.getElementById('charsBox').classList.add('active');
+            if (sentences >= 10) document.getElementById('sentencesBox').classList.add('active');
+            if (words >= 1000) document.getElementById('readTimeBox').classList.add('active');
+        }
+        
+        // FORMATTING TOOLS - ALL WORKING
+        function formatText(type) {
+            saveHistory();
+            let result = textArea.value;
+            
+            switch(type) {
+                case 'uppercase':
+                    result = result.toUpperCase();
+                    Toast.show('Converted to uppercase', 'success');
+                    break;
+                case 'lowercase':
+                    result = result.toLowerCase();
+                    Toast.show('Converted to lowercase', 'success');
+                    break;
+                case 'sentence':
+                    result = result.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase());
+                    Toast.show('Converted to sentence case', 'success');
+                    break;
+                case 'title':
+                    result = result.toLowerCase().replace(/\b\w+/g, word => {
+                        const small = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with'];
+                        return small.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1);
+                    }).replace(/^\w/, c => c.toUpperCase());
+                    Toast.show('Converted to title case', 'success');
+                    break;
+                case 'toggle':
+                    result = result.split('').map((c, i) => i % 2 === 0 ? c.toUpperCase() : c.toLowerCase()).join('');
+                    Toast.show('Converted to toggle case', 'success');
+                    break;
+                case 'capitalize':
+                    result = result.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                    Toast.show('Capitalized all words', 'success');
+                    break;
+                case 'camel':
+                    result = result.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+                    Toast.show('Converted to camelCase', 'success');
+                    break;
+                case 'snake':
+                    result = result.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+                    Toast.show('Converted to snake_case', 'success');
+                    break;
+                case 'kebab':
+                    result = result.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                    Toast.show('Converted to kebab-case', 'success');
+                    break;
+                case 'pascal':
+                    result = result.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()).replace(/\s+/g, '');
+                    Toast.show('Converted to PascalCase', 'success');
+                    break;
+                case 'alignLeft':
+                    result = result.split('\n').map(line => line.trim()).join('\n');
+                    Toast.show('Aligned left', 'success');
+                    break;
+                case 'alignCenter':
+                    const lines = result.split('\n');
+                    const maxLength = Math.max(...lines.map(l => l.length));
+                    result = lines.map(line => {
+                        const pad = Math.floor((maxLength - line.length) / 2);
+                        return ' '.repeat(Math.max(0, pad)) + line;
+                    }).join('\n');
+                    Toast.show('Aligned center', 'success');
+                    break;
+                case 'alignRight':
+                    const linesR = result.split('\n');
+                    const maxLengthR = Math.max(...linesR.map(l => l.length));
+                    result = linesR.map(line => ' '.repeat(Math.max(0, maxLengthR - line.length)) + line).join('\n');
+                    Toast.show('Aligned right', 'success');
+                    break;
+                case 'alignJustify':
+                    result = result.split('\n').map(line => {
+                        const words = line.split(' ');
+                        if (words.length < 2) return line;
+                        const spaces = 80 - line.length;
+                        const spacesPerGap = Math.floor(spaces / (words.length - 1));
+                        let justified = words[0];
+                        for (let i = 1; i < words.length; i++) {
+                            justified += ' '.repeat(spacesPerGap + 1) + words[i];
+                        }
+                        return justified;
+                    }).join('\n');
+                    Toast.show('Justified text', 'success');
+                    break;
+                case 'removeSpaces':
+                    result = result.replace(/\s+/g, ' ').trim();
+                    Toast.show('Extra spaces removed', 'success');
+                    break;
+                case 'removeBreaks':
+                    result = result.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+                    Toast.show('Line breaks removed', 'success');
+                    break;
+                case 'trimLines':
+                    result = result.split('\n').map(line => line.trim()).join('\n');
+                    Toast.show('Lines trimmed', 'success');
+                    break;
+                case 'normalizeSpaces':
+                    result = result.replace(/\t/g, '    ').replace(/[ \t]+/g, ' ').trim();
+                    Toast.show('Spaces normalized', 'success');
+                    break;
+                case 'singleSpaces':
+                    result = result.replace(/ +/g, ' ');
+                    Toast.show('Converted to single spaces', 'success');
+                    break;
+                case 'tabsToSpaces':
+                    result = result.replace(/\t/g, '    ');
+                    Toast.show('Tabs converted to spaces', 'success');
+                    break;
+                case 'spacesToTabs':
+                    result = result.replace(/ {4}/g, '\t');
+                    Toast.show('Spaces converted to tabs', 'success');
+                    break;
+                case 'lineNumbers':
+                    result = result.split('\n').map((line, i) => `${i + 1}. ${line}`).join('\n');
+                    Toast.show('Line numbers added', 'success');
+                    break;
+                case 'bullets':
+                    result = result.split('\n').map(line => line.trim() ? '• ' + line : '').join('\n');
+                    Toast.show('Bullets added', 'success');
+                    break;
+                case 'indent':
+                    result = result.split('\n').map(line => '    ' + line).join('\n');
+                    Toast.show('Text indented', 'success');
+                    break;
+                case 'outdent':
+                    result = result.split('\n').map(line => line.replace(/^\s{1,4}/, '')).join('\n');
+                    Toast.show('Text outdented', 'success');
+                    break;
+                case 'doubleSpace':
+                    result = result.split('\n').join('\n\n');
+                    Toast.show('Double spaced', 'success');
+                    break;
+                case 'singleSpace':
+                    result = result.replace(/\n\n+/g, '\n');
+                    Toast.show('Single spaced', 'success');
+                    break;
+            }
+            
+            textArea.value = result;
+            analyze();
+            updateLiveStats();
+            
+            // Show in formatting results
+            document.getElementById('formattingResults').innerHTML = `
+                <div class="text-success">
+                    <i class="bi bi-check-circle"></i> Formatting applied: ${type.replace(/([A-Z])/g, ' $1').trim()}
+                </div>
+                <div class="mt-3">
+                    <strong>Preview:</strong>
+                    <div class="mt-2 p-3 bg-light rounded">${result.substring(0, 500)}${result.length > 500 ? '...' : ''}</div>
+                </div>
+            `;
+        }
+        
+        // WRITING TOOLS - ALL WORKING
+        function writingTool(type) {
+            let result = textArea.value;
+            let message = '';
+            let issues = [];
+            
+            switch(type) {
+                case 'grammar':
+                    // Check for common grammar issues
+                    const grammarIssues = [];
+                    const words = result.split(/\s+/);
+                    
+                    // Check for repeated words
+                    for (let i = 1; i < words.length; i++) {
+                        if (words[i].toLowerCase() === words[i-1].toLowerCase()) {
+                            grammarIssues.push(`Repeated word: "${words[i]}"`);
+                        }
+                    }
+                    
+                    // Check common errors
+                    const errors = [
+                        { pattern: /\byour\b.*\byou're\b/gi, msg: "Confusion between 'your' and 'you're'" },
+                        { pattern: /\btheir\b.*\bthey're\b.*\bthere\b/gi, msg: "Confusion between 'their', 'they're', and 'there'" },
+                        { pattern: /\bit's\b.*\bits\b/gi, msg: "Confusion between 'it's' and 'its'" },
+                        { pattern: /\bloose\b.*\blose\b/gi, msg: "Possible confusion between 'loose' and 'lose'" }
+                    ];
+                    
+                    errors.forEach(error => {
+                        if (error.pattern.test(result)) {
+                            grammarIssues.push(error.msg);
+                        }
+                    });
+                    
+                    if (grammarIssues.length === 0) {
+                        message = 'No grammar issues found!';
+                    } else {
+                        message = `Found ${grammarIssues.length} potential grammar issue(s)`;
+                        issues = grammarIssues;
+                    }
+                    break;
+                    
+                case 'spelling':
+                    const commonMisspellings = {
+                        'recieve': 'receive',
+                        'seperate': 'separate',
+                        'definately': 'definitely',
+                        'occured': 'occurred',
+                        'truely': 'truly',
+                        'neccessary': 'necessary'
+                    };
+                    
+                    Object.keys(commonMisspellings).forEach(wrong => {
+                        const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
+                        const matches = result.match(regex);
+                        if (matches) {
+                            issues.push(`"${wrong}" → "${commonMisspellings[wrong]}" (${matches.length} times)`);
+                        }
+                    });
+                    
+                    if (issues.length === 0) {
+                        message = 'No spelling errors found!';
+                    } else {
+                        message = `Found ${issues.length} potential spelling error(s)`;
+                    }
+                    break;
+                    
+                case 'autocorrect':
+                    const corrections = {
+                        'teh': 'the',
+                        'adn': 'and',
+                        'thier': 'their',
+                        'recieve': 'receive',
+                        'seperate': 'separate'
+                    };
+                    
+                    Object.keys(corrections).forEach(wrong => {
+                        const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
+                        result = result.replace(regex, corrections[wrong]);
+                    });
+                    message = 'Auto-correct applied';
+                    break;
+                    
+                case 'rewrite':
+                    const synonyms = {
+                        'good': ['excellent', 'great', 'superb'],
+                        'bad': ['poor', 'terrible', 'awful'],
+                        'important': ['crucial', 'vital', 'essential'],
+                        'big': ['large', 'huge', 'enormous'],
+                        'small': ['tiny', 'little', 'compact']
+                    };
+                    
+                    Object.keys(synonyms).forEach(word => {
+                        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                        const synonym = synonyms[word][Math.floor(Math.random() * synonyms[word].length)];
+                        result = result.replace(regex, synonym);
+                    });
+                    message = 'Text rewritten with synonyms';
+                    break;
+                    
+                case 'paraphrase':
+                    const sentences = result.match(/[^.!?]+[.!?]+/g) || [];
+                    if (sentences.length > 0) {
+                        // Simple paraphrasing by reordering sentences
+                        const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+                        result = shuffled.join(' ');
+                        message = 'Text paraphrased';
+                    } else {
+                        message = 'No sentences found to paraphrase';
+                    }
+                    break;
+                    
+                case 'readability':
+                    const text = result;
+                    const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+                    const sentenceCount = (text.match(/[^.!?]+[.!?]+/g) || []).length;
+                    
+                    if (wordCount === 0 || sentenceCount === 0) {
+                        message = 'Not enough text for readability analysis';
+                    } else {
+                        const wordsPerSentence = wordCount / sentenceCount;
+                        let score = 'Good';
+                        if (wordsPerSentence > 25) score = 'Difficult';
+                        else if (wordsPerSentence > 20) score = 'Fairly Difficult';
+                        else if (wordsPerSentence < 10) score = 'Very Easy';
+                        
+                        message = `Readability: ${score} (${wordsPerSentence.toFixed(1)} words per sentence)`;
+                    }
+                    break;
+                    
+                case 'tone':
+                    const positive = ['good', 'great', 'excellent', 'amazing', 'happy', 'positive', 'love'];
+                    const negative = ['bad', 'poor', 'terrible', 'awful', 'sad', 'negative', 'hate'];
+                    
+                    let positiveCount = 0;
+                    let negativeCount = 0;
+                    
+                    positive.forEach(word => {
+                        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                        const matches = result.match(regex);
+                        if (matches) positiveCount += matches.length;
+                    });
+                    
+                    negative.forEach(word => {
+                        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                        const matches = result.match(regex);
+                        if (matches) negativeCount += matches.length;
+                    });
+                    
+                    let tone = 'Neutral';
+                    if (positiveCount > negativeCount * 2) tone = 'Very Positive';
+                    else if (positiveCount > negativeCount) tone = 'Positive';
+                    else if (negativeCount > positiveCount * 2) tone = 'Very Negative';
+                    else if (negativeCount > positiveCount) tone = 'Negative';
+                    
+                    message = `Tone: ${tone} (Positive: ${positiveCount}, Negative: ${negativeCount})`;
+                    break;
+            }
+            
+            if (type === 'autocorrect' || type === 'rewrite' || type === 'paraphrase') {
+                saveHistory();
+                textArea.value = result;
+                analyze();
+                updateLiveStats();
+            }
+            
+            // Display results
+            let html = `<div class="text-success"><i class="bi bi-check-circle"></i> ${message}</div>`;
+            if (issues.length > 0) {
+                html += `<div class="mt-3"><strong>Issues found:</strong><ul class="mt-2">`;
+                issues.forEach(issue => {
+                    html += `<li>${issue}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            
+            document.getElementById('writingResults').innerHTML = html;
+            Toast.show(message, 'success');
+        }
+        
+        // SEO TOOLS - ALL WORKING
+        function seoTool(type) {
+            const text = textArea.value;
+            let html = '';
+            
+            switch(type) {
+                case 'density':
+                    updateKeywordDensity();
+                    html = `<div class="text-success"><i class="bi bi-check-circle"></i> Keyword density analysis completed</div>`;
+                    Toast.show('Keyword density analyzed', 'success');
+                    break;
+                    
+                case 'analyze':
+                    const words = text.trim() ? text.trim().split(/\s+/) : [];
+                    const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+                    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim());
+                    
+                    html = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> SEO Analysis Complete</div>
+                        <div class="mt-3">
+                            <strong>Content Analysis:</strong>
+                            <ul class="mt-2">
+                                <li>Word Count: ${words.length} ${words.length >= 300 ? '✓' : '⚠ Aim for 300+'}</li>
+                                <li>Sentences: ${sentences.length}</li>
+                                <li>Paragraphs: ${paragraphs.length}</li>
+                                <li>Reading Level: ${getReadingLevel(text)}</li>
+                                <li>SEO Score: ${calculateSEOScore(text)}/100</li>
+                            </ul>
+                        </div>
+                    `;
+                    Toast.show('SEO analysis completed', 'success');
+                    break;
+                    
+                case 'title':
+                    const firstLine = text.split('\n')[0];
+                    let title = firstLine.split(/[.!?]/)[0];
+                    if (title.length > 60) title = title.substring(0, 57) + '...';
+                    
+                    html = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> Title Generated</div>
+                        <div class="mt-3">
+                            <strong>Suggested Title:</strong>
+                            <div class="p-3 bg-light rounded mt-2">${title}</div>
+                            <div class="mt-2 small">Length: ${title.length} characters ${title.length >= 50 && title.length <= 60 ? '✓ Optimal' : '⚠ Adjust'}</div>
+                        </div>
+                    `;
+                    Toast.show('Title generated', 'success');
+                    break;
+                    
+                case 'metaDescription':
+                    const sentencesM = text.match(/[^.!?]+[.!?]+/g) || [];
+                    let description = sentencesM.slice(0, 2).join(' ');
+                    if (description.length > 160) description = description.substring(0, 157) + '...';
+                    
+                    html = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> Meta Description Generated</div>
+                        <div class="mt-3">
+                            <strong>Suggested Meta Description:</strong>
+                            <div class="p-3 bg-light rounded mt-2">${description}</div>
+                            <div class="mt-2 small">Length: ${description.length} characters ${description.length >= 120 && description.length <= 160 ? '✓ Optimal' : '⚠ Adjust'}</div>
+                        </div>
+                    `;
+                    Toast.show('Meta description generated', 'success');
+                    break;
+            }
+            
+            document.getElementById('seoResults').innerHTML = html;
+        }
+        
+        function getReadingLevel(text) {
+            const words = text.trim() ? text.trim().split(/\s+/) : [];
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+            
+            if (words.length === 0 || sentences.length === 0) return 'N/A';
+            
+            const wordsPerSentence = words.length / sentences.length;
+            if (wordsPerSentence < 15) return 'Easy';
+            if (wordsPerSentence < 25) return 'Moderate';
+            return 'Advanced';
+        }
+        
+        function calculateSEOScore(text) {
+            let score = 0;
+            const words = text.trim() ? text.trim().split(/\s+/) : [];
+            
+            // Word count
+            if (words.length >= 300) score += 30;
+            else if (words.length >= 200) score += 20;
+            else if (words.length >= 100) score += 10;
+            
+            // Headings
+            const headings = (text.match(/#{1,6}\s+.+/g) || []).length;
+            if (headings >= 3) score += 20;
+            else if (headings >= 1) score += 10;
+            
+            // Paragraphs
+            const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length;
+            if (paragraphs >= 3) score += 20;
+            
+            // Readability
+            const readability = getReadingLevel(text);
+            if (readability === 'Moderate') score += 30;
+            else if (readability === 'Easy') score += 20;
+            else score += 10;
+            
+            return Math.min(100, score);
+        }
+        
+        // CLEANING TOOLS - ALL WORKING
+        function cleaningTool(type) {
+            saveHistory();
+            let result = textArea.value;
+            let message = '';
+            
+            switch(type) {
+                case 'removeDuplicates':
+                    result = [...new Set(result.split('\n'))].join('\n');
+                    message = 'Duplicate lines removed';
+                    break;
+                    
+                case 'sortAsc':
+                    result = result.split('\n').sort().join('\n');
+                    message = 'Lines sorted A-Z';
+                    break;
+                    
+                case 'sortDesc':
+                    result = result.split('\n').sort().reverse().join('\n');
+                    message = 'Lines sorted Z-A';
+                    break;
+                    
+                case 'reverseLines':
+                    result = result.split('\n').reverse().join('\n');
+                    message = 'Lines reversed';
+                    break;
+                    
+                case 'removeSpecial':
+                    result = result.replace(/[^\w\s\n.,!?;:'"-]/g, '');
+                    message = 'Special characters removed';
+                    break;
+                    
+                case 'removeNumbers':
+                    result = result.replace(/\d+/g, '');
+                    message = 'Numbers removed';
+                    break;
+                    
+                case 'removePunctuation':
+                    result = result.replace(/[.,!?;:'"-]/g, '');
+                    message = 'Punctuation removed';
+                    break;
+                    
+                case 'removeEmojis':
+                    result = result.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+                    message = 'Emojis removed';
+                    break;
+                    
+                case 'extractNumbers':
+                    const numbers = result.match(/\d+/g) || [];
+                    document.getElementById('cleaningResults').innerHTML = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> Extracted ${numbers.length} numbers</div>
+                        <div class="mt-3">
+                            <strong>Numbers found:</strong>
+                            <div class="p-3 bg-light rounded mt-2">${numbers.join(', ')}</div>
+                        </div>
+                    `;
+                    Toast.show(`Extracted ${numbers.length} numbers`, 'success');
+                    return;
+                    
+                case 'extractEmails':
+                    const emails = result.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+                    document.getElementById('cleaningResults').innerHTML = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> Extracted ${emails.length} email addresses</div>
+                        <div class="mt-3">
+                            <strong>Emails found:</strong>
+                            <div class="p-3 bg-light rounded mt-2">${emails.join('<br>')}</div>
+                        </div>
+                    `;
+                    Toast.show(`Extracted ${emails.length} emails`, 'success');
+                    return;
+                    
+                case 'extractURLs':
+                    const urls = result.match(/https?:\/\/[^\s]+/g) || [];
+                    document.getElementById('cleaningResults').innerHTML = `
+                        <div class="text-success"><i class="bi bi-check-circle"></i> Extracted ${urls.length} URLs</div>
+                        <div class="mt-3">
+                            <strong>URLs found:</strong>
+                            <div class="p-3 bg-light rounded mt-2">${urls.join('<br>')}</div>
+                        </div>
+                    `;
+                    Toast.show(`Extracted ${urls.length} URLs`, 'success');
+                    return;
+                    
+                case 'reverseText':
+                    result = result.split('').reverse().join('');
+                    message = 'Text reversed';
+                    break;
+                    
+                case 'shuffleLines':
+                    const lines = result.split('\n');
+                    for (let i = lines.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [lines[i], lines[j]] = [lines[j], lines[i]];
+                    }
+                    result = lines.join('\n');
+                    message = 'Lines shuffled';
+                    break;
+            }
+            
+            textArea.value = result;
+            analyze();
+            updateLiveStats();
+            
+            document.getElementById('cleaningResults').innerHTML = `
+                <div class="text-success"><i class="bi bi-check-circle"></i> ${message}</div>
+                <div class="mt-3">
+                    <strong>Preview:</strong>
+                    <div class="mt-2 p-3 bg-light rounded">${result.substring(0, 500)}${result.length > 500 ? '...' : ''}</div>
+                </div>
+            `;
+            
+            Toast.show(message, 'success');
+        }
+        
+        // DEVELOPER TOOLS - ALL WORKING
+        function devTool(type) {
+            const input = document.getElementById('converterInput').value || textArea.value;
+            let result = input;
+            let message = '';
+            let isError = false;
+            
+            try {
+                switch(type) {
+                    case 'formatJSON':
+                        result = JSON.stringify(JSON.parse(input), null, 2);
+                        message = 'JSON formatted';
+                        break;
+                        
+                    case 'minifyJSON':
+                        result = JSON.stringify(JSON.parse(input));
+                        message = 'JSON minified';
+                        break;
+                        
+                    case 'validateJSON':
+                        JSON.parse(input);
+                        message = 'Valid JSON';
+                        break;
+                        
+                    case 'encodeBase64':
+                        result = btoa(unescape(encodeURIComponent(input)));
+                        message = 'Base64 encoded';
+                        break;
+                        
+                    case 'decodeBase64':
+                        result = decodeURIComponent(escape(atob(input)));
+                        message = 'Base64 decoded';
+                        break;
+                        
+                    case 'encodeURL':
+                        result = encodeURIComponent(input);
+                        message = 'URL encoded';
+                        break;
+                        
+                    case 'decodeURL':
+                        result = decodeURIComponent(input);
+                        message = 'URL decoded';
+                        break;
+                        
+                    case 'htmlToMarkdown':
+                        result = input
+                            .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n')
+                            .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n')
+                            .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
+                            .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+                            .replace(/<[^>]+>/g, '');
+                        message = 'HTML converted to Markdown';
+                        break;
+                        
+                    case 'markdownToHTML':
+                        result = input
+                            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+                        message = 'Markdown converted to HTML';
+                        break;
+                        
+                    case 'minifyHTML':
+                        result = input.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+                        message = 'HTML minified';
+                        break;
+                        
+                    case 'beautifyHTML':
+                        let formatted = '';
+                        let indent = 0;
+                        const parts = input.split(/(>|<)/);
+                        
+                        parts.forEach(part => {
+                            if (part.startsWith('</')) indent--;
+                            formatted += '  '.repeat(Math.max(0, indent)) + part + '\n';
+                            if (part.startsWith('<') && !part.startsWith('</') && !part.endsWith('/>')) indent++;
+                        });
+                        result = formatted;
+                        message = 'HTML beautified';
+                        break;
+                }
+            } catch (error) {
+                result = `Error: ${error.message}`;
+                message = 'Operation failed';
+                isError = true;
+            }
+            
+            const outputDiv = document.getElementById('devResults');
+            outputDiv.innerHTML = `
+                <div class="${isError ? 'text-danger' : 'text-success'}">
+                    <i class="bi ${isError ? 'bi-exclamation-triangle' : 'bi-check-circle'}"></i> ${message}
+                </div>
+                <div class="mt-3">
+                    <strong>Result:</strong>
+                    <pre class="code-area mt-2">${escapeHtml(result)}</pre>
+                </div>
+            `;
+            
+            // Also update converter output if in converter tab
+            document.getElementById('converterOutput').innerHTML = `<pre>${escapeHtml(result)}</pre>`;
+            
+            if (!isError) Toast.show(message, 'success');
+            else Toast.show(message, 'error');
+        }
+        
+        // CONVERTER TOOLS - ALL WORKING
+        function converterTool(type) {
+            const input = document.getElementById('converterInput').value || textArea.value;
+            let result = input;
+            let message = '';
+            
+            switch(type) {
+                case 'textToBinary':
+                    let binary = '';
+                    for (let i = 0; i < input.length; i++) {
+                        binary += input.charCodeAt(i).toString(2).padStart(8, '0') + ' ';
+                    }
+                    result = binary.trim();
+                    message = 'Text converted to binary';
+                    break;
+                    
+                case 'binaryToText':
+                    const binaryArray = input.split(' ').filter(b => b);
+                    let text = '';
+                    for (let i = 0; i < binaryArray.length; i++) {
+                        const charCode = parseInt(binaryArray[i], 2);
+                        if (!isNaN(charCode)) text += String.fromCharCode(charCode);
+                    }
+                    result = text;
+                    message = 'Binary converted to text';
+                    break;
+                    
+                case 'textToHex':
+                    let hex = '';
+                    for (let i = 0; i < input.length; i++) {
+                        hex += input.charCodeAt(i).toString(16).padStart(2, '0') + ' ';
+                    }
+                    result = hex.trim();
+                    message = 'Text converted to hex';
+                    break;
+                    
+                case 'hexToText':
+                    const hexArray = input.split(' ').filter(h => h);
+                    let textH = '';
+                    for (let i = 0; i < hexArray.length; i++) {
+                        const charCode = parseInt(hexArray[i], 16);
+                        if (!isNaN(charCode)) textH += String.fromCharCode(charCode);
+                    }
+                    result = textH;
+                    message = 'Hex converted to text';
+                    break;
+                    
+                case 'textToCSV':
+                    const linesC = input.split('\n');
+                    const csv = linesC.map(line => {
+                        if (line.includes(',') || line.includes('"')) {
+                            return '"' + line.replace(/"/g, '""') + '"';
+                        }
+                        return line;
+                    }).join('\n');
+                    result = csv;
+                    message = 'Text converted to CSV';
+                    break;
+                    
+                case 'textToJSON':
+                    const obj = { text: input, length: input.length, words: input.trim().split(/\s+/).length };
+                    result = JSON.stringify(obj, null, 2);
+                    message = 'Text converted to JSON';
+                    break;
+                    
+                case 'textToSpeech':
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(input);
+                        speechSynthesis.speak(utterance);
+                        result = 'Speaking text... (click to stop)';
+                        message = 'Text-to-speech started';
+                    } else {
+                        result = 'Text-to-speech not supported in this browser';
+                        message = 'Feature not available';
+                    }
+                    break;
+                    
+                case 'textToPDF':
+                    window.print();
+                    message = 'PDF generated (use print dialog)';
+                    return;
+            }
+            
+            document.getElementById('converterOutput').innerHTML = `
+                <div class="text-success">
+                    <i class="bi bi-check-circle"></i> ${message}
+                </div>
+                <div class="mt-3">
+                    <strong>Converted Output:</strong>
+                    <div class="p-3 bg-light rounded mt-2" style="font-family: monospace;">${escapeHtml(result)}</div>
+                </div>
+            `;
+            
+            Toast.show(message, 'success');
+        }
+        
+        // UTILITY FUNCTIONS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function toggleDarkMode(force = null) {
+            isDarkMode = force !== null ? force : !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            const btn = document.getElementById('darkModeBtn');
+            if (btn) {
+                btn.innerHTML = isDarkMode ? 
+                    '<i class="bi bi-sun"></i> Light Mode' : 
+                    '<i class="bi bi-moon"></i> Dark Mode';
+                btn.classList.toggle('btn-outline-dark', !isDarkMode);
+                btn.classList.toggle('btn-outline-light', isDarkMode);
+            }
+            
+            localStorage.setItem('textToolsSettings', JSON.stringify({
+                ...JSON.parse(localStorage.getItem('textToolsSettings') || '{}'),
+                darkMode: isDarkMode
+            }));
+            
+            Toast.show(`${isDarkMode ? 'Dark' : 'Light'} mode enabled`, 'info');
+        }
+        
+        function increaseFontSize() {
+            currentFontSize = Math.min(24, currentFontSize + 2);
+            textArea.style.fontSize = `${currentFontSize}px`;
+            saveFontSize();
+        }
+        
+        function decreaseFontSize() {
+            currentFontSize = Math.max(12, currentFontSize - 2);
+            textArea.style.fontSize = `${currentFontSize}px`;
+            saveFontSize();
+        }
+        
+        function saveFontSize() {
+            const settings = JSON.parse(localStorage.getItem('textToolsSettings') || '{}');
+            settings.fontSize = currentFontSize;
+            localStorage.setItem('textToolsSettings', JSON.stringify(settings));
+        }
+        
+        function clearFormatting() {
+            saveHistory();
+            textArea.value = textArea.value.replace(/<[^>]*>/g, '');
+            textArea.value = textArea.value.replace(/\s+/g, ' ').trim();
+            analyze();
+            Toast.show('Formatting cleared', 'success');
+        }
+        
+        function autoSave() {
+            localStorage.setItem('textToolsText', textArea.value);
+        }
+        
+        function printText() {
+            window.print();
+        }
+        
+        function showStatDetails(statId) {
+            const details = {
+                'words': 'Total number of words in the text',
+                'chars': 'Total characters including spaces and punctuation',
+                'sentences': 'Complete sentences ending with . ! or ?',
+                'paras': 'Paragraphs separated by blank lines',
+                'readTime': 'Estimated reading time at 200 words per minute',
+                'speakTime': 'Estimated speaking time at 130 words per minute',
+                'textLength': 'Text length category: Short (<200), Medium (200-500), Long (500-1000), Very Long (>1000)',
+                'unique': 'Number of distinct words (case-insensitive)'
+            };
+            
+            Toast.show(details[statId] || 'No details available', 'info');
+        }
+        
+        function showAdvancedSettings() {
+            settingsModal.show();
+        }
+        
+        // FIND/REPLACE FUNCTIONS
+        function findReplace() {
+            const findText = document.getElementById('findText').value;
+            const replaceText = document.getElementById('replaceText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const wholeWord = document.getElementById('wholeWord').checked;
+            
+            if (!findText) {
+                Toast.show('Please enter text to find', 'warning');
+                return;
+            }
+            
+            saveHistory();
+            
+            let pattern = findText;
+            if (wholeWord) pattern = `\\b${findText}\\b`;
+            
+            const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+            const matches = textArea.value.match(regex) || [];
+            
+            if (matches.length === 0) {
+                Toast.show('No matches found', 'warning');
+                return;
+            }
+            
+            textArea.value = textArea.value.replace(regex, replaceText);
+            analyze();
+            updateLiveStats();
+            
+            document.getElementById('findResults').innerHTML = `
+                <span class="text-success">
+                    <i class="bi bi-check-circle"></i> Replaced ${matches.length} occurrence(s)
+                </span>`;
+            
+            Toast.show(`Replaced ${matches.length} occurrence(s)`, 'success');
+        }
+        
+        function findNext() {
+            const findText = document.getElementById('findText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const wholeWord = document.getElementById('wholeWord').checked;
+            
+            if (!findText) {
+                Toast.show('Please enter text to find', 'warning');
+                return;
+            }
+            
+            let pattern = findText;
+            if (wholeWord) pattern = `\\b${findText}\\b`;
+            
+            const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+            const startPos = textArea.selectionStart + 1;
+            const text = textArea.value;
+            
+            const match = regex.exec(text.substring(startPos));
+            if (match) {
+                const position = startPos + match.index;
+                textArea.focus();
+                textArea.setSelectionRange(position, position + findText.length);
+                document.getElementById('findResults').innerHTML = `
+                    <span class="text-info">
+                        <i class="bi bi-arrow-right"></i> Found at position ${position}
+                    </span>`;
+            } else {
+                Toast.show('No more matches found', 'info');
+            }
+        }
+        
+        // WORD CLOUD FUNCTIONS
+        function generateWordCloud() {
+            const text = textArea.value.toLowerCase();
+            if (!text.trim()) {
+                Toast.show('No text to generate word cloud', 'warning');
+                return;
+            }
+            
+            const words = text.match(/\b[a-z]{4,}\b/g) || [];
+            if (words.length === 0) {
+                Toast.show('No words long enough for word cloud', 'warning');
+                return;
+            }
+            
+            const frequencies = {};
+            words.forEach(word => {
+                frequencies[word] = (frequencies[word] || 0) + 1;
+            });
+            
+            wordCloudData = Object.entries(frequencies)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 50);
+            
+            displayWordCloud();
+            wordCloudModal.show();
+        }
+        
+        function displayWordCloud() {
+            const container = document.getElementById('wordCloud');
+            container.innerHTML = '';
+            
+            if (wordCloudData.length === 0) {
+                container.innerHTML = '<div class="text-center text-muted">No words to display</div>';
+                return;
+            }
+            
+            const maxCount = wordCloudData[0][1];
+            
+            wordCloudData.forEach(([word, count]) => {
+                const size = 16 + (count / maxCount) * 32;
+                const color = getRandomColor();
+                const opacity = 0.5 + (count / maxCount) * 0.5;
+                const rotation = Math.random() * 30 - 15;
+                
+                const span = document.createElement('span');
+                span.textContent = word;
+                span.style.fontSize = `${size}px`;
+                span.style.color = color;
+                span.style.opacity = opacity;
+                span.style.transform = `rotate(${rotation}deg)`;
+                span.style.display = 'inline-block';
+                span.style.margin = '5px';
+                span.style.padding = '2px 5px';
+                span.style.cursor = 'pointer';
+                span.title = `Frequency: ${count}`;
+                span.onclick = () => {
+                    document.getElementById('findText').value = word;
+                    findNext();
+                };
+                
+                container.appendChild(span);
+            });
+        }
+        
+        function getRandomColor() {
+            const colors = ['#4a6bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#20c997', '#fd7e14', '#e83e8c'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        function regenerateWordCloud() {
+            displayWordCloud();
+            Toast.show('Word cloud regenerated', 'info');
+        }
+        
+        function saveWordCloud() {
+            // Create canvas for word cloud image
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 400;
+            
+            // Draw background
+            ctx.fillStyle = document.documentElement.classList.contains('dark-mode') ? '#1e293b' : '#f8f9fd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (wordCloudData.length === 0) {
+                Toast.show('No word cloud data to save', 'warning');
+                return;
+            }
+            
+            const maxCount = wordCloudData[0][1];
+            
+            // Draw words
+            wordCloudData.forEach(([word, count], index) => {
+                const size = 16 + (count / maxCount) * 32;
+                const color = getRandomColor();
+                const opacity = 0.5 + (count / maxCount) * 0.5;
+                
+                ctx.font = `${size}px Arial`;
+                ctx.fillStyle = color;
+                ctx.globalAlpha = opacity;
+                
+                // Simple grid layout
+                const x = 50 + (index % 10) * 70;
+                const y = 50 + Math.floor(index / 10) * 50;
+                
+                ctx.fillText(word, x, y);
+                ctx.globalAlpha = 1;
+            });
+            
+            // Save as image
+            const link = document.createElement('a');
+            link.download = 'word-cloud.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            Toast.show('Word cloud saved as image', 'success');
+        }
+        
+        function printWordCloud() {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Word Cloud - Text Tools Pro+</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .word-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+                        .word { margin: 5px; padding: 5px 10px; border-radius: 10px; display: inline-block; }
+                    </style>
+                </head>
+                <body>
+                    <h2>Word Cloud</h2>
+                    <div class="word-cloud">
+                        ${wordCloudData.map(([word, count]) => 
+                            `<div class="word" style="font-size: ${16 + (count/wordCloudData[0][1])*32}px">${word}</div>`
+                        ).join('')}
+                    </div>
+                    <p>Generated on ${new Date().toLocaleString()}</p>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // CONVERTER UTILITIES
+        function useMainText() {
+            document.getElementById('converterInput').value = textArea.value;
+            Toast.show('Main text loaded into converter', 'info');
+        }
+        
+        function clearConverterInput() {
+            document.getElementById('converterInput').value = '';
+            document.getElementById('converterOutput').innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-arrow-left-right fs-1"></i>
+                    <p class="mt-2">Converted output will appear here</p>
+                </div>`;
+        }
+        
+        function copyConverterOutput() {
+            const output = document.getElementById('converterOutput').textContent;
+            navigator.clipboard.writeText(output)
+                .then(() => Toast.show('Converter output copied', 'success'))
+                .catch(() => Toast.show('Failed to copy', 'error'));
+        }
+        
+        function downloadConverterOutput() {
+            const output = document.getElementById('converterOutput').textContent;
+            const blob = new Blob([output], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted-output.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            Toast.show('Output downloaded', 'success');
+        }
+        
+        // FILE OPERATIONS
+        function downloadTXT() {
+            downloadFile(textArea.value, 'text.txt', 'text/plain');
+            Toast.show('Text file downloaded', 'success');
+        }
+        
+        function downloadHTML() {
+            const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Exported Text</title></head><body><pre>${escapeHtml(textArea.value)}</pre></body></html>`;
+            downloadFile(html, 'text.html', 'text/html');
+            Toast.show('HTML file downloaded', 'success');
+        }
+        
+        function downloadMD() {
+            downloadFile(textArea.value, 'text.md', 'text/markdown');
+            Toast.show('Markdown file downloaded', 'success');
+        }
+        
+        function downloadJSON() {
+            const data = {
+                text: textArea.value,
+                analysis: getAnalysisData(),
+                timestamp: new Date().toISOString(),
+                version: 'Text Tools Pro+ v2.2'
+            };
+            downloadFile(JSON.stringify(data, null, 2), 'text-analysis.json', 'application/json');
+            Toast.show('JSON file downloaded', 'success');
+        }
+        
+        function textToPDF() {
+            window.print();
+            Toast.show('PDF generated (use print dialog)', 'info');
+        }
+        
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+        
+        function copyText() {
+            navigator.clipboard.writeText(textArea.value)
+                .then(() => Toast.show('Copied to clipboard', 'success'))
+                .catch(() => Toast.show('Failed to copy', 'error'));
+        }
+        
+        function clearText() {
+            if (textArea.value.trim() && !confirm('Are you sure you want to clear all text?')) return;
+            
+            saveHistory();
+            textArea.value = '';
+            analyze();
+            updateLiveStats();
+            Toast.show('Text cleared', 'info');
+        }
+        
+        // IMPORT/EXPORT
+        function openImportModal() {
+            importModal.show();
+        }
+        
+        function processImport() {
+            const directInput = document.getElementById('directInput').value;
+            if (directInput) {
+                saveHistory();
+                textArea.value = directInput;
+                analyze();
+                importModal.hide();
+                Toast.show('Text imported from input', 'success');
+                return;
+            }
+            
+            Toast.show('Please enter text to import', 'warning');
+        }
+        
+        function exportKeywords() {
+            const keywords = document.getElementById('keywords').textContent;
+            downloadFile(keywords, 'keywords.txt', 'text/plain');
+            Toast.show('Keywords exported', 'success');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

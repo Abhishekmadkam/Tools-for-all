@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Professional Resume Tools</title>
+    <title>ResumeForge Pro · Professional Resume Tools</title>
     <meta name="description" content="Complete resume toolkit - create, edit, analyze, optimize, and download professional resumes">
     <!-- Bootstrap + icons + font -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap" rel="stylesheet">
+    <!-- Add Google Fonts for templates -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto+Mono:wght@400;600&family=Montserrat:wght@300;400;600;700&family=Open+Sans:wght@400;600&family=Poppins:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Merriweather:wght@400;700;900&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -182,53 +184,363 @@
         .resume-preview {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 800px;
             margin: 0 auto;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
-        .resume-header {
-            text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #1d2b64;
-            padding-bottom: 20px;
+        /* ============= TEMPLATE 1: MODERN MINIMAL ============= */
+        .template-modern {
+            font-family: 'Inter', sans-serif;
+            padding: 35px;
         }
-        
-        .resume-name {
+        .template-modern .resume-header {
+            text-align: left;
+            border-bottom: 3px solid #1d2b64;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .template-modern .resume-name {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #1d2b64;
+            letter-spacing: -0.5px;
+        }
+        .template-modern .resume-title {
+            font-size: 1.2rem;
+            color: #555;
+            font-weight: 400;
+            margin-top: 5px;
+        }
+        .template-modern .resume-contact {
+            justify-content: flex-start;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        .template-modern .resume-section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1d2b64;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        /* ============= TEMPLATE 2: CLASSIC ELEGANT ============= */
+        .template-classic {
+            font-family: 'Merriweather', serif;
+            padding: 40px;
+            background: #fdfaf6;
+        }
+        .template-classic .resume-header {
+            text-align: center;
+            border-bottom: 2px solid #8b7355;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+        .template-classic .resume-name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            font-family: 'Playfair Display', serif;
+        }
+        .template-classic .resume-title {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        .template-classic .resume-contact {
+            color: #5d6d7e;
+            font-size: 0.95rem;
+        }
+        .template-classic .resume-section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            font-family: 'Playfair Display', serif;
+            border-bottom: 1px dashed #c0b19c;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        .template-classic .resume-item-header {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .template-classic .resume-item-sub {
+            color: #7f8c8d;
+        }
+
+        /* ============= TEMPLATE 3: CREATIVE COLORFUL ============= */
+        .template-creative {
+            font-family: 'Poppins', sans-serif;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .template-creative .creative-content {
+            background: rgba(255,255,255,0.95);
+            margin: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            color: #333;
+        }
+        .template-creative .resume-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 20px 20px 0 0;
+        }
+        .template-creative .resume-name {
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .template-creative .resume-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+        .template-creative .resume-contact {
+            color: rgba(255,255,255,0.9);
+        }
+        .template-creative .resume-section-title {
+            color: #667eea;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        /* ============= TEMPLATE 4: PROFESSIONAL CORPORATE ============= */
+        .template-professional {
+            font-family: 'Lato', sans-serif;
+            padding: 30px;
+            border-top: 8px solid #1d2b64;
+        }
+        .template-professional .resume-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eef2f7;
+        }
+        .template-professional .resume-name {
             font-size: 2.5rem;
             font-weight: 700;
             color: #1d2b64;
-            margin-bottom: 5px;
+        }
+        .template-professional .resume-title {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+        .template-professional .resume-contact {
+            text-align: right;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .template-professional .resume-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1d2b64;
+            text-transform: uppercase;
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        /* ============= TEMPLATE 5: MINIMAL CLEAN ============= */
+        .template-minimal {
+            font-family: 'Open Sans', sans-serif;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .template-minimal .resume-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .template-minimal .resume-name {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2d3436;
+            letter-spacing: 2px;
+        }
+        .template-minimal .resume-title {
+            font-size: 1rem;
+            color: #636e72;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 10px 0;
+        }
+        .template-minimal .resume-contact {
+            border-top: 1px solid #dfe6e9;
+            border-bottom: 1px solid #dfe6e9;
+            padding: 15px 0;
+            margin-top: 15px;
+        }
+        .template-minimal .resume-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3436;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        /* ============= TEMPLATE 6: MODERN DARK ============= */
+        .template-modern-dark {
+            font-family: 'Inter', sans-serif;
+            background: #1a1b1f;
+            color: #e0e0e0;
+            padding: 35px;
+        }
+        .template-modern-dark .resume-header {
+            border-bottom: 1px solid #333;
+            padding-bottom: 25px;
+        }
+        .template-modern-dark .resume-name {
+            color: #fff;
+            font-size: 2.8rem;
+            font-weight: 600;
+        }
+        .template-modern-dark .resume-title {
+            color: #888;
+        }
+        .template-modern-dark .resume-contact {
+            color: #888;
+        }
+        .template-modern-dark .resume-section-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-left: 4px solid #007acc;
+            padding-left: 15px;
+        }
+        .template-modern-dark .resume-item-header {
+            color: #fff;
+        }
+        .template-modern-dark .resume-item-sub {
+            color: #888;
+        }
+
+        /* ============= TEMPLATE 7: TECH COMPACT ============= */
+        .template-compact {
+            font-family: 'Roboto Mono', monospace;
+            padding: 25px;
+            font-size: 0.9rem;
+            background: #f5f5f5;
+        }
+        .template-compact .resume-header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin: -25px -25px 25px -25px;
+        }
+        .template-compact .resume-name {
+            color: white;
+            font-size: 2rem;
+        }
+        .template-compact .resume-title {
+            color: #bdc3c7;
+        }
+        .template-compact .resume-contact {
+            color: #bdc3c7;
+            font-size: 0.8rem;
+        }
+        .template-compact .resume-section {
+            margin-bottom: 20px;
+        }
+        .template-compact .resume-section-title {
+            color: #2c3e50;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2c3e50;
+        }
+        .template-compact .resume-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* ============= TEMPLATE 8: ELEGANT LUXURY ============= */
+        .template-elegant {
+            font-family: 'Playfair Display', serif;
+            padding: 45px;
+            background: #fff;
+            border: 15px solid #f0e9e0;
+        }
+        .template-elegant .resume-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .template-elegant .resume-name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #b8860b;
+            letter-spacing: 2px;
+        }
+        .template-elegant .resume-title {
+            font-size: 1.3rem;
+            color: #666;
+            font-style: italic;
+            border-bottom: 1px solid #b8860b;
+            padding-bottom: 15px;
+        }
+        .template-elegant .resume-contact {
+            color: #999;
+            font-size: 0.95rem;
+        }
+        .template-elegant .resume-section-title {
+            color: #b8860b;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 1px solid #b8860b;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .template-elegant .resume-item-header {
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Common elements that adapt to templates */
+        .resume-header {
+            transition: all 0.3s ease;
+        }
+        
+        .resume-name {
+            transition: all 0.3s ease;
         }
         
         .resume-title {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 10px;
+            transition: all 0.3s ease;
         }
         
         .resume-contact {
             display: flex;
-            justify-content: center;
-            gap: 20px;
             flex-wrap: wrap;
-            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
-
+        
         .resume-section {
             margin-bottom: 25px;
         }
         
         .resume-section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #1d2b64;
-            border-bottom: 1px solid #d0ddee;
-            padding-bottom: 5px;
             margin-bottom: 15px;
         }
-
+        
         .resume-item {
             margin-bottom: 15px;
         }
@@ -240,7 +552,6 @@
         }
         
         .resume-item-sub {
-            color: #666;
             font-size: 0.9rem;
         }
 
@@ -480,16 +791,6 @@
             color: white;
         }
         
-        .dark-mode .resume-preview {
-            background: #1e2a40;
-            color: #e2ecff;
-        }
-        
-        .dark-mode .resume-title,
-        .dark-mode .resume-item-sub {
-            color: #aab8e0;
-        }
-        
         .dark-mode .tool-btn {
             color: #e2ecff;
         }
@@ -524,6 +825,11 @@
             background: #2e3d5a;
             color: #e2ecff;
         }
+        
+        .dark-mode .template-modern-dark {
+            background: #1a1b1f;
+            color: #e0e0e0;
+        }
 
         .toast-msg {
             position: fixed;
@@ -548,6 +854,40 @@
         .ats-excellent { background: #28a745; color: white; }
         .ats-good { background: #ffc107; color: #333; }
         .ats-poor { background: #dc3545; color: white; }
+
+        /* Template Gallery */
+        .template-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .template-thumb {
+            background: #f0f4fe;
+            border-radius: 15px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .template-thumb:hover {
+            border-color: #1d2b64;
+            transform: scale(1.05);
+        }
+        
+        .template-thumb i {
+            font-size: 2rem;
+            color: #1d2b64;
+        }
+        
+        .template-thumb span {
+            display: block;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
 
         /* Responsive */
         @media (max-width: 1200px) {
@@ -580,7 +920,7 @@
                 <i class="bi bi-file-person"></i>
             </div>
             <div class="logo-text">
-                <h1></h1>
+                <h1>ResumeForge Pro</h1>
                 <p>Professional Resume Tools</p>
             </div>
         </div>
@@ -648,7 +988,7 @@
 
         <!-- Center Panel (Resume Preview) -->
         <div class="canvas-panel">
-            <div class="resume-preview" id="resumePreview">
+            <div class="resume-preview template-modern" id="resumePreview">
                 <div class="empty-state" id="emptyResumeState" style="display: none;">
                     <i class="bi bi-file-earmark-person"></i>
                     <h4>No Resume Data</h4>
@@ -719,13 +1059,14 @@
 
     <!-- Footer -->
     <footer class="text-center small text-muted mt-4">
-        ResumeForge v1.0 · Complete resume toolkit with ATS optimization
+        ResumeForge Pro v2.0 · Complete resume toolkit with 8 professional templates
     </footer>
 </div>
 
 <script>
     // ==================== GLOBALS ====================
     let currentTool = 'personal';
+    let currentTemplate = 'modern';
     let resumeData = {
         personal: {
             fullName: 'John Doe',
@@ -761,6 +1102,7 @@
     const toolProperties = document.getElementById('toolProperties');
     const toolTitle = document.getElementById('toolTitle');
     const resumeStats = document.getElementById('resumeStats');
+    const resumePreview = document.getElementById('resumePreview');
 
     // ==================== UTILITIES ====================
     function showToast(m) { 
@@ -930,20 +1272,40 @@
         templates: `
             <div class="prop-control">
                 <label>Select Template:</label>
-                <select class="tool-select" id="templateSelect" onchange="changeTemplate(this.value)">
-                    <option value="modern">Modern</option>
-                    <option value="classic">Classic</option>
-                    <option value="minimal">Minimal</option>
-                    <option value="creative">Creative</option>
-                </select>
-            </div>
-            <div class="prop-control">
-                <label>Font Size:</label>
-                <input type="range" class="range-slider" id="fontSize" min="10" max="14" value="12" oninput="updateFontSize(this.value)">
-            </div>
-            <div class="prop-control">
-                <label>Spacing:</label>
-                <input type="range" class="range-slider" id="spacing" min="0" max="20" value="10" oninput="updateSpacing(this.value)">
+                <div class="template-gallery">
+                    <div class="template-thumb" onclick="changeTemplate('modern')">
+                        <i class="bi bi-file-text"></i>
+                        <span>Modern Minimal</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('classic')">
+                        <i class="bi bi-file-richtext"></i>
+                        <span>Classic Elegant</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('creative')">
+                        <i class="bi bi-palette"></i>
+                        <span>Creative Colorful</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('professional')">
+                        <i class="bi bi-briefcase"></i>
+                        <span>Professional Corporate</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('minimal')">
+                        <i class="bi bi-file-earmark"></i>
+                        <span>Minimal Clean</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('modern-dark')">
+                        <i class="bi bi-moon-stars"></i>
+                        <span>Modern Dark</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('compact')">
+                        <i class="bi bi-file-earmark-code"></i>
+                        <span>Tech Compact</span>
+                    </div>
+                    <div class="template-thumb" onclick="changeTemplate('elegant')">
+                        <i class="bi bi-gem"></i>
+                        <span>Elegant Luxury</span>
+                    </div>
+                </div>
             </div>
         `
     };
@@ -962,7 +1324,7 @@
             languages: 'Languages',
             certifications: 'Certifications',
             analyze: 'ATS Analysis',
-            templates: 'Template Settings'
+            templates: 'Template Gallery'
         };
         toolTitle.innerText = titles[tool] || 'Settings';
         
@@ -983,6 +1345,7 @@
             emptyResumeState.style.display = 'none';
             resumeContent.style.display = 'block';
             
+            // Base structure that will be styled differently by templates
             let html = `
                 <div class="resume-header">
                     <div class="resume-name">${resumeData.personal.fullName}</div>
@@ -994,6 +1357,11 @@
                     </div>
                 </div>
             `;
+            
+            // Add creative wrapper for creative template
+            if (currentTemplate === 'creative') {
+                html = `<div class="creative-content">${html}`;
+            }
             
             // Summary
             if (resumeData.personal.summary) {
@@ -1082,6 +1450,11 @@
                 `;
             }
             
+            // Close creative wrapper if needed
+            if (currentTemplate === 'creative') {
+                html += `</div>`;
+            }
+            
             resumeContent.innerHTML = html;
         }
         
@@ -1113,20 +1486,54 @@
     function saveCurrentTool() {
         switch(currentTool) {
             case 'personal':
-                resumeData.personal.fullName = document.getElementById('personalName').value;
-                resumeData.personal.title = document.getElementById('personalTitle').value;
-                resumeData.personal.email = document.getElementById('personalEmail').value;
-                resumeData.personal.phone = document.getElementById('personalPhone').value;
-                resumeData.personal.location = document.getElementById('personalLocation').value;
-                resumeData.personal.summary = document.getElementById('personalSummary').value;
+                if (document.getElementById('personalName')) {
+                    resumeData.personal.fullName = document.getElementById('personalName').value;
+                    resumeData.personal.title = document.getElementById('personalTitle').value;
+                    resumeData.personal.email = document.getElementById('personalEmail').value;
+                    resumeData.personal.phone = document.getElementById('personalPhone').value;
+                    resumeData.personal.location = document.getElementById('personalLocation').value;
+                    resumeData.personal.summary = document.getElementById('personalSummary').value;
+                }
                 break;
                 
             case 'experience':
-                // Already handled by individual add/remove
+                // Save experience data from inputs
+                const expInputs = document.querySelectorAll('[id^="exp_company_"]');
+                expInputs.forEach((input, idx) => {
+                    if (resumeData.experience[idx]) {
+                        resumeData.experience[idx].company = document.getElementById(`exp_company_${idx}`)?.value || resumeData.experience[idx].company;
+                        resumeData.experience[idx].position = document.getElementById(`exp_position_${idx}`)?.value || resumeData.experience[idx].position;
+                        resumeData.experience[idx].startDate = document.getElementById(`exp_start_${idx}`)?.value || resumeData.experience[idx].startDate;
+                        resumeData.experience[idx].endDate = document.getElementById(`exp_end_${idx}`)?.value || resumeData.experience[idx].endDate;
+                        resumeData.experience[idx].description = document.getElementById(`exp_desc_${idx}`)?.value || resumeData.experience[idx].description;
+                    }
+                });
                 break;
                 
             case 'education':
-                // Already handled by individual add/remove
+                // Save education data from inputs
+                const eduInputs = document.querySelectorAll('[id^="edu_institution_"]');
+                eduInputs.forEach((input, idx) => {
+                    if (resumeData.education[idx]) {
+                        resumeData.education[idx].institution = document.getElementById(`edu_institution_${idx}`)?.value || resumeData.education[idx].institution;
+                        resumeData.education[idx].degree = document.getElementById(`edu_degree_${idx}`)?.value || resumeData.education[idx].degree;
+                        resumeData.education[idx].startDate = document.getElementById(`edu_start_${idx}`)?.value || resumeData.education[idx].startDate;
+                        resumeData.education[idx].endDate = document.getElementById(`edu_end_${idx}`)?.value || resumeData.education[idx].endDate;
+                        resumeData.education[idx].gpa = document.getElementById(`edu_gpa_${idx}`)?.value || resumeData.education[idx].gpa;
+                    }
+                });
+                break;
+                
+            case 'certifications':
+                // Save certification data from inputs
+                const certInputs = document.querySelectorAll('[id^="cert_name_"]');
+                certInputs.forEach((input, idx) => {
+                    if (resumeData.certifications[idx]) {
+                        resumeData.certifications[idx].name = document.getElementById(`cert_name_${idx}`)?.value || resumeData.certifications[idx].name;
+                        resumeData.certifications[idx].issuer = document.getElementById(`cert_issuer_${idx}`)?.value || resumeData.certifications[idx].issuer;
+                        resumeData.certifications[idx].year = document.getElementById(`cert_year_${idx}`)?.value || resumeData.certifications[idx].year;
+                    }
+                });
                 break;
         }
         
@@ -1181,7 +1588,6 @@
             description: 'Job description'
         });
         toolProperties.innerHTML = toolPropertiesTemplates.experience;
-        renderResume();
     }
 
     function removeExperience(index) {
@@ -1200,7 +1606,6 @@
             gpa: ''
         });
         toolProperties.innerHTML = toolPropertiesTemplates.education;
-        renderResume();
     }
 
     function removeEducation(index) {
@@ -1250,7 +1655,6 @@
             year: '2023'
         });
         toolProperties.innerHTML = toolPropertiesTemplates.certifications;
-        renderResume();
     }
 
     function removeCertification(index) {
@@ -1310,17 +1714,18 @@
 
     // ==================== TEMPLATE FUNCTIONS ====================
     function changeTemplate(template) {
+        currentTemplate = template;
         const preview = document.querySelector('.resume-preview');
-        preview.className = `resume-preview template-${template}`;
-        showToast(`Template changed to ${template}`);
-    }
-
-    function updateFontSize(size) {
-        document.querySelector('.resume-preview').style.fontSize = size + 'px';
-    }
-
-    function updateSpacing(spacing) {
-        document.querySelector('.resume-preview').style.lineHeight = (spacing / 10) + 1;
+        
+        // Remove all template classes
+        preview.className = 'resume-preview';
+        // Add new template class
+        preview.classList.add(`template-${template}`);
+        
+        // Re-render to apply template-specific structure
+        renderResume();
+        
+        showToast(`Template changed to ${template.replace('-', ' ')}`);
     }
 
     // ==================== EXPORT FUNCTIONS ====================

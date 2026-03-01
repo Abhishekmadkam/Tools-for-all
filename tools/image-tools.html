@@ -22,6 +22,26 @@
             padding: 0 20px;
         }
 
+        /* Google Ad Spaces */
+        .google-ad-space {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px dashed #1d2b64;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .google-ad-placeholder {
+            color: #1d2b64;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
         /* Modern Header */
         .app-header {
             background: rgba(255,255,255,0.9);
@@ -428,65 +448,6 @@
             transform: scale(1.05);
         }
 
-        /* Ad Sections */
-        .ad-container {
-            background: linear-gradient(135deg, #f8f9ff, #ffffff);
-            border-radius: 20px;
-            padding: 15px 25px;
-            margin: 20px 0;
-            border: 2px dashed #1d2b64;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .ad-label {
-            position: absolute;
-            top: 5px;
-            right: 15px;
-            background: #1d2b64;
-            color: white;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        
-        .ad-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .ad-badge {
-            background: #ffd700;
-            color: #1d2b64;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-weight: 700;
-        }
-        
-        .ad-button {
-            background: #1d2b64;
-            color: white;
-            padding: 8px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            border: 2px solid #1d2b64;
-            cursor: pointer;
-        }
-        
-        .ad-button:hover {
-            background: white;
-            color: #1d2b64;
-        }
-
         /* Dark Mode */
         .dark-mode {
             background: #0f1a2f;
@@ -529,9 +490,10 @@
             color: #aab8e0;
         }
         
-        .dark-mode .ad-container {
+        .dark-mode .google-ad-space {
             background: #1d2a44;
             border-color: #4a5f8a;
+            color: #ffd700;
         }
 
         .toast-msg {
@@ -563,14 +525,12 @@
 <body>
 <div class="app-wrapper">
 
-    <!-- Top Ad -->
-    <div class="ad-container">
-        <span class="ad-label">AD</span>
-        <div class="ad-content">
-            <span class="ad-badge">🎨 PRO</span>
-            <span class="ad-promo">Get 50% off on PixelForge Pro today!</span>
+    <!-- GOOGLE AD SPACE - TOP -->
+    <div class="google-ad-space">
+        <div class="google-ad-placeholder">
+            <i class="bi bi-google me-2"></i> Google AdSense Space (Top)
         </div>
-        <a class="ad-button" onclick="showToast('Special offer: Use code PIXEL50')">Learn More</a>
+        <!-- Google Ads code would go here -->
     </div>
 
     <!-- Header -->
@@ -703,14 +663,12 @@
         </button>
     </div>
 
-    <!-- Bottom Ad -->
-    <div class="ad-container mt-4">
-        <span class="ad-label">AD</span>
-        <div class="ad-content">
-            <span class="ad-badge">⚡ LIMITED</span>
-            <span class="ad-promo">30% off on annual plan - Code: FORGE30</span>
+    <!-- GOOGLE AD SPACE - BOTTOM -->
+    <div class="google-ad-space mt-4">
+        <div class="google-ad-placeholder">
+            <i class="bi bi-google me-2"></i> Google AdSense Space (Bottom)
         </div>
-        <a class="ad-button" onclick="showToast('Limited time offer activated!')">Claim Offer</a>
+        <!-- Google Ads code would go here -->
     </div>
 
     <!-- Footer -->

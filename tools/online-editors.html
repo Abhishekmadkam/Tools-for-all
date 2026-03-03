@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Editors Pro+ – Rich Text, Code, Markdown & LaTeX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Professional online editors - Rich text, Code, Markdown, and LaTeX editor suite">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CodeMirror for code editing -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <!-- Quill for rich text editing -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <!-- KaTeX for LaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #0f172a;
+            --border-radius: 16px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --code-font: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f1f5f9, #eef2f6);
+            min-height: 100vh;
+            padding: 20px 0 40px;
+            transition: var(--transition);
+        }
+        
+        .page-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 20px 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Editor Tabs */
+        .editor-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #eaeaea;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .editor-tab-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .editor-tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Editor Container */
+        .editor-container {
+            border: 2px solid #eaeaea;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: white;
+        }
+        
+        .editor-toolbar {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .editor-toolbar-group {
+            display: flex;
+            gap: 5px;
+            padding: 0 10px;
+            border-right: 1px solid #dee2e6;
+        }
+        
+        .editor-toolbar-group:last-child {
+            border-right: none;
+        }
+        
+        .toolbar-btn {
+            background: transparent;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #495057;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .toolbar-btn:hover {
+            background: #e9ecef;
+            color: var(--primary-color);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Rich Text Editor */
+        #richEditor {
+            height: 500px;
+            background: white;
+        }
+        
+        .ql-container {
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .ql-editor {
+            min-height: 500px;
+        }
+        
+        /* Code Editor */
+        #codeEditor {
+            height: 500px;
+            border: none;
+        }
+        
+        .CodeMirror {
+            height: 500px;
+            font-family: var(--code-font);
+            font-size: 14px;
+        }
+        
+        /* Markdown Editor */
+        .split-editor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            min-height: 500px;
+        }
+        
+        .markdown-input {
+            border-right: 2px solid #eaeaea;
+            padding-right: 20px;
+        }
+        
+        .markdown-preview {
+            padding-left: 20px;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        
+        .markdown-textarea {
+            width: 100%;
+            height: 500px;
+            border: none;
+            padding: 15px;
+            font-family: var(--code-font);
+            font-size: 14px;
+            resize: none;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .markdown-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .preview-content {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            min-height: 500px;
+        }
+        
+        /* LaTeX Editor */
+        .latex-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .latex-input {
+            border-right: 2px solid #eaeaea;
+            padding-right: 20px;
+        }
+        
+        .latex-preview {
+            padding-left: 20px;
+        }
+        
+        .latex-textarea {
+            width: 100%;
+            height: 500px;
+            border: none;
+            padding: 15px;
+            font-family: var(--code-font);
+            font-size: 14px;
+            resize: none;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .katex-preview {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            min-height: 500px;
+            font-size: 16px;
+        }
+        
+        /* Stats Boxes */
+        .stat-box {
+            background: linear-gradient(135deg, #f8f9fd, #ffffff);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            height: 100%;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1.2;
+        }
+        
+        /* File Info */
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Ad Space */
+        .ad-space {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #adb5bd;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            font-size: 15px;
+            color: #6c757d;
+            margin: 25px 0;
+            transition: var(--transition);
+        }
+        
+        .ad-space:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+        
+        .toast.success { border-left-color: var(--success-color); }
+        .toast.error { border-left-color: var(--danger-color); }
+        .toast.warning { border-left-color: var(--warning-color); }
+        
+        /* Dark Mode */
+        .dark-mode {
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .tool-card,
+        .dark-mode .header {
+            background: #1e293b;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .editor-container {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .dark-mode .editor-toolbar {
+            background: #2d3748;
+            border-color: #4a5568;
+        }
+        
+        .dark-mode .toolbar-btn {
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .toolbar-btn:hover {
+            background: #4a5568;
+        }
+        
+        .dark-mode .markdown-textarea,
+        .dark-mode .latex-textarea {
+            background: #2d3748;
+            color: #e5e7eb;
+            border-color: #4a5568;
+        }
+        
+        .dark-mode .preview-content,
+        .dark-mode .katex-preview {
+            background: #2d3748;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .stat-box {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .dark-mode .stat-value {
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .file-info {
+            background: #2d3748;
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 0 10px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+            
+            .split-editor,
+            .latex-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .markdown-input,
+            .latex-input {
+                border-right: none;
+                padding-right: 0;
+            }
+            
+            .editor-toolbar-group {
+                padding: 0 5px;
+            }
+            
+            .stat-box {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h1 class="fw-bold mb-2"><i class="bi bi-pencil-square me-2"></i> Online Editors Pro+</h1>
+                    <p class="text-muted mb-0">Complete editing suite - Rich Text, Code, Markdown, and LaTeX editors</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-dark btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">
+                        <i class="bi bi-moon"></i> Dark Mode
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="saveDocument()">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="loadDocument()">
+                        <i class="bi bi-folder-open"></i> Load
+                    </button>
+                    <button class="btn btn-outline-success btn-sm" onclick="exportDocument()">
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="showSettings()">
+                        <i class="bi bi-gear"></i> Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TOP AD -->
+        <div class="ad-space">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><i class="bi bi-megaphone fs-4 me-3"></i></div>
+                <div>
+                    <div class="fw-bold">Advertisement Space</div>
+                    <div class="small">AdSense Ready • Responsive Design</div>
+                </div>
+                <div><small class="text-muted">728x90</small></div>
+            </div>
+        </div>
+        
+        <!-- MAIN TOOL CARD -->
+        <div class="tool-card">
+            <!-- EDITOR SELECTOR TABS -->
+            <div class="editor-tabs">
+                <button class="editor-tab-btn active" onclick="switchEditor('rich')" id="tab-rich">
+                    <i class="bi bi-pencil-square"></i> Rich Text
+                </button>
+                <button class="editor-tab-btn" onclick="switchEditor('code')" id="tab-code">
+                    <i class="bi bi-code-square"></i> Code Editor
+                </button>
+                <button class="editor-tab-btn" onclick="switchEditor('markdown')" id="tab-markdown">
+                    <i class="bi bi-markdown"></i> Markdown
+                </button>
+                <button class="editor-tab-btn" onclick="switchEditor('latex')" id="tab-latex">
+                    <i class="bi bi-sigma"></i> LaTeX
+                </button>
+            </div>
+            
+            <!-- STATISTICS ROW -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="bi bi-type"></i></div>
+                        <div class="stat-label">Characters</div>
+                        <div class="stat-value" id="charCount">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="bi bi-fonts"></i></div>
+                        <div class="stat-label">Words</div>
+                        <div class="stat-value" id="wordCount">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="bi bi-list-ol"></i></div>
+                        <div class="stat-label">Lines</div>
+                        <div class="stat-value" id="lineCount">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="bi bi-clock"></i></div>
+                        <div class="stat-label">Reading Time</div>
+                        <div class="stat-value" id="readTime">0 <span class="stat-unit">min</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- RICH TEXT EDITOR -->
+            <div id="rich-editor-container" class="editor-container" style="display: block;">
+                <div class="editor-toolbar">
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatRich('bold')" title="Bold"><i class="bi bi-type-bold"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('italic')" title="Italic"><i class="bi bi-type-italic"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('underline')" title="Underline"><i class="bi bi-type-underline"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('strike')" title="Strikethrough"><i class="bi bi-type-strikethrough"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatRich('h1')" title="Heading 1">H1</button>
+                        <button class="toolbar-btn" onclick="formatRich('h2')" title="Heading 2">H2</button>
+                        <button class="toolbar-btn" onclick="formatRich('h3')" title="Heading 3">H3</button>
+                        <button class="toolbar-btn" onclick="formatRich('p')" title="Paragraph">P</button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatRich('ul')" title="Bullet List"><i class="bi bi-list-ul"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('ol')" title="Numbered List"><i class="bi bi-list-ol"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('blockquote')" title="Quote"><i class="bi bi-chat-quote"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('code')" title="Code"><i class="bi bi-code"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatRich('link')" title="Insert Link"><i class="bi bi-link-45deg"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('image')" title="Insert Image"><i class="bi bi-image"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('table')" title="Insert Table"><i class="bi bi-table"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatRich('undo')" title="Undo"><i class="bi bi-arrow-counterclockwise"></i></button>
+                        <button class="toolbar-btn" onclick="formatRich('redo')" title="Redo"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="toolbar-btn" onclick="clearRichEditor()" title="Clear"><i class="bi bi-eraser"></i></button>
+                    </div>
+                </div>
+                <div id="richEditor"></div>
+            </div>
+            
+            <!-- CODE EDITOR -->
+            <div id="code-editor-container" class="editor-container" style="display: none;">
+                <div class="editor-toolbar">
+                    <div class="editor-toolbar-group">
+                        <select class="form-select form-select-sm" id="codeLanguage" style="width: 120px;" onchange="changeCodeLanguage()">
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="csharp">C#</option>
+                            <option value="php">PHP</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="sql">SQL</option>
+                            <option value="json">JSON</option>
+                            <option value="xml">XML</option>
+                        </select>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <select class="form-select form-select-sm" id="codeTheme" style="width: 120px;" onchange="changeCodeTheme()">
+                            <option value="default">Default</option>
+                            <option value="dracula">Dracula</option>
+                            <option value="monokai">Monokai</option>
+                            <option value="eclipse">Eclipse</option>
+                            <option value="idea">IntelliJ</option>
+                            <option value="material">Material</option>
+                        </select>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="formatCode()" title="Format Code"><i class="bi bi-braces"></i></button>
+                        <button class="toolbar-btn" onclick="minifyCode()" title="Minify"><i class="bi bi-compress"></i></button>
+                        <button class="toolbar-btn" onclick="validateCode()" title="Validate"><i class="bi bi-check-circle"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="copyCode()" title="Copy"><i class="bi bi-clipboard"></i></button>
+                        <button class="toolbar-btn" onclick="downloadCode()" title="Download"><i class="bi bi-download"></i></button>
+                        <button class="toolbar-btn" onclick="clearCodeEditor()" title="Clear"><i class="bi bi-eraser"></i></button>
+                    </div>
+                </div>
+                <textarea id="codeEditor"></textarea>
+            </div>
+            
+            <!-- MARKDOWN EDITOR -->
+            <div id="markdown-editor-container" class="editor-container" style="display: none;">
+                <div class="editor-toolbar">
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="insertMarkdown('bold')" title="Bold"><i class="bi bi-type-bold"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('italic')" title="Italic"><i class="bi bi-type-italic"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('strike')" title="Strikethrough"><i class="bi bi-type-strikethrough"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="insertMarkdown('h1')" title="Heading 1">H1</button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('h2')" title="Heading 2">H2</button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('h3')" title="Heading 3">H3</button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="insertMarkdown('link')" title="Link"><i class="bi bi-link-45deg"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('image')" title="Image"><i class="bi bi-image"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('code')" title="Code"><i class="bi bi-code"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="insertMarkdown('ul')" title="Bullet List"><i class="bi bi-list-ul"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('ol')" title="Numbered List"><i class="bi bi-list-ol"></i></button>
+                        <button class="toolbar-btn" onclick="insertMarkdown('quote')" title="Quote"><i class="bi bi-chat-quote"></i></button>
+                    </div>
+                    <div class="editor-toolbar-group">
+                        <button class="toolbar-btn" onclick="previewMarkdown()" title="Preview"><i class="bi bi-eye"></i></button>
+                        <button class="toolbar-btn" onclick="exportMarkdown()" title="Export"><i class="bi bi-download"></i></button>
+                    </div>
+                </div>
+                <div class="split-editor">
+                    <div class="markdown-input">
+                        <textarea id="markdownInput" class="markdown-textarea" placeholder="Enter Markdown here..."># Welcome to Markdown Editor
+
+## Features
+- **Bold** and *italic* text
+- [Links](https://example.com)
+- Code blocks: `console.log('hello')`
+- Lists and tables
+
+```javascript
+function hello() {
+    console.log('Hello, World!');
+}
+Feature	Support
+Tables	✓
+Lists	✓
+Code	✓	</textarea>
+</div> <div class="markdown-preview"> <div id="markdownPreview" class="preview-content"> <!-- Preview will be rendered here --> </div> </div> </div> </div> <!-- LATEX EDITOR --> <div id="latex-editor-container" class="editor-container" style="display: none;"> <div class="editor-toolbar"> <div class="editor-toolbar-group"> <button class="toolbar-btn" onclick="insertLatex('frac')" title="Fraction">\frac</button> <button class="toolbar-btn" onclick="insertLatex('sqrt')" title="Square Root">\sqrt</button> <button class="toolbar-btn" onclick="insertLatex('sum')" title="Sum">\sum</button> <button class="toolbar-btn" onclick="insertLatex('int')" title="Integral">\int</button> </div> <div class="editor-toolbar-group"> <button class="toolbar-btn" onclick="insertLatex('alpha')" title="Alpha">α</button> <button class="toolbar-btn" onclick="insertLatex('beta')" title="Beta">β</button> <button class="toolbar-btn" onclick="insertLatex('gamma')" title="Gamma">γ</button> <button class="toolbar-btn" onclick="insertLatex('theta')" title="Theta">θ</button> </div> <div class="editor-toolbar-group"> <button class="toolbar-btn" onclick="insertLatex('matrix')" title="Matrix">[ ]</button> <button class="toolbar-btn" onclick="insertLatex('cases')" title="Cases">{ }</button> <button class="toolbar-btn" onclick="insertLatex('align')" title="Align">=</button> </div> <div class="editor-toolbar-group"> <button class="toolbar-btn" onclick="renderLatex()" title="Render"><i class="bi bi-play"></i></button> <button class="toolbar-btn" onclick="copyLatex()" title="Copy"><i class="bi bi-clipboard"></i></button> </div> </div> <div class="latex-container"> <div class="latex-input"> <textarea id="latexInput" class="latex-textarea" placeholder="Enter LaTeX here...">\begin{equation} E = mc^2 \end{equation}
+\section*{Quadratic Formula}
+The quadratic formula is:
+
+x
+=
+−
+b
+±
+b
+2
+−
+4
+a
+c
+2
+a
+x= 
+2a
+−b± 
+b 
+2
+ −4ac
+​
+ 
+​
+ 
+\section*{Matrix}
+
+(
+a
+b
+c
+d
+)
+( 
+a
+c
+​
+  
+b
+d
+​
+ )
+\section*{Integral}
+
+∫
+0
+∞
+e
+−
+x
+2
+d
+x
+=
+π
+2
+∫ 
+0
+∞
+​
+ e 
+−x 
+2
+ 
+ dx= 
+2
+π
+​
+ 
+​
+ </textarea>
+
+</div> <div class="latex-preview"> <div id="latexPreview" class="katex-preview"> <!-- LaTeX will be rendered here --> </div> </div> </div> </div> <!-- FILE INFO --> <div class="file-info"> <div class="info-item"> <i class="bi bi-file-text text-primary"></i> <span id="currentFile">untitled.txt</span> </div> <div class="info-item"> <i class="bi bi-clock text-success"></i> <span id="lastSaved">Not saved</span> </div> <div class="info-item"> <i class="bi bi-hdd-stack text-info"></i> <span id="fileSize">0 B</span> </div> </div> <!-- QUICK ACTIONS --> <div class="mt-4"> <h6 class="fw-semibold mb-3"><i class="bi bi-lightning"></i> Quick Actions</h6> <div class="d-flex flex-wrap gap-2"> <button class="btn btn-outline-primary" onclick="newDocument()"> <i class="bi bi-file-plus"></i> New </button> <button class="btn btn-outline-primary" onclick="openFile()"> <i class="bi bi-folder-open"></i> Open </button> <button class="btn btn-outline-success" onclick="saveDocument()"> <i class="bi bi-save"></i> Save </button> <button class="btn btn-outline-info" onclick="copyToClipboard()"> <i class="bi bi-clipboard"></i> Copy </button> <button class="btn btn-outline-warning" onclick="printDocument()"> <i class="bi bi-printer"></i> Print </button> <button class="btn btn-outline-danger" onclick="clearAll()"> <i class="bi bi-trash"></i> Clear </button> </div> </div> </div> <!-- BOTTOM AD --> <div class="ad-space"> <div class="row align-items-center"> <div class="col-md-8"> <div class="fw-bold">Advertisement Space</div> <div class="small">Perfect for monetization • Multiple ad formats supported</div> </div> <div class="col-md-4 text-end"> <small class="text-muted">300x250</small> </div> </div> </div> <!-- SETTINGS MODAL --> <div class="modal fade" id="settingsModal" tabindex="-1"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title"><i class="bi bi-gear"></i> Settings</h5> <button type="button" class="btn-close" data-bs-dismiss="modal"></button> </div> <div class="modal-body"> <div class="mb-3"> <label class="form-label">Default Editor</label> <select class="form-select" id="defaultEditor"> <option value="rich">Rich Text</option> <option value="code">Code Editor</option> <option value="markdown">Markdown</option> <option value="latex">LaTeX</option> </select> </div> <div class="mb-3"> <label class="form-label">Font Size</label> <input type="range" class="form-range" id="fontSize" min="12" max="24" value="16"> </div> <div class="mb-3"> <label class="form-label">Theme</label> <div class="btn-group w-100"> <button class="btn btn-outline-primary active" onclick="setTheme('light')">Light</button> <button class="btn btn-outline-primary" onclick="setTheme('dark')">Dark</button> </div> </div> <div class="mb-3"> <div class="form-check"> <input class="form-check-input" type="checkbox" id="autoSave" checked> <label class="form-check-label" for="autoSave">Auto-save every 30 seconds</label> </div> </div> <div class="mb-3"> <div class="form-check"> <input class="form-check-input" type="checkbox" id="wordWrap" checked> <label class="form-check-label" for="wordWrap">Word wrap</label> </div> </div> </div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button> </div> </div> </div> </div> <!-- FOOTER --> <footer class="mt-5 pt-4 border-top"> <div class="row"> <div class="col-md-6"> <h6 class="fw-bold">Online Editors Pro+</h6> <p class="small text-muted">Complete editing suite with Rich Text, Code, Markdown, and LaTeX editors.</p> </div> <div class="col-md-6 text-md-end"> <div class="small text-muted mb-2"> <i class="bi bi-shield-check"></i> All processing happens locally in your browser </div> <div class="small text-muted">© 2025 Editors Pro+ | v3.0</div> </div> </div> </footer> </div> <!-- Toast Container --> <div class="toast-container" id="toastContainer"></div> <!-- Scripts --> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> <!-- Quill for rich text --> <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script> <!-- CodeMirror for code editing --> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/php/php.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script> <!-- Marked for Markdown --> <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> <!-- KaTeX for LaTeX --> <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script> <script> // COMPLETE WORKING JAVASCRIPT - ALL EDITORS FUNCTIONAL // Global variables let quill; let codeMirror; let currentEditor = 'rich'; let isDarkMode = false; let autoSaveInterval; let currentFileName = 'untitled.txt'; let lastSavedTime = null; // Initialize Bootstrap modals const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal')); // Toast Notification System class Toast { static show(message, type = 'info', duration = 3000) { const container = document.getElementById('toastContainer'); const toast = document.createElement('div'); toast.className = `toast ${type}`; toast.innerHTML = ` <div class="d-flex justify-content-between align-items-center"> <div> <i class="bi ${this.getIcon(type)} me-2"></i> ${message} </div> <button type="button" class="btn-close btn-close-sm" onclick="this.parentElement.parentElement.remove()"></button> </div> `; container.appendChild(toast); setTimeout(() => { if (toast.parentElement) { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); } }, duration); } static getIcon(type) { const icons = { 'success': 'bi-check-circle', 'error': 'bi-exclamation-circle', 'warning': 'bi-exclamation-triangle', 'info': 'bi-info-circle' }; return icons[type] || 'bi-info-circle'; } } // Initialize all editors function init() { initRichEditor(); initCodeEditor(); initMarkdown(); initLatex(); startAutoSave(); updateStats(); // Set up event listeners document.getElementById('markdownInput').addEventListener('input', previewMarkdown); document.getElementById('latexInput').addEventListener('input', debounce(renderLatex, 500)); Toast.show('Editors Pro+ ready!', 'success', 3000); } // RICH TEXT EDITOR function initRichEditor() { quill = new Quill('#richEditor', { theme: 'snow', modules: { toolbar: false // We're using custom toolbar }, placeholder: 'Start writing your rich text document...' }); quill.on('text-change', function() { updateStats(); updateFileInfo(); }); // Set initial content quill.setText(`Welcome to Rich Text Editor! This is a powerful rich text editor with formatting options. You can: - Make text **bold**, *italic*, or underlined - Create headings and lists - Add links and images - Insert tables and quotes - Undo/redo your changes Start typing or paste your content here!`); } function formatRich(format) { if (!quill) return; const range = quill.getSelection(); switch(format) { case 'bold': quill.format('bold', true); break; case 'italic': quill.format('italic', true); break; case 'underline': quill.format('underline', true); break; case 'strike': quill.format('strike', true); break; case 'h1': quill.format('header', 1); break; case 'h2': quill.format('header', 2); break; case 'h3': quill.format('header', 3); break; case 'p': quill.format('header', false); break; case 'ul': quill.format('list', 'bullet'); break; case 'ol': quill.format('list', 'ordered'); break; case 'blockquote': quill.format('blockquote', true); break; case 'code': quill.format('code-block', true); break; case 'link': const url = prompt('Enter URL:'); if (url) { quill.format('link', url); } break; case 'image': const imageUrl = prompt('Enter image URL:'); if (imageUrl) { const range = quill.getSelection(); quill.insertEmbed(range.index, 'image', imageUrl); } break; case 'table': insertTable(); break; case 'undo': quill.history.undo(); break; case 'redo': quill.history.redo(); break; } } function insertTable() { const rows = prompt('Number of rows:', '3'); const cols = prompt('Number of columns:', '3'); if (rows && cols) { let tableHtml = '<table border="1" cellpadding="5" cellspacing="0">'; for (let i = 0; i < parseInt(rows); i++) { tableHtml += '<tr>'; for (let j = 0; j < parseInt(cols); j++) { tableHtml += `<td>Cell ${i+1}-${j+1}</td>`; } tableHtml += '</tr>'; } tableHtml += '</table><br>'; const range = quill.getSelection(); quill.clipboard.dangerouslyPasteHTML(range.index, tableHtml); } } function clearRichEditor() { if (confirm('Clear all content?')) { quill.setText(''); Toast.show('Editor cleared', 'info'); } } // CODE EDITOR function initCodeEditor() { codeMirror = CodeMirror.fromTextArea(document.getElementById('codeEditor'), { lineNumbers: true, mode: 'javascript', theme: 'default', autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, tabSize: 4, lineWrapping: true, foldGutter: true, gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] }); codeMirror.on('change', function() { updateStats(); updateFileInfo(); }); // Set initial content codeMirror.setValue(`// Welcome to Code Editor // Select a language from the dropdown and start coding! function helloWorld() { console.log("Hello, World!"); } class Example { constructor(name) { this.name = name; } greet() { return \`Hello, \${this.name}!\`; } } // Features: // - Syntax highlighting // - Auto-completion // - Code formatting // - Multiple themes // - Line numbers // - Code folding const example = new Example("Developer"); console.log(example.greet());`); } function changeCodeLanguage() { const language = document.getElementById('codeLanguage').value; const mode = { 'javascript': 'javascript', 'html': 'htmlmixed', 'css': 'css', 'python': 'python', 'java': 'text/x-java', 'cpp': 'text/x-c++src', 'csharp': 'text/x-csharp', 'php': 'php', 'ruby': 'ruby', 'sql': 'sql', 'json': 'application/json', 'xml': 'xml' }[language] || 'javascript'; codeMirror.setOption('mode', mode); Toast.show(`Switched to ${language}`, 'success'); } function changeCodeTheme() { const theme = document.getElementById('codeTheme').value; codeMirror.setOption('theme', theme); Toast.show(`Theme changed to ${theme}`, 'success'); } function formatCode() { try { const code = codeMirror.getValue(); const language = document.getElementById('codeLanguage').value; // Simple formatting for demonstration let formatted = code .split('\n') .map(line => line.trim()) .join('\n'); codeMirror.setValue(formatted); Toast.show('Code formatted', 'success'); } catch (error) { Toast.show('Error formatting code', 'error'); } } function minifyCode() { try { const code = codeMirror.getValue(); // Simple minification (remove comments and extra spaces) let minified = code .replace(/\/\/.*/g, '') .replace(/\/\*[\s\S]*?\*\//g, '') .replace(/\s+/g, ' ') .trim(); codeMirror.setValue(minified); Toast.show('Code minified', 'success'); } catch (error) { Toast.show('Error minifying code', 'error'); } } function validateCode() { try { const code = codeMirror.getValue(); const language = document.getElementById('codeLanguage').value; // Simple validation if (language === 'json') { JSON.parse(code); Toast.show('Valid JSON', 'success'); } else if (language === 'html') { if (code.includes('<') && code.includes('>')) { Toast.show('Valid HTML (basic check)', 'success'); } else { Toast.show('Invalid HTML', 'error'); } } else { Toast.show('Syntax validation not available for this language', 'info'); } } catch (error) { Toast.show(`Validation error: ${error.message}`, 'error'); } } function copyCode() { const code = codeMirror.getValue(); navigator.clipboard.writeText(code) .then(() => Toast.show('Code copied to clipboard', 'success')) .catch(() => Toast.show('Failed to copy', 'error')); } function downloadCode() { const code = codeMirror.getValue(); const language = document.getElementById('codeLanguage').value; const ext = { 'javascript': 'js', 'html': 'html', 'css': 'css', 'python': 'py', 'java': 'java', 'cpp': 'cpp', 'csharp': 'cs', 'php': 'php', 'ruby': 'rb', 'sql': 'sql', 'json': 'json', 'xml': 'xml' }[language] || 'txt'; downloadFile(code, `code.${ext}`, 'text/plain'); Toast.show('Code downloaded', 'success'); } function clearCodeEditor() { if (confirm('Clear all code?')) { codeMirror.setValue(''); Toast.show('Editor cleared', 'info'); } } // MARKDOWN EDITOR function initMarkdown() { previewMarkdown(); } function insertMarkdown(type) { const textarea = document.getElementById('markdownInput'); const start = textarea.selectionStart; const end = textarea.selectionEnd; const selected = textarea.value.substring(start, end); let replacement = ''; switch(type) { case 'bold': replacement = `**${selected || 'bold text'}**`; break; case 'italic': replacement = `*${selected || 'italic text'}*`; break; case 'strike': replacement = `~~${selected || 'strikethrough'}~~`; break; case 'h1': replacement = `# ${selected || 'Heading 1'}`; break; case 'h2': replacement = `## ${selected || 'Heading 2'}`; break; case 'h3': replacement = `### ${selected || 'Heading 3'}`; break; case 'link': replacement = `[${selected || 'link text'}](url)`; break; case 'image': replacement = `![${selected || 'alt text'}](image-url)`; break; case 'code': replacement = `\`${selected || 'code'}\``; break; case 'ul': replacement = `- ${selected || 'List item'}`; break; case 'ol': replacement = `1. ${selected || 'List item'}`; break; case 'quote': replacement = `> ${selected || 'Quote'}`; break; } textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end); textarea.focus(); textarea.setSelectionRange(start + replacement.length, start + replacement.length); previewMarkdown(); } function previewMarkdown() { const markdown = document.getElementById('markdownInput').value; const preview = document.getElementById('markdownPreview'); try { // Configure marked marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false }); preview.innerHTML = marked.parse(markdown); updateStats(); } catch (error) { preview.innerHTML = `<div class="text-danger">Error rendering markdown: ${error.message}</div>`; } } function exportMarkdown() { const markdown = document.getElementById('markdownInput').value; const html = document.getElementById('markdownPreview').innerHTML; // Save both markdown and HTML const exportData = { markdown: markdown, html: html, timestamp: new Date().toISOString() }; downloadFile(JSON.stringify(exportData, null, 2), 'markdown-export.json', 'application/json'); Toast.show('Markdown exported', 'success'); } // LATEX EDITOR function initLatex() { renderLatex(); } function insertLatex(type) { const textarea = document.getElementById('latexInput'); const start = textarea.selectionStart; const end = textarea.selectionEnd; let replacement = ''; switch(type) { case 'frac': replacement = '\\frac{}{}'; break; case 'sqrt': replacement = '\\sqrt{}'; break; case 'sum': replacement = '\\sum_{i=1}^{n}'; break; case 'int': replacement = '\\int_{a}^{b}'; break; case 'alpha': replacement = '\\alpha'; break; case 'beta': replacement = '\\beta'; break; case 'gamma': replacement = '\\gamma'; break; case 'theta': replacement = '\\theta'; break; case 'matrix': replacement = '\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}'; break; case 'cases': replacement = '\\begin{cases} x & \\text{if } a \\\\ y & \\text{otherwise} \\end{cases}'; break; case 'align': replacement = '\\begin{align} a &= b \\\\ c &= d \\end{align}'; break; } textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end); textarea.focus(); textarea.setSelectionRange(start + replacement.length, start + replacement.length); renderLatex(); } function renderLatex() { const latex = document.getElementById('latexInput').value; const preview = document.getElementById('latexPreview'); try { // Process LaTeX with KaTeX let html = ''; let remaining = latex; // Find and render display math ($$...$$) const displayMathRegex = /\$\$(.*?)\$\$/gs; html = remaining.replace(displayMathRegex, (match, formula) => { try { return katex.renderToString(formula, { displayMode: true, throwOnError: false }); } catch (e) { return `<span class="text-danger">Error: ${e.message}</span>`; } }); // Find and render inline math ($...$) const inlineMathRegex = /\$(.*?)\$/g; html = html.replace(inlineMathRegex, (match, formula) => { try { return katex.renderToString(formula, { displayMode: false, throwOnError: false }); } catch (e) { return `<span class="text-danger">Error: ${e.message}</span>`; } }); // Handle LaTeX environments const envRegex = /\\begin\{(\w+)\}(.*?)\\end\{\1\}/gs; html = html.replace(envRegex, (match, env, content) => { try { return katex.renderToString(match, { displayMode: true, throwOnError: false }); } catch (e) { return `<span class="text-danger">Error in ${env} environment: ${e.message}</span>`; } }); // Handle LaTeX commands that weren't caught const cmdRegex = /\\[a-zA-Z]+/g; html = html.replace(cmdRegex, (match) => { try { return katex.renderToString(match, { throwOnError: false }); } catch (e) { return `<span class="text-danger">${match}</span>`; } }); preview.innerHTML = html || '<p class="text-muted">Enter LaTeX to see rendered output</p>'; } catch (error) { preview.innerHTML = `<div class="text-danger">Error rendering LaTeX: ${error.message}</div>`; } } function copyLatex() { const latex = document.getElementById('latexInput').value; navigator.clipboard.writeText(latex) .then(() => Toast.show('LaTeX copied to clipboard', 'success')) .catch(() => Toast.show('Failed to copy', 'error')); } // STATISTICS function updateStats() { let text = ''; if (currentEditor === 'rich' && quill) { text = quill.getText(); } else if (currentEditor === 'code' && codeMirror) { text = codeMirror.getValue(); } else if (currentEditor === 'markdown') { text = document.getElementById('markdownInput').value; } else if (currentEditor === 'latex') { text = document.getElementById('latexInput').value; } const chars = text.length; const words = text.trim() ? text.trim().split(/\s+/).length : 0; const lines = text.split('\n').length; const readTime = Math.max(1, Math.ceil(words / 200)); document.getElementById('charCount').textContent = chars; document.getElementById('wordCount').textContent = words; document.getElementById('lineCount').textContent = lines; document.getElementById('readTime').innerHTML = readTime + ' <span class="stat-unit">min</span>'; } function updateFileInfo() { let text = ''; if (currentEditor === 'rich' && quill) { text = quill.getText(); } else if (currentEditor === 'code' && codeMirror) { text = codeMirror.getValue(); } else if (currentEditor === 'markdown') { text = document.getElementById('markdownInput').value; } else if (currentEditor === 'latex') { text = document.getElementById('latexInput').value; } const size = new Blob([text]).size; document.getElementById('fileSize').textContent = formatBytes(size); } // EDITOR SWITCHING function switchEditor(editor) { // Update tab buttons document.querySelectorAll('.editor-tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById(`tab-${editor}`).classList.add('active'); // Hide all editors document.getElementById('rich-editor-container').style.display = 'none'; document.getElementById('code-editor-container').style.display = 'none'; document.getElementById('markdown-editor-container').style.display = 'none'; document.getElementById('latex-editor-container').style.display = 'none'; // Show selected editor document.getElementById(`${editor}-editor-container`).style.display = 'block'; currentEditor = editor; // Refresh editor if needed if (editor === 'code' && codeMirror) { codeMirror.refresh(); } else if (editor === 'markdown') { previewMarkdown(); } else if (editor === 'latex') { renderLatex(); } updateStats(); Toast.show(`Switched to ${editor.charAt(0).toUpperCase() + editor.slice(1)} Editor`, 'info'); } // FILE OPERATIONS function newDocument() { if (!confirm('Create new document? Unsaved changes will be lost.')) return; if (currentEditor === 'rich' && quill) { quill.setText(''); } else if (currentEditor === 'code' && codeMirror) { codeMirror.setValue(''); } else if (currentEditor === 'markdown') { document.getElementById('markdownInput').value = ''; previewMarkdown(); } else if (currentEditor === 'latex') { document.getElementById('latexInput').value = ''; renderLatex(); } currentFileName = 'untitled.txt'; document.getElementById('currentFile').textContent = currentFileName; lastSavedTime = null; document.getElementById('lastSaved').textContent = 'Not saved'; Toast.show('New document created', 'success'); } function openFile() { const input = document.createElement('input'); input.type = 'file'; input.accept = '.txt,.md,.tex,.js,.html,.css,.json'; input.onchange = (e) => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = (event) => { const content = event.target.result; if (currentEditor === 'rich' && quill) { quill.setText(content); } else if (currentEditor === 'code' && codeMirror) { codeMirror.setValue(content); } else if (currentEditor === 'markdown') { document.getElementById('markdownInput').value = content; previewMarkdown(); } else if (currentEditor === 'latex') { document.getElementById('latexInput').value = content; renderLatex(); } currentFileName = file.name; document.getElementById('currentFile').textContent = currentFileName; Toast.show(`Loaded ${file.name}`, 'success'); updateStats(); }; reader.readAsText(file); }; input.click(); } function saveDocument() { let content = ''; let ext = 'txt'; if (currentEditor === 'rich' && quill) { content = quill.getText(); ext = 'txt'; } else if (currentEditor === 'code' && codeMirror) { content = codeMirror.getValue(); ext = document.getElementById('codeLanguage').value; ext = ext === 'javascript' ? 'js' : ext; } else if (currentEditor === 'markdown') { content = document.getElementById('markdownInput').value; ext = 'md'; } else if (currentEditor === 'latex') { content = document.getElementById('latexInput').value; ext = 'tex'; } const filename = currentFileName.replace(/\.[^/.]+$/, '') + '.' + ext; downloadFile(content, filename, 'text/plain'); lastSavedTime = new Date(); document.getElementById('lastSaved').textContent = lastSavedTime.toLocaleTimeString(); Toast.show(`Saved as ${filename}`, 'success'); } function exportDocument() { if (currentEditor === 'rich' && quill) { const html = quill.root.innerHTML; downloadFile(html, 'document.html', 'text/html'); } else if (currentEditor === 'markdown') { const html = document.getElementById('markdownPreview').innerHTML; downloadFile(html, 'document.html', 'text/html'); } else { saveDocument(); } Toast.show('Document exported', 'success'); } function downloadFile(content, filename, type) { const blob = new Blob([content], { type }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); } function copyToClipboard() { let content = ''; if (currentEditor === 'rich' && quill) { content = quill.getText(); } else if (currentEditor === 'code' && codeMirror) { content = codeMirror.getValue(); } else if (currentEditor === 'markdown') { content = document.getElementById('markdownInput').value; } else if (currentEditor === 'latex') { content = document.getElementById('latexInput').value; } navigator.clipboard.writeText(content) .then(() => Toast.show('Copied to clipboard', 'success')) .catch(() => Toast.show('Failed to copy', 'error')); } function printDocument() { let content = ''; let title = 'Document'; if (currentEditor === 'rich' && quill) { content = quill.root.innerHTML; title = 'Rich Text Document'; } else if (currentEditor === 'markdown') { content = document.getElementById('markdownPreview').innerHTML; title = 'Markdown Document'; } else if (currentEditor === 'code' && codeMirror) { content = `<pre>${codeMirror.getValue()}</pre>`;
+title = 'Code Document';
+} else if (currentEditor === 'latex') {
+content = document.getElementById('latexPreview').innerHTML;
+title = 'LaTeX Document';
+}
+
+const printWindow = window.open('', '_blank');
+printWindow.document.write(`
+
+<!DOCTYPE html> <html> <head> <title>${title}</title> <style> body { font-family: 'Inter', sans-serif; padding: 20px; line-height: 1.6; } pre { background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto; } img { max-width: 100%; } </style> </head> <body> <h1>${title}</h1> <hr> ${content} </body> </html> `); printWindow.document.close(); printWindow.print(); }
+function clearAll() {
+if (!confirm('Clear all content?')) return;
+
+if (currentEditor === 'rich' && quill) {
+quill.setText('');
+} else if (currentEditor === 'code' && codeMirror) {
+codeMirror.setValue('');
+} else if (currentEditor === 'markdown') {
+document.getElementById('markdownInput').value = '';
+previewMarkdown();
+} else if (currentEditor === 'latex') {
+document.getElementById('latexInput').value = '';
+renderLatex();
+}
+
+Toast.show('Editor cleared', 'info');
+}
+
+// AUTO-SAVE
+function startAutoSave() {
+autoSaveInterval = setInterval(() => {
+if (document.getElementById('autoSave')?.checked) {
+const saved = localStorage.getItem('editorAutoSave');
+let content = '';
+
+if (currentEditor === 'rich' && quill) {
+content = quill.getText();
+} else if (currentEditor === 'code' && codeMirror) {
+content = codeMirror.getValue();
+} else if (currentEditor === 'markdown') {
+content = document.getElementById('markdownInput').value;
+} else if (currentEditor === 'latex') {
+content = document.getElementById('latexInput').value;
+}
+
+localStorage.setItem('editorAutoSave', JSON.stringify({
+editor: currentEditor,
+content: content,
+timestamp: new Date().toISOString()
+}));
+
+Toast.show('Auto-saved', 'info', 1000);
+}
+}, 30000);
+}
+
+// SETTINGS
+function showSettings() {
+settingsModal.show();
+}
+
+function saveSettings() {
+const defaultEditor = document.getElementById('defaultEditor').value;
+const fontSize = document.getElementById('fontSize').value;
+const autoSave = document.getElementById('autoSave').checked;
+const wordWrap = document.getElementById('wordWrap').checked;
+
+// Apply settings
+document.body.style.fontSize = fontSize + 'px';
+
+if (codeMirror) {
+codeMirror.setOption('lineWrapping', wordWrap);
+}
+
+settingsModal.hide();
+Toast.show('Settings saved', 'success');
+}
+
+// THEME
+function toggleDarkMode(force = null) {
+isDarkMode = force !== null ? force : !isDarkMode;
+document.body.classList.toggle('dark-mode', isDarkMode);
+
+const btn = document.getElementById('darkModeBtn');
+if (btn) {
+btn.innerHTML = isDarkMode ?
+'<i class="bi bi-sun"></i> Light Mode' :
+'<i class="bi bi-moon"></i> Dark Mode';
+}
+
+if (codeMirror) {
+const theme = document.getElementById('codeTheme').value;
+codeMirror.setOption('theme', isDarkMode && theme === 'default' ? 'dracula' : theme);
+}
+
+Toast.show(${isDarkMode ? 'Dark' : 'Light'} mode enabled, 'info');
+}
+
+function setTheme(theme) {
+if (theme === 'dark') {
+toggleDarkMode(true);
+} else {
+toggleDarkMode(false);
+}
+}
+
+// UTILITY FUNCTIONS
+function formatBytes(bytes) {
+if (bytes === 0) return '0 B';
+const k = 1024;
+const sizes = ['B', 'KB', 'MB', 'GB'];
+const i = Math.floor(Math.log(bytes) / Math.log(k));
+return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function debounce(func, wait) {
+let timeout;
+return function executedFunction(...args) {
+const later = () => {
+clearTimeout(timeout);
+func(...args);
+};
+clearTimeout(timeout);
+timeout = setTimeout(later, wait);
+};
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body> </html> ```

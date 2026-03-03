@@ -1346,19 +1346,23 @@
             }
         });
 
-        // Search Functionality
+        // Search Functionality - Fully Working
         const search = document.getElementById("search");
         const tools = document.querySelectorAll(".tool");
         const categoryBtns = document.querySelectorAll(".category-btn");
 
-        search.addEventListener("input", () => {
-            const query = search.value.toLowerCase().trim();
+        search.addEventListener("input", function() {
+            const query = this.value.toLowerCase().trim();
+            
             tools.forEach(tool => {
                 const toolText = tool.textContent.toLowerCase();
                 const toolTitle = tool.querySelector('h4').textContent.toLowerCase();
                 const toolDesc = tool.querySelector('p').textContent.toLowerCase();
                 
-                if (toolText.includes(query) || toolTitle.includes(query) || toolDesc.includes(query)) {
+                // Check if tool matches search query
+                const matchesSearch = query === '' || toolText.includes(query) || toolTitle.includes(query) || toolDesc.includes(query);
+                
+                if (matchesSearch) {
                     tool.style.display = "block";
                     setTimeout(() => {
                         tool.style.opacity = "1";
@@ -1372,9 +1376,39 @@
                     }, 300);
                 }
             });
+            
+            // Reset active category when searching
+            if (query !== '') {
+                categoryBtns.forEach(btn => btn.classList.remove('active'));
+            } else {
+                // If search is empty, reactivate the current category filter
+                const activeCategory = document.querySelector('.category-btn.active')?.getAttribute('data-category') || 'all';
+                filterToolsByCategory(activeCategory);
+            }
         });
 
-        // Enhanced Category Filter
+        // Category Filter Function
+        function filterToolsByCategory(category) {
+            tools.forEach(tool => {
+                const toolCategory = tool.getAttribute("data-category");
+                
+                if (category === "all" || toolCategory === category) {
+                    tool.style.display = "block";
+                    setTimeout(() => {
+                        tool.style.opacity = "1";
+                        tool.style.transform = "translateY(0)";
+                    }, 10);
+                } else {
+                    tool.style.opacity = "0";
+                    tool.style.transform = "translateY(10px)";
+                    setTimeout(() => {
+                        tool.style.display = "none";
+                    }, 300);
+                }
+            });
+        }
+
+        // Enhanced Category Filter with click handlers
         categoryBtns.forEach(btn => {
             btn.addEventListener("click", function() {
                 // Update active button
@@ -1383,31 +1417,25 @@
                 
                 const category = this.getAttribute("data-category");
                 
-                // Filter tools
-                tools.forEach(tool => {
-                    const toolCategory = tool.getAttribute("data-category");
-                    
-                    if (category === "all" || toolCategory === category) {
-                        tool.style.display = "block";
-                        setTimeout(() => {
-                            tool.style.opacity = "1";
-                            tool.style.transform = "translateY(0)";
-                        }, 10);
-                    } else {
-                        tool.style.opacity = "0";
-                        tool.style.transform = "translateY(10px)";
-                        setTimeout(() => {
-                            tool.style.display = "none";
-                        }, 300);
-                    }
-                });
+                // Clear search input when category is clicked
+                search.value = '';
+                
+                // Filter tools by category
+                filterToolsByCategory(category);
             });
         });
 
         // Add animation to tool cards on load
         document.addEventListener('DOMContentLoaded', function() {
-            // Animate tool cards sequentially
+            // Set initial styles for tool cards
             const toolCards = document.querySelectorAll('.tool-card');
+            toolCards.forEach(card => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(20px)";
+                card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            });
+            
+            // Animate tool cards sequentially
             toolCards.forEach((card, index) => {
                 setTimeout(() => {
                     card.style.opacity = "1";
@@ -1415,11 +1443,9 @@
                 }, 100 + (index * 50));
             });
             
-            // Initialize with fade-in effect
-            toolCards.forEach(card => {
-                card.style.opacity = "0";
-                card.style.transform = "translateY(20px)";
-                card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            // Make sure all tools are visible initially
+            tools.forEach(tool => {
+                tool.style.display = "block";
             });
         });
     </script>

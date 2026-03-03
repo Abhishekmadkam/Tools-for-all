@@ -1,0 +1,2871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Developer Tools Pro+ – Code & Dev Utilities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Professional developer tools for code formatting, validation, conversion, and debugging">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #0f172a;
+            --border-radius: 16px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --code-font: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f1f5f9, #eef2f6);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            transition: var(--transition);
+        }
+        
+        .page-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 20px 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Code Area */
+        .code-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }
+        
+        .code-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .control-btn:hover {
+            background: #e9ecef;
+            color: var(--dark-color);
+        }
+        
+        .code-input {
+            font-family: var(--code-font);
+            resize: vertical;
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 2px solid #dee2e6;
+            width: 100%;
+            min-height: 350px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            transition: var(--transition);
+            tab-size: 4;
+        }
+        
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        
+        .line-counter {
+            position: absolute;
+            left: 0;
+            top: 50px;
+            bottom: 0;
+            width: 40px;
+            padding: 20px 5px;
+            font-family: var(--code-font);
+            font-size: 12px;
+            color: #6c757d;
+            text-align: right;
+            pointer-events: none;
+            user-select: none;
+            background: linear-gradient(to right, transparent, transparent);
+        }
+        
+        .live-stats {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .live-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #f8f9fd, #ffffff);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        }
+        
+        .stat-box.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .stat-box.active .stat,
+        .stat-box.active .stat-value {
+            color: white;
+        }
+        
+        .stat {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+        }
+        
+        .keyword-box {
+            background: #f1f5ff;
+            border-radius: 14px;
+            padding: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .keyword {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .keyword:hover {
+            background: #fff;
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 10px 20px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+        
+        .output-msg {
+            min-height: 24px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .ad-space {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #adb5bd;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            font-size: 15px;
+            color: #6c757d;
+            margin: 25px 0;
+            transition: var(--transition);
+        }
+        
+        .ad-space:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        }
+        
+        .tool-section {
+            border: 2px solid #eaeaea;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            background: #fcfcfc;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-btn {
+            margin: 8px;
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            border-radius: 10px;
+            min-width: 140px;
+        }
+        
+        /* Tab Navigation */
+        .nav-tabs {
+            border-bottom: 3px solid #eaeaea;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0;
+            margin-right: 10px;
+            padding: 12px 25px;
+            transition: var(--transition);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(99, 102, 241, 0.1);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow: visible;
+            background: #e9ecef;
+        }
+        
+        .progress-bar {
+            border-radius: 6px;
+            position: relative;
+            transition: width 0.6s ease;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        /* Results area */
+        .results-area {
+            background: #f8f9fd;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 25px;
+            min-height: 150px;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            border: 1px solid #e9ecef;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .code-output {
+            font-family: var(--code-font);
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .code-output pre {
+            margin: 0;
+            background: transparent !important;
+        }
+        
+        /* Language selector */
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .language-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Word cloud */
+        .word-cloud-container {
+            height: 300px;
+            border-radius: var(--border-radius);
+            background: #f8f9fd;
+            padding: 20px;
+            margin: 20px 0;
+            overflow: auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            gap: 10px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .word-cloud-item {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 20px;
+        }
+        
+        .word-cloud-item:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Modal improvements */
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 20px 30px;
+        }
+        
+        /* Dark mode */
+        .dark-mode {
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .tool-card,
+        .dark-mode .header {
+            background: #1e293b;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .code-input {
+            background: #0f172a;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .stat-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .keyword-box {
+            background: #1e293b;
+        }
+        
+        .dark-mode .keyword {
+            background: #2d3748;
+            color: #e5e7eb;
+            border-left-color: #60a5fa;
+        }
+        
+        .dark-mode .stat {
+            color: #94a3b8;
+        }
+        
+        .dark-mode .stat-value {
+            color: #e5e7eb;
+        }
+        
+        .dark-mode .ad-space {
+            background: #1e293b;
+            border-color: #475569;
+            color: #94a3b8;
+        }
+        
+        .dark-mode .tool-section {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .dark-mode .nav-tabs {
+            border-bottom-color: #334155;
+        }
+        
+        .dark-mode .nav-tabs .nav-link {
+            color: #94a3b8;
+        }
+        
+        .dark-mode .nav-tabs .nav-link.active {
+            color: #60a5fa;
+            background-color: rgba(96, 165, 250, 0.1);
+            border-bottom-color: #60a5fa;
+        }
+        
+        .dark-mode .results-area {
+            background: #1e293b;
+            color: #e5e7eb;
+            border-color: #334155;
+        }
+        
+        .dark-mode .progress {
+            background: #334155;
+        }
+        
+        .dark-mode .live-stats {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            animation: slideIn 0.3s ease-out;
+            max-width: 350px;
+        }
+        
+        .toast.success {
+            border-left-color: var(--success-color);
+        }
+        
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+        
+        .toast.warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        /* Code mirror style */
+        .cm-editor {
+            height: 100%;
+            background: #1e1e1e;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 0 10px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+            
+            .code-input {
+                min-height: 250px;
+                padding: 15px;
+            }
+            
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            
+            .stat-box {
+                padding: 15px;
+            }
+            
+            .stat-value {
+                font-size: 22px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+            }
+            
+            .tool-btn {
+                min-width: 120px;
+                margin: 5px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stat-box {
+                margin-bottom: 15px;
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+            }
+            
+            .tool-btn {
+                min-width: 100%;
+                margin: 5px 0;
+            }
+            
+            .language-selector {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h1 class="fw-bold mb-2"><i class="bi bi-code-square me-2"></i> Developer Tools Pro+</h1>
+                    <p class="text-muted mb-0">Professional code utilities for developers – format, validate, convert, and debug</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-dark btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">
+                        <i class="bi bi-moon"></i> Dark Mode
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="openImportModal()">
+                        <i class="bi bi-upload"></i> Import
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadCode()">
+                        <i class="bi bi-download"></i> Download
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="undo()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Undo
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="redo()">
+                        <i class="bi bi-arrow-clockwise"></i> Redo
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="showSettings()">
+                        <i class="bi bi-gear"></i> Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TOP AD -->
+        <div class="ad-space">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><i class="bi bi-megaphone fs-4 me-3"></i></div>
+                <div>
+                    <div class="fw-bold">Advertisement Space</div>
+                    <div class="small">AdSense Ready • Responsive Design</div>
+                </div>
+                <div><small class="text-muted">728x90</small></div>
+            </div>
+        </div>
+        
+        <!-- MAIN TOOL CARD -->
+        <div class="tool-card">
+            <!-- CODE AREA -->
+            <div class="code-container">
+                <div class="code-header">
+                    <h6 class="fw-semibold mb-0"><i class="bi bi-code me-2"></i> Code Editor</h6>
+                    <div class="code-controls">
+                        <button class="control-btn" onclick="increaseFontSize()">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                        <button class="control-btn" onclick="decreaseFontSize()">
+                            <i class="bi bi-zoom-out"></i>
+                        </button>
+                        <button class="control-btn" onclick="clearEditor()">
+                            <i class="bi bi-eraser"></i>
+                        </button>
+                        <select class="control-btn" id="languageSelect" onchange="changeLanguage()" style="min-width: 100px;">
+                            <option value="auto">Auto-detect</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="json">JSON</option>
+                            <option value="xml">XML</option>
+                            <option value="markdown">Markdown</option>
+                            <option value="python">Python</option>
+                            <option value="sql">SQL</option>
+                            <option value="php">PHP</option>
+                            <option value="java">Java</option>
+                            <option value="csharp">C#</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <textarea id="codeInput" class="code-input" placeholder="Paste your code here...">{
+  "name": "Developer Tools Pro+",
+  "version": "2.2.0",
+  "description": "Professional developer utilities",
+  "features": [
+    "JSON Formatter",
+    "Code Minifier",
+    "Base64 Converter",
+    "HTML to Markdown",
+    "Syntax Validator"
+  ],
+  "author": "DevTools Team",
+  "license": "MIT",
+  "dependencies": {
+    "highlight.js": "^11.0.0",
+    "prettier": "^3.0.0"
+  }
+}</textarea>
+                
+                <div class="live-stats">
+                    <div class="live-stat">
+                        <i class="bi bi-code"></i>
+                        <span id="liveLines">6</span>
+                    </div>
+                    <div class="live-stat">
+                        <i class="bi bi-type"></i>
+                        <span id="liveChars">358</span>
+                    </div>
+                    <div class="live-stat">
+                        <i class="bi bi-hash"></i>
+                        <span id="liveTokens">JSON</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- LANGUAGE BADGES -->
+            <div class="language-selector mb-3">
+                <span class="language-badge" id="detectedLang">Detected: JSON</span>
+                <span class="language-badge bg-success" id="validityBadge">✓ Valid</span>
+                <span class="language-badge bg-info" id="sizeBadge">Size: 358 B</span>
+            </div>
+            
+            <!-- TAB NAVIGATION -->
+            <div class="mb-4">
+                <ul class="nav nav-tabs" id="toolTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="formatter-tab" data-bs-toggle="tab" data-bs-target="#formatter" type="button" role="tab" aria-controls="formatter" aria-selected="true">
+                            <i class="bi bi-braces me-2"></i> Formatter
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="minifier-tab" data-bs-toggle="tab" data-bs-target="#minifier" type="button" role="tab" aria-controls="minifier" aria-selected="false">
+                            <i class="bi bi-compress me-2"></i> Minifier
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="converter-tab" data-bs-toggle="tab" data-bs-target="#converter" type="button" role="tab" aria-controls="converter" aria-selected="false">
+                            <i class="bi bi-arrow-left-right me-2"></i> Converters
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="encoder-tab" data-bs-toggle="tab" data-bs-target="#encoder" type="button" role="tab" aria-controls="encoder" aria-selected="false">
+                            <i class="bi bi-lock me-2"></i> Encoder/Decoder
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="validator-tab" data-bs-toggle="tab" data-bs-target="#validator" type="button" role="tab" aria-controls="validator" aria-selected="false">
+                            <i class="bi bi-check-circle me-2"></i> Validator
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="diff-tab" data-bs-toggle="tab" data-bs-target="#diff" type="button" role="tab" aria-controls="diff" aria-selected="false">
+                            <i class="bi bi-files me-2"></i> Diff Checker
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="regex-tab" data-bs-toggle="tab" data-bs-target="#regex" type="button" role="tab" aria-controls="regex" aria-selected="false">
+                            <i class="bi bi-slash-circle me-2"></i> Regex Tester
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- TAB CONTENT -->
+            <div class="tab-content" id="toolTabsContent">
+                <!-- FORMATTER TAB -->
+                <div class="tab-pane fade show active" id="formatter" role="tabpanel" aria-labelledby="formatter-tab">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('lines')" id="linesBox">
+                                <div class="stat">Lines</div>
+                                <div class="stat-value" id="lines">6</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('characters')" id="charsBox">
+                                <div class="stat">Characters</div>
+                                <div class="stat-value" id="characters">358</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('tokens')" id="tokensBox">
+                                <div class="stat">Tokens</div>
+                                <div class="stat-value" id="tokens">42</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box" onclick="showStatDetails('size')" id="sizeBox">
+                                <div class="stat">Size</div>
+                                <div class="stat-value" id="size">358 B</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CODE QUALITY PROGRESS -->
+                    <div class="progress-container fade-in">
+                        <div class="progress-label">
+                            <span>Code Quality Score</span>
+                            <span id="qualityPercent">92%</span>
+                        </div>
+                        <div class="progress">
+                            <div id="qualityProgress" class="progress-bar bg-success" role="progressbar" style="width: 92%"></div>
+                        </div>
+                        <div class="text-center small text-muted mt-2" id="qualityText">Excellent code quality</div>
+                    </div>
+                    
+                    <!-- FORMATTING OPTIONS -->
+                    <div class="row g-4 mt-4">
+                        <div class="col-lg-6">
+                            <div class="tool-section">
+                                <h5 class="category-title"><i class="bi bi-braces"></i> Code Formatter</h5>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('json')">
+                                        <i class="bi bi-braces"></i> Format JSON
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('html')">
+                                        <i class="bi bi-filetype-html"></i> Format HTML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('css')">
+                                        <i class="bi bi-filetype-css"></i> Format CSS
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('javascript')">
+                                        <i class="bi bi-filetype-js"></i> Format JS
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('xml')">
+                                        <i class="bi bi-code-square"></i> Format XML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="formatCode('sql')">
+                                        <i class="bi bi-database"></i> Format SQL
+                                    </button>
+                                </div>
+                                
+                                <h6 class="fw-bold mb-3"><i class="bi bi-gear"></i> Formatting Options</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Indent Size</label>
+                                    <select class="form-select" id="indentSize">
+                                        <option value="2">2 spaces</option>
+                                        <option value="4" selected>4 spaces</option>
+                                        <option value="8">8 spaces</option>
+                                        <option value="tab">Tab</option>
+                                    </select>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="preserveComments" checked>
+                                    <label class="form-check-label" for="preserveComments">Preserve comments</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="sortKeys">
+                                    <label class="form-check-label" for="sortKeys">Sort object keys</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="stripTrailing">
+                                    <label class="form-check-label" for="stripTrailing">Strip trailing commas</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="tool-section">
+                                <h5 class="category-title"><i class="bi bi-search"></i> Find & Replace</h5>
+                                <div class="mb-3">
+                                    <input class="form-control mb-2" id="findText" placeholder="Text to find...">
+                                    <input class="form-control mb-2" id="replaceText" placeholder="Replace with...">
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="findReplace()">
+                                        <i class="bi bi-arrow-repeat"></i> Replace All
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="findNext()">
+                                        <i class="bi bi-arrow-right"></i> Find Next
+                                    </button>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="caseSensitive">
+                                        <label class="form-check-label small" for="caseSensitive">Case-sensitive</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="useRegex">
+                                        <label class="form-check-label small" for="useRegex">Use regex</label>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-info btn-sm" onclick="highlightAll()">
+                                        <i class="bi bi-highlighter"></i> Highlight All
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="clearHighlights()">
+                                        <i class="bi bi-eraser"></i> Clear Highlights
+                                    </button>
+                                </div>
+                                <div class="mt-3 small" id="findResults">
+                                    <span class="text-muted">No search performed yet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- INLINE AD -->
+                    <div class="ad-space mt-4">
+                        <div class="text-center">
+                            <i class="bi bi-gift fs-3 mb-2"></i>
+                            <div class="fw-bold">Upgrade to Pro</div>
+                            <div class="small">Unlock advanced features and remove limits</div>
+                            <button class="btn btn-sm btn-primary mt-2">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <!-- FORMATTING RESULTS -->
+                    <div class="results-area" id="formattingResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-arrow-left-right fs-1"></i>
+                            <p class="mt-2">Formatted code will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- MINIFIER TAB -->
+                <div class="tab-pane fade" id="minifier" role="tabpanel" aria-labelledby="minifier-tab">
+                    <h5 class="category-title"><i class="bi bi-compress"></i> Code Minifier & Optimizer</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-js"></i> JavaScript Minifier</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="minifyCode('js')">
+                                        <i class="bi bi-filetype-js"></i> Minify JS
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="minifyCode('js-advanced')">
+                                        <i class="bi bi-lightning"></i> Advanced JS
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="minifyCode('js-mangle')">
+                                        <i class="bi bi-shuffle"></i> Mangle Names
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-css"></i> CSS Minifier</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="minifyCode('css')">
+                                        <i class="bi bi-filetype-css"></i> Minify CSS
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="minifyCode('css-advanced')">
+                                        <i class="bi bi-magic"></i> Optimize CSS
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-html"></i> HTML Minifier</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="minifyCode('html')">
+                                        <i class="bi bi-filetype-html"></i> Minify HTML
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="minifyCode('html-aggressive')">
+                                        <i class="bi bi-lightning"></i> Aggressive
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-json"></i> JSON Minifier</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="minifyCode('json')">
+                                        <i class="bi bi-filetype-json"></i> Minify JSON
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="minifyCode('json-remove')">
+                                        <i class="bi bi-trash"></i> Remove Comments
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span>Minification Stats</span>
+                                    <span id="minifyStats">0% reduction</span>
+                                </div>
+                                <div class="progress">
+                                    <div id="minifyProgress" class="progress-bar bg-info" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="minifyResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-compress fs-1"></i>
+                            <p class="mt-2">Minified code will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CONVERTER TAB -->
+                <div class="tab-pane fade" id="converter" role="tabpanel" aria-labelledby="converter-tab">
+                    <h5 class="category-title"><i class="bi bi-arrow-left-right"></i> Code Converters</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-arrow-left-right"></i> JSON & XML</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="convertCode('json2xml')">
+                                        <i class="bi bi-braces"></i> JSON → XML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="convertCode('xml2json')">
+                                        <i class="bi bi-code-square"></i> XML → JSON
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="convertCode('json2yaml')">
+                                        <i class="bi bi-braces"></i> JSON → YAML
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="convertCode('yaml2json')">
+                                        <i class="bi bi-braces"></i> YAML → JSON
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-markdown"></i> Markdown & HTML</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="convertCode('md2html')">
+                                        <i class="bi bi-markdown"></i> Markdown → HTML
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="convertCode('html2md')">
+                                        <i class="bi bi-filetype-html"></i> HTML → Markdown
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="convertCode('text2html')">
+                                        <i class="bi bi-type"></i> Text → HTML
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="convertCode('html2text')">
+                                        <i class="bi bi-file-text"></i> HTML → Text
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-table"></i> CSV & JSON</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="convertCode('csv2json')">
+                                        <i class="bi bi-table"></i> CSV → JSON
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="convertCode('json2csv')">
+                                        <i class="bi bi-filetype-json"></i> JSON → CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-arrow-left-right"></i> Other Formats</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="convertCode('sql2json')">
+                                        <i class="bi bi-database"></i> SQL → JSON
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="convertCode('json2sql')">
+                                        <i class="bi bi-filetype-json"></i> JSON → SQL
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6>Input for Conversion</h6>
+                            <textarea class="form-control" id="converterInput" rows="8" placeholder="Enter text to convert..."></textarea>
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-primary" onclick="useMainCode()">
+                                    <i class="bi bi-arrow-down"></i> Use Main Code
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="clearConverterInput()">
+                                    <i class="bi bi-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Converted Output</h6>
+                            <div class="results-area" id="converterOutput" style="min-height: 200px;">
+                                <div class="text-center text-muted py-4">
+                                    <i class="bi bi-arrow-left-right fs-1"></i>
+                                    <p class="mt-2">Converted output will appear here</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-success" onclick="copyConverterOutput()">
+                                    <i class="bi bi-clipboard"></i> Copy
+                                </button>
+                                <button class="btn btn-outline-success" onclick="downloadConverterOutput()">
+                                    <i class="bi bi-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ENCODER TAB -->
+                <div class="tab-pane fade" id="encoder" role="tabpanel" aria-labelledby="encoder-tab">
+                    <h5 class="category-title"><i class="bi bi-lock"></i> Encoder / Decoder</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-lock"></i> Base64</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-primary tool-btn" onclick="encodeDecode('base64-encode')">
+                                        <i class="bi bi-lock"></i> Base64 Encode
+                                    </button>
+                                    <button class="btn btn-outline-primary tool-btn" onclick="encodeDecode('base64-decode')">
+                                        <i class="bi bi-unlock"></i> Base64 Decode
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-link"></i> URL</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-success tool-btn" onclick="encodeDecode('url-encode')">
+                                        <i class="bi bi-link-45deg"></i> URL Encode
+                                    </button>
+                                    <button class="btn btn-outline-success tool-btn" onclick="encodeDecode('url-decode')">
+                                        <i class="bi bi-link-45deg"></i> URL Decode
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-filetype-html"></i> HTML Entities</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-info tool-btn" onclick="encodeDecode('html-encode')">
+                                        <i class="bi bi-filetype-html"></i> HTML Encode
+                                    </button>
+                                    <button class="btn btn-outline-info tool-btn" onclick="encodeDecode('html-decode')">
+                                        <i class="bi bi-filetype-html"></i> HTML Decode
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tool-section">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-0-circle"></i> Binary & Hex</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <button class="btn btn-outline-warning tool-btn" onclick="encodeDecode('text2binary')">
+                                        <i class="bi bi-0-circle"></i> Text → Binary
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="encodeDecode('binary2text')">
+                                        <i class="bi bi-type"></i> Binary → Text
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="encodeDecode('text2hex')">
+                                        <i class="bi bi-hexagon"></i> Text → Hex
+                                    </button>
+                                    <button class="btn btn-outline-warning tool-btn" onclick="encodeDecode('hex2text')">
+                                        <i class="bi bi-type"></i> Hex → Text
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="encoderResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-lock fs-1"></i>
+                            <p class="mt-2">Encoded/decoded output will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- VALIDATOR TAB -->
+                <div class="tab-pane fade" id="validator" role="tabpanel" aria-labelledby="validator-tab">
+                    <h5 class="category-title"><i class="bi bi-check-circle"></i> Syntax Validator</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">JSON Validator</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('json')">
+                                    Validate JSON
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">HTML Validator</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('html')">
+                                    Validate HTML
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">CSS Validator</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('css')">
+                                    Validate CSS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">JavaScript Linter</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('js')">
+                                    Lint JavaScript
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">XML Validator</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('xml')">
+                                    Validate XML
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tool-section text-center">
+                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                <h6 class="mt-3">SQL Validator</h6>
+                                <button class="btn btn-outline-primary mt-2" onclick="validateCode('sql')">
+                                    Validate SQL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-area" id="validatorResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-check-circle fs-1"></i>
+                            <p class="mt-2">Validation results will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DIFF CHECKER TAB -->
+                <div class="tab-pane fade" id="diff" role="tabpanel" aria-labelledby="diff-tab">
+                    <h5 class="category-title"><i class="bi bi-files"></i> Diff Checker</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Original Code</h6>
+                            <textarea class="form-control" id="diffOriginal" rows="10">{
+  "name": "Version 1",
+  "value": 100,
+  "enabled": true
+}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Modified Code</h6>
+                            <textarea class="form-control" id="diffModified" rows="10">{
+  "name": "Version 2",
+  "value": 200,
+  "enabled": true,
+  "newField": "added"
+}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center my-4">
+                        <button class="btn btn-primary btn-lg" onclick="compareDiff()">
+                            <i class="bi bi-files"></i> Compare Differences
+                        </button>
+                        <button class="btn btn-outline-secondary ms-2" onclick="swapDiff()">
+                            <i class="bi bi-arrow-left-right"></i> Swap
+                        </button>
+                    </div>
+                    
+                    <div class="results-area" id="diffResults">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-files fs-1"></i>
+                            <p class="mt-2">Click compare to see differences</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- REGEX TESTER TAB -->
+                <div class="tab-pane fade" id="regex" role="tabpanel" aria-labelledby="regex-tab">
+                    <h5 class="category-title"><i class="bi bi-slash-circle"></i> Regex Tester</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Regular Expression</label>
+                                <input class="form-control" id="regexPattern" placeholder="/pattern/flags" value="/\b\w+\b/g">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Test String</label>
+                                <textarea class="form-control" id="regexTestString" rows="5">This is a test string with 123 numbers and symbols !@#</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="regexGlobal" checked>
+                                    <label class="form-check-label" for="regexGlobal">Global (g)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="regexCaseInsensitive">
+                                    <label class="form-check-label" for="regexCaseInsensitive">Case insensitive (i)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="regexMultiline">
+                                    <label class="form-check-label" for="regexMultiline">Multiline (m)</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="testRegex()">
+                                <i class="bi bi-play"></i> Test Regex
+                            </button>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Matches Found</h6>
+                            <div class="results-area" id="regexMatches" style="min-height: 200px;">
+                                <div class="text-center text-muted py-4">
+                                    No matches yet
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h6>Replacement</h6>
+                                <div class="input-group mb-2">
+                                    <input class="form-control" id="regexReplace" placeholder="Replace with...">
+                                    <button class="btn btn-outline-primary" onclick="regexReplace()">Replace</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- QUICK ACTIONS -->
+            <div class="mt-5">
+                <h6 class="fw-semibold mb-3"><i class="bi bi-lightning"></i> Quick Actions</h6>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button class="btn btn-success" onclick="copyCode()">
+                        <i class="bi bi-clipboard"></i> Copy Code
+                    </button>
+                    <button class="btn btn-primary" onclick="clearCode()">
+                        <i class="bi bi-trash"></i> Clear All
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="downloadJSON()">
+                        <i class="bi bi-filetype-json"></i> Save as JSON
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="downloadTXT()">
+                        <i class="bi bi-filetype-txt"></i> Save as TXT
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="printCode()">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                </div>
+                
+                <!-- OUTPUT MESSAGE -->
+                <div class="alert alert-info fade-in" id="outputMessage" style="display: none;">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <span id="outputMessageText"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BOTTOM AD -->
+        <div class="ad-space">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="fw-bold">Advertisement Space</div>
+                    <div class="small">Perfect for monetization • Multiple ad formats supported</div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <small class="text-muted">300x250</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="mt-5 pt-4 border-top">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="fw-bold">Developer Tools Pro+</h6>
+                    <p class="small text-muted">Professional code utilities for developers – format, minify, convert, validate, and debug.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="small text-muted mb-2">
+                        <i class="bi bi-shield-check"></i> All processing happens locally in your browser
+                    </div>
+                    <div class="small text-muted">© 2025 DevTools Pro+ | v3.0</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- MODALS -->
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-upload"></i> Import Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Import from File</label>
+                        <input type="file" id="fileInput" class="form-control" accept=".js,.html,.css,.json,.xml,.txt,.md,.sql">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Import from URL</label>
+                        <input type="url" id="urlInput" class="form-control" placeholder="https://example.com/code.js">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Direct Code Input</label>
+                        <textarea id="directInput" class="form-control" rows="4" placeholder="Paste code directly here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="processImport()">Import Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-gear"></i> Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Font Size</label>
+                        <input type="range" class="form-range" id="fontSizeSlider" min="12" max="24" value="14" oninput="updateFontSizePreview()">
+                        <div class="small text-muted mt-1" id="fontSizePreview">Preview: 14px</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tab Size</label>
+                        <select class="form-select" id="tabSize">
+                            <option value="2">2 spaces</option>
+                            <option value="4" selected>4 spaces</option>
+                            <option value="8">8 spaces</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="autoDetect" checked>
+                        <label class="form-check-label" for="autoDetect">Auto-detect language</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="lineNumbers" checked>
+                        <label class="form-check-label" for="lineNumbers">Show line numbers</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="wordWrap">
+                        <label class="form-check-label" for="wordWrap">Enable word wrap</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="autoSave" checked>
+                        <label class="form-check-label" for="autoSave">Auto-save to localStorage</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    
+    <script>
+        // COMPLETE WORKING JAVASCRIPT - ALL DEVELOPER TOOLS FUNCTIONAL
+        
+        // DOM Elements
+        const codeInput = document.getElementById('codeInput');
+        let history = [];
+        let historyIndex = -1;
+        let currentFontSize = 14;
+        let isDarkMode = false;
+        let lastHighlight = null;
+        
+        // Initialize Bootstrap modals
+        const importModal = new bootstrap.Modal(document.getElementById('importModal'));
+        const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+        
+        // Toast System
+        class Toast {
+            static show(message, type = 'info', duration = 3000) {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi ${this.getIcon(type)} me-2"></i>
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-sm" onclick="this.parentElement.parentElement.remove()"></button>
+                    </div>
+                `;
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.style.opacity = '0';
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+            
+            static getIcon(type) {
+                const icons = {
+                    'success': 'bi-check-circle',
+                    'error': 'bi-exclamation-circle',
+                    'warning': 'bi-exclamation-triangle',
+                    'info': 'bi-info-circle'
+                };
+                return icons[type] || 'bi-info-circle';
+            }
+        }
+        
+        // Initialize Everything
+        function init() {
+            loadSavedData();
+            saveHistory();
+            analyzeCode();
+            updateLiveStats();
+            setupEventListeners();
+            detectLanguage();
+            
+            setTimeout(() => {
+                Toast.show('Developer Tools Pro+ ready! All tools fully functional.', 'success', 4000);
+            }, 1000);
+            
+            // Auto-save every 30 seconds
+            setInterval(() => {
+                if (document.getElementById('autoSave')?.checked) {
+                    localStorage.setItem('devToolsCode', codeInput.value);
+                }
+            }, 30000);
+        }
+        
+        function loadSavedData() {
+            const savedCode = localStorage.getItem('devToolsCode');
+            if (savedCode) codeInput.value = savedCode;
+            
+            const settings = JSON.parse(localStorage.getItem('devToolsSettings') || '{}');
+            if (settings.darkMode) toggleDarkMode(true);
+            if (settings.fontSize) {
+                currentFontSize = settings.fontSize;
+                codeInput.style.fontSize = `${currentFontSize}px`;
+            }
+            if (settings.tabSize) {
+                codeInput.style.tabSize = settings.tabSize;
+            }
+        }
+        
+        function setupEventListeners() {
+            codeInput.addEventListener('input', () => {
+                saveHistory();
+                localStorage.setItem('devToolsCode', codeInput.value);
+                analyzeCode();
+                updateLiveStats();
+                detectLanguage();
+            });
+            
+            codeInput.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    analyzeCode();
+                    Toast.show('Code analyzed', 'success');
+                }
+                
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    localStorage.setItem('devToolsCode', codeInput.value);
+                    Toast.show('Code saved', 'success');
+                }
+                
+                // Handle tab key
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = codeInput.selectionStart;
+                    const end = codeInput.selectionEnd;
+                    
+                    codeInput.value = codeInput.value.substring(0, start) + '    ' + codeInput.value.substring(end);
+                    codeInput.selectionStart = codeInput.selectionEnd = start + 4;
+                }
+            });
+            
+            // Tab switching
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', () => {
+                    const activeTab = tab.getAttribute('data-bs-target');
+                    localStorage.setItem('activeDevTab', activeTab);
+                });
+            });
+            
+            // Restore active tab
+            const activeTab = localStorage.getItem('activeDevTab') || '#formatter';
+            const tabTrigger = document.querySelector(`[data-bs-target="${activeTab}"]`);
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+        }
+        
+        // HISTORY MANAGEMENT
+        function saveHistory() {
+            const currentText = codeInput.value;
+            if (history[historyIndex] === currentText) return;
+            
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            
+            history.push(currentText);
+            historyIndex = history.length - 1;
+            
+            if (history.length > 50) {
+                history.shift();
+                historyIndex--;
+            }
+        }
+        
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                codeInput.value = history[historyIndex];
+                analyzeCode();
+                updateLiveStats();
+                Toast.show('Undo performed', 'info');
+            }
+        }
+        
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                codeInput.value = history[historyIndex];
+                analyzeCode();
+                updateLiveStats();
+                Toast.show('Redo performed', 'info');
+            }
+        }
+        
+        // CODE ANALYSIS
+        function analyzeCode() {
+            const code = codeInput.value;
+            const lines = code.split('\n').length;
+            const chars = code.length;
+            
+            document.getElementById('lines').textContent = lines;
+            document.getElementById('characters').textContent = chars;
+            document.getElementById('size').textContent = formatBytes(chars);
+            
+            // Count tokens (rough estimate)
+            const tokens = code.split(/\s+/).filter(t => t.length > 0).length;
+            document.getElementById('tokens').textContent = tokens;
+            
+            // Calculate code quality score
+            calculateQualityScore(code);
+        }
+        
+        function calculateQualityScore(code) {
+            let score = 100;
+            const lines = code.split('\n');
+            
+            // Check for long lines
+            const longLines = lines.filter(l => l.length > 100).length;
+            score -= longLines * 2;
+            
+            // Check for trailing whitespace
+            const trailingSpace = lines.filter(l => l.match(/\s+$/)).length;
+            score -= trailingSpace;
+            
+            // Check for inconsistent indentation
+            const indentSizes = lines
+                .filter(l => l.match(/^\s+/))
+                .map(l => l.match(/^\s+/)[0].length);
+            if (indentSizes.length > 0) {
+                const avgIndent = indentSizes.reduce((a, b) => a + b, 0) / indentSizes.length;
+                const inconsistent = indentSizes.filter(s => Math.abs(s - avgIndent) > 2).length;
+                score -= inconsistent * 3;
+            }
+            
+            // Clamp score between 0 and 100
+            score = Math.max(0, Math.min(100, score));
+            
+            const progressBar = document.getElementById('qualityProgress');
+            const percentSpan = document.getElementById('qualityPercent');
+            const textSpan = document.getElementById('qualityText');
+            
+            progressBar.style.width = score + '%';
+            percentSpan.textContent = score + '%';
+            
+            if (score >= 90) {
+                progressBar.className = 'progress-bar bg-success';
+                textSpan.textContent = 'Excellent code quality';
+            } else if (score >= 70) {
+                progressBar.className = 'progress-bar bg-info';
+                textSpan.textContent = 'Good code quality';
+            } else if (score >= 50) {
+                progressBar.className = 'progress-bar bg-warning';
+                textSpan.textContent = 'Needs improvement';
+            } else {
+                progressBar.className = 'progress-bar bg-danger';
+                textSpan.textContent = 'Poor code quality';
+            }
+        }
+        
+        function updateLiveStats() {
+            const code = codeInput.value;
+            const lines = code.split('\n').length;
+            const chars = code.length;
+            
+            document.getElementById('liveLines').textContent = lines;
+            document.getElementById('liveChars').textContent = chars;
+        }
+        
+        function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+        
+        // LANGUAGE DETECTION
+        function detectLanguage() {
+            const code = codeInput.value;
+            const select = document.getElementById('languageSelect');
+            const detectedSpan = document.getElementById('detectedLang');
+            const validityBadge = document.getElementById('validityBadge');
+            const sizeBadge = document.getElementById('sizeBadge');
+            
+            // Update size
+            sizeBadge.textContent = `Size: ${formatBytes(code.length)}`;
+            
+            // Simple language detection
+            let language = 'auto';
+            if (code.trim().startsWith('{') && code.includes('":')) language = 'json';
+            else if (code.includes('<html') || code.includes('<!DOCTYPE')) language = 'html';
+            else if (code.includes('{') && code.includes('}') && code.includes(':')) language = 'css';
+            else if (code.includes('function') || code.includes('=>') || code.includes('var ')) language = 'javascript';
+            else if (code.includes('<?xml')) language = 'xml';
+            else if (code.includes('SELECT') && code.includes('FROM')) language = 'sql';
+            
+            detectedSpan.textContent = `Detected: ${language.toUpperCase()}`;
+            select.value = language;
+            
+            // Validate based on language
+            validateCurrentLanguage(language);
+        }
+        
+        function changeLanguage() {
+            const language = document.getElementById('languageSelect').value;
+            document.getElementById('detectedLang').textContent = `Detected: ${language.toUpperCase()}`;
+            validateCurrentLanguage(language);
+            Toast.show(`Language set to ${language}`, 'info');
+        }
+        
+        function validateCurrentLanguage(language) {
+            const validityBadge = document.getElementById('validityBadge');
+            const code = codeInput.value;
+            
+            try {
+                switch(language) {
+                    case 'json':
+                        JSON.parse(code);
+                        validityBadge.className = 'language-badge bg-success';
+                        validityBadge.innerHTML = '✓ Valid';
+                        break;
+                    case 'html':
+                        // Simple HTML validation
+                        const hasTags = /<[a-z][\s\S]*>/i.test(code);
+                        validityBadge.className = `language-badge ${hasTags ? 'bg-success' : 'bg-warning'}`;
+                        validityBadge.innerHTML = hasTags ? '✓ Valid' : '? Check';
+                        break;
+                    default:
+                        validityBadge.className = 'language-badge bg-info';
+                        validityBadge.innerHTML = '? Auto';
+                }
+            } catch (e) {
+                validityBadge.className = 'language-badge bg-danger';
+                validityBadge.innerHTML = '✗ Invalid';
+            }
+        }
+        
+        // FORMATTING TOOLS
+        function formatCode(type) {
+            let result = codeInput.value;
+            let message = '';
+            
+            try {
+                switch(type) {
+                    case 'json':
+                        const parsed = JSON.parse(result);
+                        result = JSON.stringify(parsed, null, getIndentSize());
+                        message = 'JSON formatted successfully';
+                        break;
+                        
+                    case 'html':
+                        // Simple HTML formatting
+                        result = result
+                            .replace(/>\s*</g, '>\n<')
+                            .replace(/(<[^\/].*?>)/g, (match) => {
+                                const indent = '  '.repeat((match.match(/<\//g) || []).length);
+                                return '\n' + indent + match;
+                            });
+                        message = 'HTML formatted';
+                        break;
+                        
+                    case 'css':
+                        result = result
+                            .replace(/\{\s*/g, ' {\n  ')
+                            .replace(/;\s*/g, ';\n  ')
+                            .replace(/\}\s*/g, '\n}\n');
+                        message = 'CSS formatted';
+                        break;
+                        
+                    case 'javascript':
+                        // Basic JS formatting
+                        result = result
+                            .replace(/\{\s*/g, ' {\n  ')
+                            .replace(/\;\s*/g, ';\n')
+                            .replace(/\}\s*/g, '}\n');
+                        message = 'JavaScript formatted';
+                        break;
+                        
+                    case 'xml':
+                        // Simple XML formatting
+                        result = result
+                            .replace(/>\s*</g, '>\n<')
+                            .replace(/<\?xml/g, '<?xml');
+                        message = 'XML formatted';
+                        break;
+                        
+                    case 'sql':
+                        result = result
+                            .replace(/SELECT/gi, '\nSELECT')
+                            .replace(/FROM/gi, '\nFROM')
+                            .replace(/WHERE/gi, '\nWHERE')
+                            .replace(/JOIN/gi, '\nJOIN')
+                            .replace(/AND/gi, '\n  AND')
+                            .replace(/OR/gi, '\n  OR');
+                        message = 'SQL formatted';
+                        break;
+                }
+                
+                saveHistory();
+                codeInput.value = result;
+                analyzeCode();
+                
+                document.getElementById('formattingResults').innerHTML = `
+                    <div class="text-success">
+                        <i class="bi bi-check-circle"></i> ${message}
+                    </div>
+                    <pre class="code-output mt-3"><code>${escapeHtml(result.substring(0, 1000))}${result.length > 1000 ? '...' : ''}</code></pre>
+                `;
+                
+                Toast.show(message, 'success');
+                
+            } catch (error) {
+                Toast.show(`Error: ${error.message}`, 'error');
+                document.getElementById('formattingResults').innerHTML = `
+                    <div class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function getIndentSize() {
+            const indent = document.getElementById('indentSize').value;
+            return indent === 'tab' ? '\t' : parseInt(indent);
+        }
+        
+        // MINIFIER TOOLS
+        function minifyCode(type) {
+            let result = codeInput.value;
+            let message = '';
+            let originalSize = result.length;
+            
+            try {
+                switch(type) {
+                    case 'json':
+                        const parsed = JSON.parse(result);
+                        result = JSON.stringify(parsed);
+                        message = 'JSON minified';
+                        break;
+                        
+                    case 'js':
+                    case 'js-advanced':
+                        result = result
+                            .replace(/\/\/.*/g, '')
+                            .replace(/\/\*[\s\S]*?\*\//g, '')
+                            .replace(/\s+/g, ' ')
+                            .replace(/\s*([{}();,=<>+*\/-])\s*/g, '$1')
+                            .trim();
+                        message = 'JavaScript minified';
+                        break;
+                        
+                    case 'js-mangle':
+                        // Simple variable renaming (demo)
+                        let varCounter = 0;
+                        result = result.replace(/\b(var|let|const)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 
+                            (match, decl, name) => {
+                                return decl + ' ' + String.fromCharCode(97 + (varCounter++ % 26));
+                            });
+                        message = 'Variables renamed (mangled)';
+                        break;
+                        
+                    case 'css':
+                        result = result
+                            .replace(/\/\*[\s\S]*?\*\//g, '')
+                            .replace(/\s+/g, ' ')
+                            .replace(/\s*([{}:;,])\s*/g, '$1')
+                            .replace(/;}/g, '}')
+                            .trim();
+                        message = 'CSS minified';
+                        break;
+                        
+                    case 'html':
+                        result = result
+                            .replace(/<!--[\s\S]*?-->/g, '')
+                            .replace(/>\s+</g, '><')
+                            .replace(/\s+/g, ' ')
+                            .trim();
+                        message = 'HTML minified';
+                        break;
+                        
+                    case 'html-aggressive':
+                        result = result
+                            .replace(/<!--[\s\S]*?-->/g, '')
+                            .replace(/\s+/g, ' ')
+                            .replace(/>\s+</g, '><')
+                            .replace(/\s*=\s*/g, '=')
+                            .trim();
+                        message = 'HTML aggressively minified';
+                        break;
+                }
+                
+                saveHistory();
+                codeInput.value = result;
+                analyzeCode();
+                
+                const newSize = result.length;
+                const reduction = ((originalSize - newSize) / originalSize * 100).toFixed(1);
+                
+                document.getElementById('minifyStats').textContent = `${reduction}% reduction`;
+                document.getElementById('minifyProgress').style.width = reduction + '%';
+                
+                document.getElementById('minifyResults').innerHTML = `
+                    <div class="text-success">
+                        <i class="bi bi-check-circle"></i> ${message}
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <small>Original: ${formatBytes(originalSize)}</small>
+                        </div>
+                        <div class="col-6">
+                            <small>Minified: ${formatBytes(newSize)}</small>
+                        </div>
+                    </div>
+                    <pre class="code-output mt-3"><code>${escapeHtml(result.substring(0, 500))}${result.length > 500 ? '...' : ''}</code></pre>
+                `;
+                
+                Toast.show(`${message} (${reduction}% reduction)`, 'success');
+                
+            } catch (error) {
+                Toast.show(`Error: ${error.message}`, 'error');
+                document.getElementById('minifyResults').innerHTML = `
+                    <div class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // CONVERTER TOOLS
+        function convertCode(type) {
+            const input = document.getElementById('converterInput').value || codeInput.value;
+            let result = input;
+            let message = '';
+            
+            try {
+                switch(type) {
+                    case 'json2xml':
+                        const obj = JSON.parse(input);
+                        result = jsonToXml(obj, 'root');
+                        message = 'JSON converted to XML';
+                        break;
+                        
+                    case 'xml2json':
+                        // Simple XML to JSON conversion (demo)
+                        const matches = input.match(/<(\w+)>(.*?)<\/\1>/gs);
+                        if (matches) {
+                            const obj = {};
+                            matches.forEach(match => {
+                                const tag = match.match(/<(\w+)>/)[1];
+                                const value = match.replace(/<[^>]*>/g, '');
+                                obj[tag] = value;
+                            });
+                            result = JSON.stringify(obj, null, 2);
+                        }
+                        message = 'XML converted to JSON';
+                        break;
+                        
+                    case 'md2html':
+                        result = input
+                            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+                            .replace(/\n/g, '<br>');
+                        message = 'Markdown converted to HTML';
+                        break;
+                        
+                    case 'html2md':
+                        result = input
+                            .replace(/<h1>(.*?)<\/h1>/gi, '# $1\n')
+                            .replace(/<h2>(.*?)<\/h2>/gi, '## $1\n')
+                            .replace(/<h3>(.*?)<\/h3>/gi, '### $1\n')
+                            .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+                            .replace(/<em>(.*?)<\/em>/gi, '*$1*')
+                            .replace(/<a href="(.*?)">(.*?)<\/a>/gi, '[$2]($1)')
+                            .replace(/<br>/gi, '\n')
+                            .replace(/<[^>]*>/g, '');
+                        message = 'HTML converted to Markdown';
+                        break;
+                        
+                    case 'csv2json':
+                        const lines = input.split('\n');
+                        const headers = lines[0].split(',');
+                        const jsonData = [];
+                        
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            const values = lines[i].split(',');
+                            const obj = {};
+                            headers.forEach((header, index) => {
+                                obj[header.trim()] = values[index]?.trim() || '';
+                            });
+                            jsonData.push(obj);
+                        }
+                        
+                        result = JSON.stringify(jsonData, null, 2);
+                        message = 'CSV converted to JSON';
+                        break;
+                        
+                    case 'json2csv':
+                        const data = JSON.parse(input);
+                        if (Array.isArray(data) && data.length > 0) {
+                            const headers = Object.keys(data[0]);
+                            const csvRows = [headers.join(',')];
+                            
+                            data.forEach(item => {
+                                const values = headers.map(header => {
+                                    const value = item[header] || '';
+                                    return value.includes(',') ? `"${value}"` : value;
+                                });
+                                csvRows.push(values.join(','));
+                            });
+                            
+                            result = csvRows.join('\n');
+                            message = 'JSON converted to CSV';
+                        }
+                        break;
+                }
+                
+                document.getElementById('converterOutput').innerHTML = `
+                    <div class="text-success">
+                        <i class="bi bi-check-circle"></i> ${message}
+                    </div>
+                    <pre class="code-output mt-3"><code>${escapeHtml(result.substring(0, 1000))}${result.length > 1000 ? '...' : ''}</code></pre>
+                `;
+                
+                Toast.show(message, 'success');
+                
+            } catch (error) {
+                Toast.show(`Error: ${error.message}`, 'error');
+                document.getElementById('converterOutput').innerHTML = `
+                    <div class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function jsonToXml(obj, rootName) {
+            let xml = `<${rootName}>`;
+            for (let key in obj) {
+                if (typeof obj[key] === 'object') {
+                    xml += jsonToXml(obj[key], key);
+                } else {
+                    xml += `<${key}>${obj[key]}</${key}>`;
+                }
+            }
+            xml += `</${rootName}>`;
+            return xml;
+        }
+        
+        // ENCODER/DECODER TOOLS
+        function encodeDecode(type) {
+            const input = codeInput.value;
+            let result = input;
+            let message = '';
+            
+            try {
+                switch(type) {
+                    case 'base64-encode':
+                        result = btoa(unescape(encodeURIComponent(input)));
+                        message = 'Base64 encoded';
+                        break;
+                        
+                    case 'base64-decode':
+                        result = decodeURIComponent(escape(atob(input)));
+                        message = 'Base64 decoded';
+                        break;
+                        
+                    case 'url-encode':
+                        result = encodeURIComponent(input);
+                        message = 'URL encoded';
+                        break;
+                        
+                    case 'url-decode':
+                        result = decodeURIComponent(input);
+                        message = 'URL decoded';
+                        break;
+                        
+                    case 'html-encode':
+                        result = input
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/"/g, '&quot;')
+                            .replace(/'/g, '&#39;');
+                        message = 'HTML encoded';
+                        break;
+                        
+                    case 'html-decode':
+                        result = input
+                            .replace(/&amp;/g, '&')
+                            .replace(/&lt;/g, '<')
+                            .replace(/&gt;/g, '>')
+                            .replace(/&quot;/g, '"')
+                            .replace(/&#39;/g, "'");
+                        message = 'HTML decoded';
+                        break;
+                        
+                    case 'text2binary':
+                        result = input.split('').map(c => 
+                            c.charCodeAt(0).toString(2).padStart(8, '0')
+                        ).join(' ');
+                        message = 'Text converted to binary';
+                        break;
+                        
+                    case 'binary2text':
+                        const binaryArray = input.split(' ').filter(b => b);
+                        result = binaryArray.map(b => 
+                            String.fromCharCode(parseInt(b, 2))
+                        ).join('');
+                        message = 'Binary converted to text';
+                        break;
+                        
+                    case 'text2hex':
+                        result = input.split('').map(c => 
+                            c.charCodeAt(0).toString(16).padStart(2, '0')
+                        ).join(' ');
+                        message = 'Text converted to hex';
+                        break;
+                        
+                    case 'hex2text':
+                        const hexArray = input.split(' ').filter(h => h);
+                        result = hexArray.map(h => 
+                            String.fromCharCode(parseInt(h, 16))
+                        ).join('');
+                        message = 'Hex converted to text';
+                        break;
+                }
+                
+                saveHistory();
+                codeInput.value = result;
+                analyzeCode();
+                
+                document.getElementById('encoderResults').innerHTML = `
+                    <div class="text-success">
+                        <i class="bi bi-check-circle"></i> ${message}
+                    </div>
+                    <pre class="code-output mt-3"><code>${escapeHtml(result.substring(0, 1000))}${result.length > 1000 ? '...' : ''}</code></pre>
+                `;
+                
+                Toast.show(message, 'success');
+                
+            } catch (error) {
+                Toast.show(`Error: ${error.message}`, 'error');
+                document.getElementById('encoderResults').innerHTML = `
+                    <div class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // VALIDATOR TOOLS
+        function validateCode(type) {
+            const input = codeInput.value;
+            let isValid = false;
+            let message = '';
+            let details = [];
+            
+            try {
+                switch(type) {
+                    case 'json':
+                        const parsed = JSON.parse(input);
+                        isValid = true;
+                        message = 'Valid JSON';
+                        details = [
+                            `Object type: ${Array.isArray(parsed) ? 'Array' : 'Object'}`,
+                            `Properties: ${Object.keys(parsed).length}`,
+                            `Depth: ${getJsonDepth(parsed)}`
+                        ];
+                        break;
+                        
+                    case 'html':
+                        const hasDoctype = input.includes('<!DOCTYPE');
+                        const hasHtml = input.includes('<html');
+                        const hasBody = input.includes('<body');
+                        isValid = hasHtml && hasBody;
+                        message = isValid ? 'Valid HTML structure' : 'Incomplete HTML';
+                        details = [
+                            `DOCTYPE: ${hasDoctype ? '✓' : '✗'}`,
+                            `HTML tag: ${hasHtml ? '✓' : '✗'}`,
+                            `Body tag: ${hasBody ? '✓' : '✗'}`
+                        ];
+                        break;
+                        
+                    case 'css':
+                        const hasSelectors = input.includes('{') && input.includes('}');
+                        const hasProperties = input.includes(':') && input.includes(';');
+                        isValid = hasSelectors && hasProperties;
+                        message = isValid ? 'Valid CSS' : 'Invalid CSS';
+                        break;
+                        
+                    case 'js':
+                        try {
+                            new Function(input);
+                            isValid = true;
+                            message = 'Valid JavaScript';
+                        } catch (e) {
+                            isValid = false;
+                            message = 'Invalid JavaScript';
+                            details = [e.message];
+                        }
+                        break;
+                }
+                
+                let html = `
+                    <div class="${isValid ? 'text-success' : 'text-danger'}">
+                        <i class="bi ${isValid ? 'bi-check-circle' : 'bi-exclamation-triangle'}"></i> 
+                        ${message}
+                    </div>
+                `;
+                
+                if (details.length > 0) {
+                    html += '<ul class="mt-3">';
+                    details.forEach(d => html += `<li>${d}</li>`);
+                    html += '</ul>';
+                }
+                
+                document.getElementById('validatorResults').innerHTML = html;
+                Toast.show(message, isValid ? 'success' : 'warning');
+                
+            } catch (error) {
+                document.getElementById('validatorResults').innerHTML = `
+                    <div class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+                Toast.show('Validation failed', 'error');
+            }
+        }
+        
+        function getJsonDepth(obj, depth = 0) {
+            if (typeof obj !== 'object' || obj === null) return depth;
+            return Math.max(...Object.values(obj).map(v => getJsonDepth(v, depth + 1)));
+        }
+        
+        // DIFF CHECKER
+        function compareDiff() {
+            const original = document.getElementById('diffOriginal').value;
+            const modified = document.getElementById('diffModified').value;
+            
+            const originalLines = original.split('\n');
+            const modifiedLines = modified.split('\n');
+            
+            let html = '<div class="diff-output">';
+            const maxLines = Math.max(originalLines.length, modifiedLines.length);
+            
+            for (let i = 0; i < maxLines; i++) {
+                const origLine = originalLines[i] || '';
+                const modLine = modifiedLines[i] || '';
+                
+                if (origLine === modLine) {
+                    html += `<div class="diff-same">  ${escapeHtml(origLine)}</div>`;
+                } else {
+                    if (origLine) {
+                        html += `<div class="diff-removed text-danger">- ${escapeHtml(origLine)}</div>`;
+                    }
+                    if (modLine) {
+                        html += `<div class="diff-added text-success">+ ${escapeHtml(modLine)}</div>`;
+                    }
+                }
+            }
+            html += '</div>';
+            
+            document.getElementById('diffResults').innerHTML = html;
+            Toast.show('Comparison complete', 'success');
+        }
+        
+        function swapDiff() {
+            const original = document.getElementById('diffOriginal').value;
+            const modified = document.getElementById('diffModified').value;
+            document.getElementById('diffOriginal').value = modified;
+            document.getElementById('diffModified').value = original;
+            Toast.show('Swapped', 'info');
+        }
+        
+        // REGEX TESTER
+        function testRegex() {
+            const pattern = document.getElementById('regexPattern').value;
+            const testString = document.getElementById('regexTestString').value;
+            const global = document.getElementById('regexGlobal').checked;
+            const caseInsensitive = document.getElementById('regexCaseInsensitive').checked;
+            const multiline = document.getElementById('regexMultiline').checked;
+            
+            try {
+                let flags = '';
+                if (global) flags += 'g';
+                if (caseInsensitive) flags += 'i';
+                if (multiline) flags += 'm';
+                
+                // Remove surrounding slashes if present
+                const cleanPattern = pattern.replace(/^\/(.*)\/[gim]*$/, '$1');
+                const regex = new RegExp(cleanPattern, flags);
+                
+                const matches = testString.match(regex) || [];
+                let html = '';
+                
+                if (matches.length > 0) {
+                    html = `<div class="text-success">Found ${matches.length} match(es):</div>`;
+                    html += '<ul class="mt-2">';
+                    matches.forEach((match, i) => {
+                        html += `<li><code>${escapeHtml(match)}</code> at position ${testString.indexOf(match)}</li>`;
+                    });
+                    html += '</ul>';
+                } else {
+                    html = '<div class="text-warning">No matches found</div>';
+                }
+                
+                document.getElementById('regexMatches').innerHTML = html;
+                Toast.show(`Found ${matches.length} matches`, matches.length > 0 ? 'success' : 'info');
+                
+            } catch (error) {
+                document.getElementById('regexMatches').innerHTML = `
+                    <div class="text-danger">
+                        Invalid regex: ${error.message}
+                    </div>
+                `;
+                Toast.show('Invalid regex pattern', 'error');
+            }
+        }
+        
+        function regexReplace() {
+            const pattern = document.getElementById('regexPattern').value;
+            const replacement = document.getElementById('regexReplace').value;
+            const testString = document.getElementById('regexTestString').value;
+            
+            try {
+                const cleanPattern = pattern.replace(/^\/(.*)\/[gim]*$/, '$1');
+                const regex = new RegExp(cleanPattern, 'g');
+                
+                const result = testString.replace(regex, replacement);
+                document.getElementById('regexTestString').value = result;
+                
+                Toast.show('Replacement applied', 'success');
+                testRegex();
+                
+            } catch (error) {
+                Toast.show('Replacement failed', 'error');
+            }
+        }
+        
+        // FIND/REPLACE
+        function findReplace() {
+            const findText = document.getElementById('findText').value;
+            const replaceText = document.getElementById('replaceText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const useRegex = document.getElementById('useRegex').checked;
+            
+            if (!findText) {
+                Toast.show('Please enter text to find', 'warning');
+                return;
+            }
+            
+            saveHistory();
+            
+            let pattern = findText;
+            if (!useRegex) {
+                pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+            
+            const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+            const matches = codeInput.value.match(regex) || [];
+            
+            if (matches.length === 0) {
+                Toast.show('No matches found', 'warning');
+                return;
+            }
+            
+            codeInput.value = codeInput.value.replace(regex, replaceText);
+            analyzeCode();
+            
+            document.getElementById('findResults').innerHTML = `
+                <span class="text-success">
+                    <i class="bi bi-check-circle"></i> Replaced ${matches.length} occurrence(s)
+                </span>`;
+            
+            Toast.show(`Replaced ${matches.length} occurrence(s)`, 'success');
+        }
+        
+        function findNext() {
+            const findText = document.getElementById('findText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const useRegex = document.getElementById('useRegex').checked;
+            
+            if (!findText) {
+                Toast.show('Please enter text to find', 'warning');
+                return;
+            }
+            
+            let pattern = findText;
+            if (!useRegex) {
+                pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+            
+            const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+            const startPos = codeInput.selectionStart + 1;
+            const text = codeInput.value;
+            
+            regex.lastIndex = startPos;
+            const match = regex.exec(text);
+            
+            if (match) {
+                const position = match.index;
+                codeInput.focus();
+                codeInput.setSelectionRange(position, position + findText.length);
+                document.getElementById('findResults').innerHTML = `
+                    <span class="text-info">
+                        <i class="bi bi-arrow-right"></i> Found at position ${position}
+                    </span>`;
+            } else {
+                Toast.show('No more matches found', 'info');
+            }
+        }
+        
+        function highlightAll() {
+            const findText = document.getElementById('findText').value;
+            const caseSensitive = document.getElementById('caseSensitive').checked;
+            const useRegex = document.getElementById('useRegex').checked;
+            
+            if (!findText) {
+                Toast.show('Please enter text to find', 'warning');
+                return;
+            }
+            
+            let pattern = findText;
+            if (!useRegex) {
+                pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+            
+            const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+            
+            if (lastHighlight) {
+                codeInput.value = lastHighlight.original;
+            }
+            
+            const original = codeInput.value;
+            const highlighted = original.replace(regex, '<mark>$&</mark>');
+            
+            lastHighlight = {
+                original: original,
+                highlighted: highlighted
+            };
+            
+            codeInput.value = highlighted;
+            Toast.show('Highlights applied', 'info');
+        }
+        
+        function clearHighlights() {
+            if (lastHighlight) {
+                codeInput.value = lastHighlight.original;
+                lastHighlight = null;
+                Toast.show('Highlights cleared', 'info');
+            }
+        }
+        
+        // UTILITY FUNCTIONS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function toggleDarkMode(force = null) {
+            isDarkMode = force !== null ? force : !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            const btn = document.getElementById('darkModeBtn');
+            if (btn) {
+                btn.innerHTML = isDarkMode ? 
+                    '<i class="bi bi-sun"></i> Light Mode' : 
+                    '<i class="bi bi-moon"></i> Dark Mode';
+                btn.classList.toggle('btn-outline-dark', !isDarkMode);
+                btn.classList.toggle('btn-outline-light', isDarkMode);
+            }
+            
+            const settings = JSON.parse(localStorage.getItem('devToolsSettings') || '{}');
+            settings.darkMode = isDarkMode;
+            localStorage.setItem('devToolsSettings', JSON.stringify(settings));
+            
+            Toast.show(`${isDarkMode ? 'Dark' : 'Light'} mode enabled`, 'info');
+        }
+        
+        function increaseFontSize() {
+            currentFontSize = Math.min(24, currentFontSize + 2);
+            codeInput.style.fontSize = `${currentFontSize}px`;
+            saveFontSize();
+        }
+        
+        function decreaseFontSize() {
+            currentFontSize = Math.max(12, currentFontSize - 2);
+            codeInput.style.fontSize = `${currentFontSize}px`;
+            saveFontSize();
+        }
+        
+        function saveFontSize() {
+            const settings = JSON.parse(localStorage.getItem('devToolsSettings') || '{}');
+            settings.fontSize = currentFontSize;
+            localStorage.setItem('devToolsSettings', JSON.stringify(settings));
+        }
+        
+        function updateFontSizePreview() {
+            const size = document.getElementById('fontSizeSlider').value;
+            document.getElementById('fontSizePreview').textContent = `Preview: ${size}px`;
+        }
+        
+        function clearEditor() {
+            if (codeInput.value.trim() && !confirm('Are you sure you want to clear all code?')) return;
+            
+            saveHistory();
+            codeInput.value = '';
+            analyzeCode();
+            Toast.show('Editor cleared', 'info');
+        }
+        
+        function showSettings() {
+            settingsModal.show();
+        }
+        
+        function saveSettings() {
+            const fontSize = document.getElementById('fontSizeSlider').value;
+            const tabSize = document.getElementById('tabSize').value;
+            const autoDetect = document.getElementById('autoDetect').checked;
+            const lineNumbers = document.getElementById('lineNumbers').checked;
+            const wordWrap = document.getElementById('wordWrap').checked;
+            const autoSave = document.getElementById('autoSave').checked;
+            
+            const settings = {
+                fontSize: parseInt(fontSize),
+                tabSize: parseInt(tabSize),
+                autoDetect,
+                lineNumbers,
+                wordWrap,
+                autoSave,
+                darkMode: isDarkMode
+            };
+            
+            localStorage.setItem('devToolsSettings', JSON.stringify(settings));
+            
+            // Apply settings
+            codeInput.style.fontSize = fontSize + 'px';
+            codeInput.style.tabSize = tabSize;
+            codeInput.style.whiteSpace = wordWrap ? 'pre-wrap' : 'pre';
+            
+            Toast.show('Settings saved', 'success');
+            settingsModal.hide();
+        }
+        
+        function showStatDetails(statId) {
+            const details = {
+                'lines': 'Total number of lines in the code',
+                'characters': 'Total characters including spaces',
+                'tokens': 'Rough estimate of code tokens (words)',
+                'size': 'File size in bytes/KB'
+            };
+            Toast.show(details[statId] || 'No details available', 'info');
+        }
+        
+        function showMessage(text, type) {
+            const msg = document.getElementById('outputMessage');
+            const msgText = document.getElementById('outputMessageText');
+            msgText.textContent = text;
+            msg.className = `alert alert-${type} fade-in`;
+            msg.style.display = 'block';
+            
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+        
+        // IMPORT/EXPORT
+        function openImportModal() {
+            importModal.show();
+        }
+        
+        function processImport() {
+            const directInput = document.getElementById('directInput').value;
+            if (directInput) {
+                saveHistory();
+                codeInput.value = directInput;
+                analyzeCode();
+                importModal.hide();
+                Toast.show('Code imported from input', 'success');
+                return;
+            }
+            
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    saveHistory();
+                    codeInput.value = e.target.result;
+                    analyzeCode();
+                    importModal.hide();
+                    Toast.show(`Imported ${file.name}`, 'success');
+                };
+                reader.readAsText(file);
+                return;
+            }
+            
+            Toast.show('Please enter code or select a file', 'warning');
+        }
+        
+        function downloadCode() {
+            downloadFile(codeInput.value, 'code.txt', 'text/plain');
+            Toast.show('Code downloaded', 'success');
+        }
+        
+        function downloadJSON() {
+            const data = {
+                code: codeInput.value,
+                timestamp: new Date().toISOString(),
+                stats: {
+                    lines: codeInput.value.split('\n').length,
+                    chars: codeInput.value.length
+                }
+            };
+            downloadFile(JSON.stringify(data, null, 2), 'code.json', 'application/json');
+            Toast.show('JSON file downloaded', 'success');
+        }
+        
+        function downloadTXT() {
+            downloadFile(codeInput.value, 'code.txt', 'text/plain');
+            Toast.show('Text file downloaded', 'success');
+        }
+        
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+        
+        function copyCode() {
+            navigator.clipboard.writeText(codeInput.value)
+                .then(() => Toast.show('Copied to clipboard', 'success'))
+                .catch(() => Toast.show('Failed to copy', 'error'));
+        }
+        
+        function clearCode() {
+            if (codeInput.value.trim() && !confirm('Are you sure you want to clear all code?')) return;
+            
+            saveHistory();
+            codeInput.value = '';
+            analyzeCode();
+            Toast.show('Code cleared', 'info');
+        }
+        
+        function printCode() {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Code Print - Developer Tools Pro+</title>
+                    <style>
+                        body { 
+                            font-family: 'Fira Code', monospace; 
+                            padding: 20px; 
+                            white-space: pre-wrap;
+                            background: white;
+                            color: black;
+                        }
+                        pre {
+                            border: 1px solid #ddd;
+                            padding: 15px;
+                            background: #f5f5f5;
+                            overflow-x: auto;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>Code Export</h2>
+                    <pre>${escapeHtml(codeInput.value)}</pre>
+                    <p>Generated on ${new Date().toLocaleString()}</p>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // CONVERTER UTILITIES
+        function useMainCode() {
+            document.getElementById('converterInput').value = codeInput.value;
+            Toast.show('Main code loaded into converter', 'info');
+        }
+        
+        function clearConverterInput() {
+            document.getElementById('converterInput').value = '';
+            document.getElementById('converterOutput').innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-arrow-left-right fs-1"></i>
+                    <p class="mt-2">Converted output will appear here</p>
+                </div>`;
+        }
+        
+        function copyConverterOutput() {
+            const output = document.getElementById('converterOutput').innerText;
+            navigator.clipboard.writeText(output)
+                .then(() => Toast.show('Converter output copied', 'success'))
+                .catch(() => Toast.show('Failed to copy', 'error'));
+        }
+        
+        function downloadConverterOutput() {
+            const output = document.getElementById('converterOutput').innerText;
+            downloadFile(output, 'converted-output.txt', 'text/plain');
+            Toast.show('Output downloaded', 'success');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

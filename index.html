@@ -2,287 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ZenToolo – All-in-One Online Tools Platform</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!-- SEO Meta Tags for Google -->
-    <meta name="description" content="Access 150+ professional tools for productivity, creativity, and development. Free online tools for text, images, PDF, calculators, AI and more.">
-    <meta name="keywords" content="online tools, text tools, image tools, PDF tools, calculators, developer tools, AI tools, free tools">
-    <meta name="author" content="ZenToolo">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <link rel="canonical" href="https://zentoolo.com">
-    
-    <!-- Open Graph Meta Tags for Social Media -->
-    <meta property="og:title" content="ZenToolo - All-in-One Online Tools Platform">
-    <meta property="og:description" content="Access 150+ professional tools for productivity, creativity, and development. Free online tools for everyone.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://zentoolo.com">
-    <meta property="og:image" content="https://zentoolo.com/og-image.jpg">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ZenToolo - All-in-One Online Tools Platform">
-    <meta name="twitter:description" content="Access 150+ professional tools for productivity, creativity, and development.">
-    <meta name="twitter:image" content="https://zentoolo.com/twitter-image.jpg">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    
-    <!-- Bootstrap & Icons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zebtoolo — Free Online Tools</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    
-    <!-- JSON-LD Structured Data for Google Rich Results -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "ZenToolo",
-        "url": "https://zentoolo.com",
-        "description": "All-in-One Online Tools Platform with 150+ professional tools",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://zentoolo.com/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "ZenToolo",
-        "url": "https://zentoolo.com",
-        "logo": "https://zentoolo.com/logo.png",
-        "sameAs": [
-            "https://twitter.com/zentoolo",
-            "https://facebook.com/zentoolo"
-        ]
-    }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
-            --primary-dark: #3730a3;
-            --secondary: #10b981;
-            --accent: #f59e0b;
-            --danger: #ef4444;
-            --dark-bg: #0a0a0f;
-            --darker-bg: #050508;
-            --card-bg: #14141f;
-            --card-hover: #1a1a2a;
-            --border-glow: rgba(79, 70, 229, 0.3);
-            --text-bright: #ffffff;
-            --text-primary: #f0f0ff;
-            --text-secondary: #a0a0c0;
-            --text-muted: #707090;
-            --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
-            --gradient-accent: linear-gradient(135deg, #f59e0b, #f97316);
-            --gradient-success: linear-gradient(135deg, #10b981, #34d399);
-            --glass-bg: rgba(20, 20, 31, 0.8);
-            --glass-border: rgba(79, 70, 229, 0.2);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #8b5cf6 100%);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 18px;
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--dark-bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
             overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* TYPOGRAPHY - BOLDER, BIGGER */
-        h1, h2, h3, h4, h5, .display-font {
-            font-family: 'Clash Display', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-        }
-
-        .hero-title {
-            font-size: 5.5rem;
-            font-weight: 800;
-            line-height: 1;
-            color: var(--text-bright);
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: -0.03em;
-        }
-
-        .hero-title span {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-title span::after {
-            content: '';
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: rgba(79, 70, 229, 0.3);
-            filter: blur(20px);
-            z-index: -1;
-        }
-
-        .section-title {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            color: var(--text-bright);
-            position: relative;
-            display: inline-block;
-            text-transform: uppercase;
-        }
-
-        .section-title span {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        .section-title span::before {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 15px;
-            background: rgba(79, 70, 229, 0.2);
-            filter: blur(10px);
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -20px;
-            width: 150px;
-            height: 8px;
-            background: var(--gradient-primary);
-            border-radius: 4px;
-            box-shadow: 0 0 30px var(--primary);
-        }
-
-        .lead-text {
-            font-size: 1.6rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            max-width: 900px;
-            font-weight: 400;
-        }
-
-        .big-number {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-        }
-
-        /* NAVBAR - GLASS EFFECT */
+        /* ===== NAVBAR ===== */
         .navbar {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1.5rem 0;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-
-        .navbar.scrolled {
-            padding: 1rem 0;
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 1px solid var(--primary);
-            box-shadow: 0 10px 40px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            transition: all 0.3s ease;
         }
 
         .navbar-brand {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 2.5rem;
             font-weight: 800;
-            color: var(--text-bright) !important;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
-        .navbar-brand span {
-            background: var(--gradient-primary);
+            font-size: 1.8rem;
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
+            letter-spacing: -1px;
         }
 
-        .navbar-brand span::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: rgba(79, 70, 229, 0.3);
-            filter: blur(8px);
+        .navbar-brand span {
+            color: var(--secondary);
+            -webkit-text-fill-color: var(--secondary);
         }
 
         .nav-link {
-            color: var(--text-secondary) !important;
-            font-weight: 700;
-            margin: 0 1rem;
-            transition: all 0.3s;
+            font-weight: 500;
+            color: var(--dark) !important;
+            margin: 0 10px;
             position: relative;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
         .nav-link::after {
@@ -291,15 +73,10 @@
             bottom: -5px;
             left: 0;
             width: 0;
-            height: 4px;
-            background: var(--gradient-primary);
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 10px;
             transition: width 0.3s ease;
-            border-radius: 2px;
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        .nav-link:hover {
-            color: var(--text-bright) !important;
         }
 
         .nav-link:hover::after {
@@ -307,49 +84,30 @@
         }
 
         .btn-primary-custom {
-            background: var(--gradient-primary);
+            background: var(--gradient);
             border: none;
-            border-radius: 16px;
-            padding: 1.2rem 3rem;
-            font-weight: 800;
-            font-size: 1.2rem;
             color: white;
-            transition: all 0.3s;
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary-custom::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary-custom:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 30px 50px rgba(79, 70, 229, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
             color: white;
         }
 
-        .btn-primary-custom:hover::before {
-            left: 100%;
-        }
-
-        /* HERO SECTION - DYNAMIC */
+        /* ===== HERO SECTION ===== */
         .hero {
-            padding: 220px 20px 150px;
-            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
-            background: var(--darker-bg);
+            background: linear-gradient(135deg, #f0f4ff 0%, #fef3ff 50%, #fff0f5 100%);
         }
 
         .hero::before {
@@ -357,28 +115,28 @@
             position: absolute;
             top: -50%;
             right: -20%;
-            width: 80%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, transparent 60%);
-            animation: pulseGlow 8s ease-in-out infinite;
-            z-index: 0;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
         }
 
         .hero::after {
             content: '';
             position: absolute;
-            bottom: -50%;
-            left: -20%;
-            width: 80%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 60%);
-            animation: pulseGlow 10s ease-in-out infinite reverse;
-            z-index: 0;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(236,72,153,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
         }
 
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
         }
 
         .hero-content {
@@ -386,185 +144,137 @@
             z-index: 2;
         }
 
-        .hero-subtitle {
-            font-size: 2rem;
-            color: var(--text-secondary);
-            max-width: 900px;
-            margin: 0 auto 3rem;
+        .hero h1 {
+            font-weight: 800;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
             font-weight: 500;
         }
 
-        .search-container {
-            max-width: 1000px;
-            margin: 4rem auto;
-            position: relative;
-            transform: scale(1);
-            transition: transform 0.3s ease;
-        }
-
-        .search-container:focus-within {
-            transform: scale(1.02);
-        }
-
-        .search-box {
-            background: var(--card-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: 30px;
-            color: var(--text-bright);
-            padding: 2rem 4rem 2rem 5rem;
-            font-size: 1.4rem;
-            transition: all 0.3s;
-            width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(79, 70, 229, 0.1);
-        }
-
-        .search-box:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.2), 0 20px 40px rgba(0, 0, 0, 0.5);
-            outline: none;
-            background: var(--card-hover);
-        }
-
-        .search-box::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
+        .badge-item i {
             color: var(--primary);
-            font-size: 2rem;
-            z-index: 2;
-            filter: drop-shadow(0 0 10px var(--primary));
+            font-size: 1.1rem;
         }
 
-        /* FEATURES BANNER */
-        .features-banner {
-            background: var(--card-bg);
-            color: var(--text-primary);
-            padding: 120px 30px;
-            border-radius: 40px;
-            margin-top: 100px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            transition: all 0.4s;
-            border: 1px solid var(--glass-border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .features-banner::before {
-            content: '';
+        /* Floating shapes */
+        .shape {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
+            border-radius: 20px;
+            opacity: 0.6;
+            animation: floatShape 6s ease-in-out infinite;
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            top: 20%;
+            right: 15%;
+            animation-delay: 0s;
         }
 
-        .features-banner:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 50px 80px rgba(79, 70, 229, 0.3);
-            border-color: var(--primary);
+        .shape-2 {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            top: 60%;
+            right: 25%;
+            animation-delay: 2s;
         }
 
-        .features-banner h2 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-            color: var(--text-bright);
+        .shape-3 {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            top: 40%;
+            right: 8%;
+            animation-delay: 4s;
         }
 
-        /* SWIPER SLIDERS */
-        .tools-slider-container {
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* ===== TOOLS SECTION ===== */
+        .tools-section {
+            padding: 100px 0;
             position: relative;
-            padding: 60px 0 100px;
         }
 
-        .swiper {
-            width: 100%;
-            height: 100%;
-            padding: 40px 10px 80px !important;
-        }
-
-        .swiper-slide {
+        .section-header {
             text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin-bottom: 60px;
         }
 
-        .swiper-slide a {
-            text-decoration: none;
-            width: 100%;
+        .section-header h2 {
+            font-weight: 800;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
         }
 
-        .swiper-button-next, .swiper-button-prev {
-            background: var(--card-bg);
-            width: 70px !important;
-            height: 70px !important;
-            border-radius: 50%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            color: var(--primary) !important;
-            transition: all 0.3s;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
+        .section-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .swiper-button-next:after, .swiper-button-prev:after {
-            font-size: 2rem !important;
-            font-weight: 900;
+        .section-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
         }
 
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-            background: var(--primary);
-            color: white !important;
-            transform: scale(1.2);
-            box-shadow: 0 0 30px var(--primary);
-            border-color: var(--primary);
-        }
-
-        .swiper-pagination-bullet {
-            width: 16px !important;
-            height: 16px !important;
-            background: var(--text-muted) !important;
-            opacity: 0.5 !important;
-            transition: all 0.3s;
-        }
-
-        .swiper-pagination-bullet-active {
-            background: var(--primary) !important;
-            opacity: 1 !important;
-            transform: scale(1.3);
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        /* TOOL CARDS - MODERN GLASS */
+        /* Tool Cards */
         .tool-card {
             background: var(--card-bg);
-            border-radius: 30px;
-            padding: 3rem 2rem;
-            height: 100%;
-            border: 1px solid var(--glass-border);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.04);
             position: relative;
             overflow: hidden;
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            z-index: 1;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
+            height: 100%;
+            cursor: pointer;
         }
 
         .tool-card::before {
@@ -573,878 +283,528 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.2), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: -1;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .tool-card:hover {
-            transform: translateY(-20px) scale(1.05);
-            border-color: var(--primary);
-            box-shadow: 0 40px 80px rgba(79, 70, 229, 0.4);
-            background: var(--card-hover);
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
         }
 
         .tool-card:hover::before {
-            opacity: 1;
+            transform: scaleX(1);
         }
 
-        .tool-icon {
-            font-size: 4.5rem;
-            margin-bottom: 2rem;
-            color: var(--primary);
-            transition: all 0.5s;
-            filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.5));
-        }
-
-        .tool-card:hover .tool-icon {
-            transform: scale(1.3) rotate(5deg);
-            color: var(--primary-light);
-            filter: drop-shadow(0 0 30px var(--primary));
-        }
-
-        .tool-card h4 {
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-bright);
-            font-size: 2rem;
-        }
-
-        .tool-card p {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .tool-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--gradient-primary);
-            color: white;
-            font-size: 1rem;
-            font-weight: 800;
-            padding: 0.6rem 1.5rem;
-            border-radius: 30px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
-            text-transform: uppercase;
-        }
-
-        /* CATEGORY TABS */
-        .category-tabs {
+        .tool-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            border-radius: 24px;
             display: flex;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin: 4rem 0 5rem;
-        }
-
-        .category-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.2rem 2.5rem;
-            color: var(--text-secondary);
-            font-weight: 800;
-            transition: all 0.3s;
-            cursor: pointer;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            text-transform: uppercase;
-            backdrop-filter: blur(10px);
-        }
-
-        .category-btn:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.4);
-        }
-
-        .category-btn.active {
-            background: var(--gradient-primary);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.5);
-            transform: scale(1.1);
-        }
-
-        /* HIGHLIGHT CARDS */
-        .highlight-card {
-            background: var(--card-bg);
-            border-radius: 30px;
-            padding: 4rem 2rem;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            transition: all 0.5s;
-            height: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
 
-        .highlight-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            animation: rotate 15s linear infinite;
-        }
-
-        .highlight-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-20px) scale(1.05);
-            box-shadow: 0 40px 80px rgba(79, 70, 229, 0.4);
-        }
-
-        .highlight-card:hover::before {
-            opacity: 1;
-        }
-
-        .highlight-icon {
-            font-size: 5rem;
-            margin-bottom: 2.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: all 0.5s;
-            filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.5));
-        }
-
-        .highlight-card:hover .highlight-icon {
-            transform: scale(1.3) rotate(10deg);
-            filter: drop-shadow(0 0 40px var(--primary));
-        }
-
-        .highlight-card h4 {
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            color: var(--text-bright);
-            font-size: 2.2rem;
-        }
-
-        .highlight-card p {
-            color: var(--text-secondary);
-            margin: 0;
-            font-size: 1.2rem;
-        }
-
-        /* FOOTER - DARK GLASS */
-        .footer {
-            background: var(--darker-bg);
-            color: white;
-            padding: 6rem 0 3rem;
-            margin-top: 8rem;
-            position: relative;
-            overflow: hidden;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 140%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
-            animation: rotate 30s linear infinite;
-        }
-
-        .footer-logo {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-            color: white;
-            text-transform: uppercase;
+        .tool-icon-wrapper img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
             position: relative;
             z-index: 2;
         }
 
-        .footer-logo span {
-            background: linear-gradient(135deg, #ffffff, #a5b4fc);
+        .tool-icon-wrapper.pdf-bg {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        }
+
+        .tool-icon-wrapper.resume-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+
+        .tool-icon-wrapper.img-bg {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+
+        .tool-card h3 {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .tool-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tool-btn.pdf {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .tool-btn.pdf:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .tool-btn.resume {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .tool-btn.resume:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .tool-btn.img {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .tool-btn.img:hover {
+            background: #059669;
+            color: white;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .feature-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            background: #f8fafc;
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.purple { background: #ede9fe; color: #7c3aed; }
+        .feature-icon.pink { background: #fce7f3; color: #db2777; }
+        .feature-icon.blue { background: #dbeafe; color: #2563eb; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .footer-links a {
-            color: var(--text-secondary);
-            margin: 0 1.5rem;
+            color: #94a3b8;
             text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 2;
+            transition: color 0.3s ease;
+            display: block;
+            margin-bottom: 10px;
         }
 
         .footer-links a:hover {
             color: white;
-            text-shadow: 0 0 20px var(--primary);
         }
 
-        .copyright {
-            color: var(--text-muted);
-            margin-top: 4rem;
-            font-size: 1.1rem;
-            position: relative;
-            z-index: 2;
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 1200px) {
-            html { font-size: 16px; }
-            .hero-title { font-size: 4.5rem; }
-            .section-title { font-size: 3.5rem; }
-            .big-number { font-size: 4rem; }
-        }
-
-        @media (max-width: 992px) {
-            html { font-size: 15px; }
-            .hero-title { font-size: 4rem; }
-            .section-title { font-size: 3rem; }
-            .hero { padding: 180px 20px 120px; }
-            .lead-text { font-size: 1.4rem; }
-        }
-
-        @media (max-width: 768px) {
-            html { font-size: 14px; }
-            .hero-title { font-size: 3.5rem; }
-            .section-title { font-size: 2.5rem; }
-            .lead-text { font-size: 1.3rem; }
-            .category-btn { padding: 1rem 2rem; font-size: 1rem; }
-            .search-box { padding: 1.5rem 2.5rem 1.5rem 4rem; font-size: 1.2rem; }
-            .big-number { font-size: 3.5rem; }
-        }
-
-        @media (max-width: 576px) {
-            html { font-size: 13px; }
-            .hero-title { font-size: 3rem; }
-            .hero { padding: 150px 15px 100px; }
-            .features-banner { padding: 80px 20px; }
-            .tool-card { padding: 2.5rem 1.5rem; }
-            .hero-subtitle { font-size: 1.5rem; }
-        }
-
-        /* ANIMATIONS */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .floating {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* GRID LAYOUT ENHANCEMENTS */
-        #toolList {
-            margin-top: 3rem;
-        }
-
-        #toolList .col-lg-3 {
-            transition: all 0.5s ease;
-        }
-
-        #toolList .col-lg-3:hover {
-            transform: translateY(-10px);
-        }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--darker-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
+        .social-icon:hover {
             background: var(--primary);
-            border-radius: 6px;
-            border: 3px solid var(--darker-bg);
+            transform: translateY(-3px);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-light);
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero-badges { flex-direction: column; }
+            .shape { display: none; }
+            .section-header h2 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><span>Zen</span>Toolo</a>
-            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="#">Zeb<span>toolo</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#all-tools">Tools</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tools">Tools</a></li>
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#sliders">Top Tools</a></li>
-                    <li class="nav-item ms-3">
-                        <a href="#all-tools" class="btn btn-primary-custom">Start Free</a>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="#tools" class="btn btn-primary-custom">Get Started</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container hero-content">
-            <h1 class="hero-title floating">Powerful Tools.<br><span>Simplified Experience.</span></h1>
-            <p class="lead-text hero-subtitle">Access 150+ professional tools for productivity, creativity, and development. All in one clean, intuitive platform.</p>
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="home">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
         
-            <p class="text-secondary">No login required • 100% secure • Works on all devices</p>
-        </div>
-    </section>
-
-    <!-- FEATURES BANNER -->
-    <section class="container" id="features">
-        <div class="features-banner">
-            <h2 class="mb-4">Everything You Need In One Place</h2>
-            <p class="lead-text">From AI-powered writing assistants to secure file converters, ZenToolo provides enterprise-level tools with a simple, beautiful interface. No downloads, no accounts, no limits.</p>
-        </div>
-    </section>
-
-    <!-- TOOLS SLIDERS -->
-    <section class="container tools-slider-container" id="sliders">
-        <div class="section-title mb-5 text-center">
-            <h2><span>Most Popular</span> Tools</h2>
-            <p class="lead-text mt-3">Quick access to our most-used utilities</p>
-        </div>
-
-        <!-- Swiper 1 -->
-        <div class="swiper popularSwiper mb-5">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a href="/tools/text-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-fonts"></i></div>
-                            <h4>Text Tools</h4>
-                            <p>Grammar, counter, formatter</p>
+        <div class="container">
+            <div class="row align-items-center min-vh-100 pt-5">
+                <div class="col-lg-7 hero-content">
+                    <div class="badge-item d-inline-flex mb-4" style="background: rgba(99,102,241,0.1); color: var(--primary);">
+                        <i class="bi bi-stars"></i>
+                        <span>100% Free Online Tools</span>
+                    </div>
+                    <h1>Powerful Tools for <span class="gradient-text">Everyone</span></h1>
+                    <p>Zebtoolo provides a suite of free, easy-to-use online tools. Convert PDFs, build professional resumes, and edit images — all in one place.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#tools" class="btn btn-primary-custom btn-lg">Explore Tools</a>
+                        <a href="#features" class="btn btn-outline-dark btn-lg rounded-pill px-4">Learn More</a>
+                    </div>
+                    <div class="hero-badges">
+                        <div class="badge-item">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Secure & Private</span>
                         </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/calculator.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-calculator"></i></div>
-                            <h4>Calculators</h4>
-                            <p>Finance, age, scientific</p>
+                        <div class="badge-item">
+                            <i class="bi bi-lightning-charge"></i>
+                            <span>Fast Processing</span>
                         </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/image-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-image"></i></div>
-                            <h4>Image Tools</h4>
-                            <p>Resize, compress, convert</p>
+                        <div class="badge-item">
+                            <i class="bi bi-phone"></i>
+                            <span>Mobile Friendly</span>
                         </div>
-                    </a>
+                    </div>
                 </div>
-                <div class="swiper-slide">
-                    <a href="/tools/pdf-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
-                            <h4>PDF Tools</h4>
-                            <p>Merge, split, compress</p>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="position-relative">
+                        <div class="text-center">
+                            <div style="font-size: 15rem; opacity: 0.1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                <i class="bi bi-tools"></i>
+                            </div>
+                            <div class="position-relative" style="z-index: 2;">
+                                <div class="d-flex justify-content-center gap-3 mb-3">
+                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #fee2e2, #fecaca); transform: rotate(-5deg);">
+                                        <i class="bi bi-file-earmark-pdf-fill text-danger" style="font-size: 3rem;"></i>
+                                    </div>
+                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); transform: rotate(5deg); margin-top: 30px;">
+                                        <i class="bi bi-file-person-fill text-primary" style="font-size: 3rem;"></i>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); transform: rotate(-3deg);">
+                                        <i class="bi bi-image-fill text-success" style="font-size: 3rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/developer-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
-                            <h4>Developer Tools</h4>
-                            <p>JSON, minifier, formatter</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/ai-utilities.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-cpu"></i></div>
-                            <h4>AI Tools</h4>
-                            <p>Writer, generator, assistant</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-
-        <!-- Swiper 2 -->
-        <div class="section-title mb-5 text-center mt-5">
-            <h2><span>New & Updated</span> Tools</h2>
-            <p class="lead-text mt-3">Fresh additions to our toolkit</p>
-        </div>
-
-        <div class="swiper newToolsSwiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a href="/tools/ai-utilities.html">
-                        <div class="tool-card">
-                            <span class="tool-badge">NEW</span>
-                            <div class="tool-icon"><i class="bi bi-robot"></i></div>
-                            <h4>AI Assistant</h4>
-                            <p>Chat, write, generate content</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/security-tools.html">
-                        <div class="tool-card">
-                            <span class="tool-badge">UPDATED</span>
-                            <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
-                            <h4>Security Tools</h4>
-                            <p>Password, hash, encryption</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/data-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
-                            <h4>Data Tools</h4>
-                            <p>Visualization, analysis, CSV</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/network-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-globe"></i></div>
-                            <h4>Network Tools</h4>
-                            <p>IP lookup, speed test, ping</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/online-editors.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
-                            <h4>Online Editors</h4>
-                            <p>Text, code, markdown editor</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/tools/seo-tools.html">
-                        <div class="tool-card">
-                            <div class="tool-icon"><i class="bi bi-hash"></i></div>
-                            <h4>SEO Tools</h4>
-                            <p>Keywords, analyzer, generator</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-
-    <!-- CATEGORY TABS -->
-    <div class="container" id="categories">
-        <div class="section-title mb-5 text-center">
-            <h2>Browse By <span>Category</span></h2>
-            <p class="lead-text mt-3">Find exactly what you need</p>
-        </div>
-        <div class="category-tabs">
-            <button class="category-btn active" data-category="all">All Tools</button>
-            <button class="category-btn" data-category="text">Text & Writing</button>
-            <button class="category-btn" data-category="calc">Calculators</button>
-            <button class="category-btn" data-category="image">Image Tools</button>
-            <button class="category-btn" data-category="pdf">PDF Tools</button>
-            <button class="category-btn" data-category="business">Business</button>
-            <button class="category-btn" data-category="dev">Developer</button>
-            <button class="category-btn" data-category="ai">AI & ML</button>
-        </div>
-    </div>
-
-    <!-- ALL TOOLS SECTION -->
-    <section class="container" id="all-tools">
-        <div class="row g-4" id="toolList">
-            <!-- CORE TOOLS -->
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
-                <a href="/tools/text-tools.html" class="tool-card">
-                    <span class="tool-badge">POPULAR</span>
-                    <div class="tool-icon"><i class="bi bi-fonts"></i></div>
-                    <h4>Text & Writing</h4>
-                    <p>Grammar checker, paraphrasing, word counter, text analyzer</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="calc">
-                <a href="/tools/calculator.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-calculator"></i></div>
-                    <h4>Calculators</h4>
-                    <p>Financial, scientific, age, EMI, GST, investment calculators</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="image">
-                <a href="/tools/image-tools.html" class="tool-card">
-                    <span class="tool-badge">NEW</span>
-                    <div class="tool-icon"><i class="bi bi-image"></i></div>
-                    <h4>Image Tools</h4>
-                    <p>Resize, compress, convert, optimize, edit, watermark</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="/tools/resume-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-file-earmark-person"></i></div>
-                    <h4>Resume & Career</h4>
-                    <p>Resume builder, cover letters, portfolio generator</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="pdf">
-                <a href="/tools/pdf-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-file-earmark-pdf"></i></div>
-                    <h4>PDF Tools</h4>
-                    <p>Merge, split, compress, convert, edit, protect, OCR</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="/tools/business-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-briefcase"></i></div>
-                    <h4>Business Tools</h4>
-                    <p>Invoice generator, quotation maker, contract templates</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="/tools/developer-tools.html" class="tool-card">
-                    <span class="tool-badge">DEV</span>
-                    <div class="tool-icon"><i class="bi bi-code-slash"></i></div>
-                    <h4>Developer Tools</h4>
-                    <p>JSON formatter, code minifier, base64, regex tester</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="/tools/file-utilities.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-folder"></i></div>
-                    <h4>File Utilities</h4>
-                    <p>File converter, renamer, compressor, ZIP tools</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
-                <a href="/tools/ai-utilities.html" class="tool-card">
-                    <span class="tool-badge">AI</span>
-                    <div class="tool-icon"><i class="bi bi-cpu"></i></div>
-                    <h4>AI Utilities</h4>
-                    <p>AI writer, content rewriter, idea generator, chatbot</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="text">
-                <a href="/tools/online-editors.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-pencil-square"></i></div>
-                    <h4>Online Editors</h4>
-                    <p>Rich text editor, code editor, markdown editor, LaTeX</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="/tools/student-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-mortarboard"></i></div>
-                    <h4>Student Tools</h4>
-                    <p>Citation generator, essay helper, plagiarism checker</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="/tools/converters.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-arrow-left-right"></i></div>
-                    <h4>Converters</h4>
-                    <p>Unit converter, currency converter, file format converter</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="/tools/network-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-globe"></i></div>
-                    <h4>Network Tools</h4>
-                    <p>IP lookup, DNS checker, speed test, ping, traceroute</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="business">
-                <a href="/tools/seo-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-hash"></i></div>
-                    <h4>SEO Tools</h4>
-                    <p>Meta tag generator, keyword analyzer, backlink checker</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="dev">
-                <a href="/tools/security-tools.html" class="tool-card">
-                    <div class="tool-icon"><i class="bi bi-shield-lock"></i></div>
-                    <h4>Security Tools</h4>
-                    <p>Password generator, hash generator, encryption, SSL</p>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 tool" data-category="ai">
-                <a href="/tools/data-tools.html" class="tool-card">
-                    <span class="tool-badge">NEW</span>
-                    <div class="tool-icon"><i class="bi bi-bar-chart"></i></div>
-                    <h4>Data & Analytics</h4>
-                    <p>Data visualization, chart generator, CSV tools, analytics</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- HIGHLIGHTS -->
-    <section class="container mt-5">
-        <div class="section-title mb-5 text-center">
-            <h2>Why Choose <span>ZenToolo</span>?</h2>
-            <p class="lead-text mt-3">Built for professionals who demand excellence</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="highlight-card">
-                    <div class="highlight-icon"><i class="bi bi-lightning-charge"></i></div>
-                    <h4>Lightning Fast</h4>
-                    <p>Optimized for speed with CDN acceleration and minimal latency</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="highlight-card">
-                    <div class="highlight-icon"><i class="bi bi-shield-check"></i></div>
-                    <h4>Secure & Private</h4>
-                    <p>End-to-end encryption with no data storage on our servers</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="highlight-card">
-                    <div class="highlight-icon"><i class="bi bi-phone"></i></div>
-                    <h4>Fully Responsive</h4>
-                    <p>Perfect experience on desktop, tablet, and mobile devices</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="highlight-card">
-                    <div class="highlight-icon"><i class="bi bi-gem"></i></div>
-                    <h4>Premium Quality</h4>
-                    <p>Enterprise-grade tools with premium features at no cost</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== TOOLS SECTION ===== -->
+    <section class="tools-section" id="tools">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="section-badge">Our Tools</span>
+                <h2>Everything You Need</h2>
+                <p>Three powerful tools designed to make your digital life easier. No signup required, completely free.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- PDF Tool -->
+                <div class="col-md-4 fade-in-up">
+                    <div class="tool-card">
+                        <div class="tool-icon-wrapper pdf-bg">
+                            <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="PDF Tool">
+                        </div>
+                        <h3>PDF Converter</h3>
+                        <p>Convert, merge, split, and compress PDF files instantly. Support for Word, Excel, JPG, and more formats.</p>
+                        <a href="#" class="tool-btn pdf">
+                            Use Tool <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resume Builder -->
+                <div class="col-md-4 fade-in-up">
+                    <div class="tool-card">
+                        <div class="tool-icon-wrapper resume-bg">
+                            <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="Resume Builder">
+                        </div>
+                        <h3>Resume Builder</h3>
+                        <p>Create professional, ATS-friendly resumes in minutes. Choose from 50+ modern templates and export to PDF.</p>
+                        <a href="#" class="tool-btn resume">
+                            Use Tool <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Image Editor -->
+                <div class="col-md-4 fade-in-up">
+                    <div class="tool-card">
+                        <div class="tool-icon-wrapper img-bg">
+                            <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="Image Editor">
+                        </div>
+                        <h3>Image Editor</h3>
+                        <p>Edit, resize, crop, and enhance your images online. Add filters, remove backgrounds, and optimize for web.</p>
+                        <a href="#" class="tool-btn img">
+                            Use Tool <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <span class="section-badge">Why Zebtoolo</span>
+                <h2>Built for Simplicity</h2>
+                <p>We believe great tools should be accessible to everyone. Here's what makes us different.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4 fade-in-up">
+                    <div class="feature-box">
+                        <div class="feature-icon purple">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">Lightning Fast</h5>
+                            <p class="text-muted mb-0">Process files in seconds with our optimized cloud infrastructure.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-up">
+                    <div class="feature-box">
+                        <div class="feature-icon pink">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">Privacy First</h5>
+                            <p class="text-muted mb-0">Your files are processed securely and deleted automatically after use.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in-up">
+                    <div class="feature-box">
+                        <div class="feature-icon blue">
+                            <i class="bi bi-phone-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">Works Everywhere</h5>
+                            <p class="text-muted mb-0">Fully responsive design that works on desktop, tablet, and mobile.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT / CTA SECTION ===== -->
+    <section class="py-5" id="about" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+        <div class="container py-5 text-center text-white">
+            <h2 class="fw-bold mb-3" style="font-size: 2.5rem;">Ready to Get Started?</h2>
+            <p class="mb-4 opacity-75" style="font-size: 1.1rem;">Join thousands of users who trust Zebtoolo for their daily tasks.</p>
+            <a href="#tools" class="btn btn-light btn-lg rounded-pill px-5 fw-bold" style="color: var(--primary);">
+                Explore All Tools <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-logo text-center"><span>Zen</span>Toolo</div>
-            <div class="footer-links mb-4 text-center">
-                <a href="/#all-tools">All Tools</a>
-                <a href="/#categories">Categories</a>
-                <a href="/#sliders">Top Tools</a>
-                <a href="/privacy-policy.html">Privacy Policy</a>
-                <a href="/terms-of-service.html">Terms of Service</a>
-                <a href="/contact.html">Contact</a>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand mb-3">Zeb<span style="color: var(--secondary); -webkit-text-fill-color: var(--secondary);">toolo</span></div>
+                    <p class="text-muted">Free online tools for everyone. Simple, fast, and secure.</p>
+                    <div class="mt-3">
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Tools</h6>
+                    <div class="footer-links">
+                        <a href="#">PDF Converter</a>
+                        <a href="#">Resume Builder</a>
+                        <a href="#">Image Editor</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Company</h6>
+                    <div class="footer-links">
+                        <a href="#">About Us</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Support</h6>
+                    <div class="footer-links">
+                        <a href="#">Help Center</a>
+                        <a href="#">Contact Us</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                </div>
             </div>
-            <p class="copyright text-center">
-                © 2025 ZenToolo Platform • Professional Online Tools Suite • All Rights Reserved
-            </p>
+            <div class="footer-bottom">
+                <p class="mb-0">© 2026 Zebtoolo. All rights reserved. Built with ❤️ for everyone.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
+
+    <!-- Custom JS -->
     <script>
-        // Initialize Swiper sliders
-        const popularSwiper = new Swiper('.popularSwiper', {
-            slidesPerView: 1,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 4 },
-            },
-        });
-
-        const newToolsSwiper = new Swiper('.newToolsSwiper', {
-            slidesPerView: 1,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 4 },
-            },
-        });
-
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('mainNavbar');
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.1)';
+                navbar.style.padding = '10px 0';
             } else {
-                navbar.classList.remove('scrolled');
+                navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.05)';
+                navbar.style.padding = '15px 0';
             }
         });
 
-        // Search Functionality - Fully Working
-        const search = document.getElementById("search");
-        const tools = document.querySelectorAll(".tool");
-        const categoryBtns = document.querySelectorAll(".category-btn");
-
-        search.addEventListener("input", function() {
-            const query = this.value.toLowerCase().trim();
-            
-            tools.forEach(tool => {
-                const toolText = tool.textContent.toLowerCase();
-                const toolTitle = tool.querySelector('h4').textContent.toLowerCase();
-                const toolDesc = tool.querySelector('p').textContent.toLowerCase();
-                
-                // Check if tool matches search query
-                const matchesSearch = query === '' || toolText.includes(query) || toolTitle.includes(query) || toolDesc.includes(query);
-                
-                if (matchesSearch) {
-                    tool.style.display = "block";
-                    setTimeout(() => {
-                        tool.style.opacity = "1";
-                        tool.style.transform = "translateY(0)";
-                    }, 10);
-                } else {
-                    tool.style.opacity = "0";
-                    tool.style.transform = "translateY(10px)";
-                    setTimeout(() => {
-                        tool.style.display = "none";
-                    }, 300);
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-            
-            // Reset active category when searching
-            if (query !== '') {
-                categoryBtns.forEach(btn => btn.classList.remove('active'));
-            } else {
-                // If search is empty, reactivate the current category filter
-                const activeCategory = document.querySelector('.category-btn.active')?.getAttribute('data-category') || 'all';
-                filterToolsByCategory(activeCategory);
-            }
         });
 
-        // Category Filter Function
-        function filterToolsByCategory(category) {
-            tools.forEach(tool => {
-                const toolCategory = tool.getAttribute("data-category");
-                
-                if (category === "all" || toolCategory === category) {
-                    tool.style.display = "block";
-                    setTimeout(() => {
-                        tool.style.opacity = "1";
-                        tool.style.transform = "translateY(0)";
-                    }, 10);
-                } else {
-                    tool.style.opacity = "0";
-                    tool.style.transform = "translateY(10px)";
-                    setTimeout(() => {
-                        tool.style.display = "none";
-                    }, 300);
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-        }
+        }, observerOptions);
 
-        // Enhanced Category Filter with click handlers
-        categoryBtns.forEach(btn => {
-            btn.addEventListener("click", function() {
-                // Update active button
-                categoryBtns.forEach(b => b.classList.remove("active"));
-                this.classList.add("active");
-                
-                const category = this.getAttribute("data-category");
-                
-                // Clear search input when category is clicked
-                search.value = '';
-                
-                // Filter tools by category
-                filterToolsByCategory(category);
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add stagger delay to tool cards
+        document.querySelectorAll('.tool-card').forEach((card, index) => {
+            card.parentElement.style.transitionDelay = `${index * 0.15}s`;
+        });
+
+        // Tool card click effect
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.tool-btn')) {
+                    const btn = this.querySelector('.tool-btn');
+                    btn.click();
+                }
             });
         });
 
-        // Add animation to tool cards on load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial styles for tool cards
-            const toolCards = document.querySelectorAll('.tool-card');
-            toolCards.forEach(card => {
-                card.style.opacity = "0";
-                card.style.transform = "translateY(20px)";
-                card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-            });
-            
-            // Animate tool cards sequentially
-            toolCards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = "1";
-                    card.style.transform = "translateY(0)";
-                }, 100 + (index * 50));
-            });
-            
-            // Make sure all tools are visible initially
-            tools.forEach(tool => {
-                tool.style.display = "block";
-            });
-        });
+        // Console welcome message
+        console.log('%c🚀 Welcome to Zebtoolo!', 'font-size: 24px; font-weight: bold; color: #6366f1;');
+        console.log('%cBuilt with HTML, CSS, JS & Bootstrap 5', 'font-size: 14px; color: #64748b;');
     </script>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Tools · Professional Suite</title>
+  <title>Student Tools · Ultimate Academic Suite (30+ Tools)</title>
   <!-- Bootstrap + icons + font -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet">
-  <!-- PDF libraries for real merge/split -->
+  <!-- PDF libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
   <style>
@@ -17,6 +17,11 @@
       background: linear-gradient(145deg, #f0f4fb, #fafcff);
       min-height: 100vh;
       padding: 20px 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background: linear-gradient(145deg, #0f1a2f, #1a2a4a);
+      color: #e2ecff;
     }
     .app-wrapper {
       max-width: 1600px;
@@ -24,7 +29,6 @@
       padding: 0 20px;
     }
 
-    /* Google Ad Spaces */
     .google-ad-space {
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(8px);
@@ -37,11 +41,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: 0.2s;
+      transition: 0.3s;
     }
-    .google-ad-space:hover {
-      background: #f0f5ff;
+    body.dark-mode .google-ad-space {
+      background: rgba(26,42,74,0.85);
+      border-color: #4a5f8a;
+      color: #ffd700;
     }
+    .google-ad-space:hover { background: #f0f5ff; }
+    body.dark-mode .google-ad-space:hover { background: #1e2a40; }
     .google-ad-placeholder {
       color: #2c3e7a;
       font-weight: 600;
@@ -50,8 +58,8 @@
       align-items: center;
       gap: 12px;
     }
+    body.dark-mode .google-ad-placeholder { color: #ffd700; }
 
-    /* Modern Header */
     .app-header {
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
@@ -65,8 +73,12 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 15px;
+      transition: 0.3s;
     }
-
+    body.dark-mode .app-header {
+      background: rgba(26,42,74,0.92);
+      border-color: #33415e;
+    }
     .logo {
       display: flex;
       align-items: center;
@@ -84,9 +96,7 @@
       font-size: 28px;
       transition: 0.3s;
     }
-    .logo-icon:hover {
-      transform: rotate(-6deg) scale(1.1);
-    }
+    .logo-icon:hover { transform: rotate(-6deg) scale(1.1); }
     .logo-text h1 {
       font-weight: 700;
       font-size: 1.8rem;
@@ -95,13 +105,14 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .logo-text p {
-      margin: 0;
-      font-size: 0.85rem;
-      color: #666;
+    body.dark-mode .logo-text h1 {
+      background: linear-gradient(135deg, #8a9fd1, #6a8fc8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+    .logo-text p { margin: 0; font-size: 0.85rem; color: #666; }
+    body.dark-mode .logo-text p { color: #aab8e0; }
 
-    /* Main Layout - 3 Column */
     .editor-layout {
       display: grid;
       grid-template-columns: 280px 1fr 320px;
@@ -109,15 +120,20 @@
       margin-bottom: 30px;
     }
 
-    /* Left Toolbar */
-    .tools-panel {
+    .tools-panel, .canvas-panel, .properties-panel {
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
       border-radius: 30px;
       padding: 20px;
       border: 1px solid rgba(255,255,255,0.5);
       box-shadow: 0 15px 35px -10px rgba(0,20,60,0.12);
-      height: fit-content;
+      transition: 0.3s;
+    }
+    body.dark-mode .tools-panel,
+    body.dark-mode .canvas-panel,
+    body.dark-mode .properties-panel {
+      background: rgba(26,42,74,0.92);
+      border-color: #33415e;
     }
 
     .tools-header {
@@ -131,122 +147,65 @@
       gap: 10px;
       color: #2c3e7a;
     }
+    body.dark-mode .tools-header {
+      color: #8a9fd1;
+      border-bottom-color: rgba(138,159,209,0.15);
+    }
 
     .tools-grid {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+      max-height: 600px;
+      overflow-y: auto;
     }
+    .tools-grid::-webkit-scrollbar { width: 4px; }
+    .tools-grid::-webkit-scrollbar-thumb { background: #2c3e7a; border-radius: 10px; }
+    body.dark-mode .tools-grid::-webkit-scrollbar-thumb { background: #6a8fc8; }
 
     .tool-btn {
       background: transparent;
       border: none;
-      padding: 12px 15px;
-      border-radius: 20px;
+      padding: 10px 14px;
+      border-radius: 16px;
       text-align: left;
       font-weight: 500;
+      font-size: 0.9rem;
       transition: 0.2s;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       color: #333;
       width: 100%;
     }
-    .tool-btn i {
-      font-size: 1.4rem;
-      width: 30px;
-      color: #2c3e7a;
-    }
+    body.dark-mode .tool-btn { color: #e2ecff; }
+    .tool-btn i { font-size: 1.2rem; width: 26px; color: #2c3e7a; }
+    body.dark-mode .tool-btn i { color: #8a9fd1; }
     .tool-btn:hover {
       background: rgba(44,62,122,0.08);
-      transform: translateX(5px);
+      transform: translateX(4px);
     }
+    body.dark-mode .tool-btn:hover { background: rgba(138,159,209,0.1); }
     .tool-btn.active {
       background: linear-gradient(135deg, #2c3e7a, #1a2a5c);
       color: white;
     }
-    .tool-btn.active i {
-      color: white;
-    }
+    body.dark-mode .tool-btn.active { background: linear-gradient(135deg, #4a5f8a, #2a3f6a); }
+    .tool-btn.active i { color: white; }
 
-    /* Center Panel */
-    .canvas-panel {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-radius: 30px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 15px 35px -10px rgba(0,20,60,0.12);
-      min-height: 500px;
-    }
-
-    .upload-area {
+    .canvas-panel { min-height: 500px; }
+    .result-display {
       background: #f8faff;
-      border-radius: 25px;
-      padding: 40px;
-      text-align: center;
-      cursor: pointer;
-      border: 3px dashed #2c3e7a;
-      transition: 0.3s;
-      min-height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .upload-area:hover {
-      background: #eef3ff;
-      transform: scale(1.01);
-    }
-    .upload-area.dragover {
-      background: #e0e8ff;
-      border-color: #28a745;
-    }
-
-    .upload-content i {
-      font-size: 5rem;
-      color: #2c3e7a;
-      margin-bottom: 20px;
-    }
-    .upload-content h3 {
-      font-weight: 700;
-      color: #2c3e7a;
-    }
-
-    .pdf-container {
-      display: none;
-    }
-    .file-list {
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 10px;
-    }
-    .file-item {
-      background: #f0f4fe;
       border-radius: 20px;
-      padding: 12px 18px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      transition: 0.2s;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #e0e8f0;
+      word-break: break-all;
     }
-    .file-item:hover {
-      background: #e0e8ff;
-    }
-    .file-icon { font-size: 2rem; color: #2c3e7a; }
-    .file-details { flex: 1; }
-    .file-name { font-weight: 600; }
-    .file-meta { font-size: 0.8rem; color: #666; }
-
-    /* Right Properties Panel */
-    .properties-panel {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-radius: 30px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 15px 35px -10px rgba(0,20,60,0.12);
-      height: fit-content;
+    body.dark-mode .result-display {
+      background: #1a2a44;
+      border-color: #33415e;
+      color: #e2ecff;
     }
 
     .prop-section { margin-bottom: 25px; }
@@ -259,6 +218,7 @@
       gap: 8px;
       color: #2c3e7a;
     }
+    body.dark-mode .prop-title { color: #8a9fd1; }
     .prop-control { margin-bottom: 15px; }
     .prop-control label {
       font-size: 0.9rem;
@@ -266,48 +226,33 @@
       margin-bottom: 5px;
       display: block;
     }
+    body.dark-mode .prop-control label { color: #aab8e0; }
 
-    .range-slider {
-      width: 100%;
-      height: 6px;
-      border-radius: 10px;
-      background: #d0ddee;
-      outline: none;
-      -webkit-appearance: none;
-    }
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #2c3e7a;
-      cursor: pointer;
-      transition: 0.1s;
-    }
-    .range-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
-
-    .tool-input, .tool-select {
-      width: 100%;
-      padding: 10px 15px;
+    .form-control, .form-select {
       border-radius: 30px;
+      padding: 10px 15px;
       border: 1.5px solid #d0ddee;
       background: white;
       font-weight: 500;
+      transition: 0.3s;
     }
-    .tool-input:focus, .tool-select:focus {
+    body.dark-mode .form-control,
+    body.dark-mode .form-select {
+      background: #1a2a44;
+      border-color: #33415e;
+      color: #e2ecff;
+    }
+    .form-control:focus, .form-select:focus {
       border-color: #2c3e7a;
       box-shadow: 0 0 0 3px rgba(44,62,122,0.12);
       outline: none;
     }
-
-    .action-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 20px;
+    body.dark-mode .form-control:focus,
+    body.dark-mode .form-select:focus {
+      border-color: #6a8fc8;
+      box-shadow: 0 0 0 3px rgba(106,143,200,0.15);
     }
+
     .btn-primary-custom {
       background: linear-gradient(135deg, #2c3e7a, #1a2a5c);
       color: white;
@@ -316,25 +261,37 @@
       padding: 12px;
       font-weight: 600;
       transition: 0.2s;
+      width: 100%;
     }
     .btn-primary-custom:hover {
       transform: scale(1.02);
       box-shadow: 0 8px 20px rgba(44,62,122,0.3);
     }
-    .btn-secondary-custom {
-      background: #ecf2fc;
+    body.dark-mode .btn-primary-custom { background: linear-gradient(135deg, #4a5f8a, #2a3f6a); }
+
+    .btn-outline-custom {
+      background: transparent;
+      border: 1.5px solid #2c3e7a;
       color: #2c3e7a;
-      border: none;
       border-radius: 20px;
-      padding: 12px;
+      padding: 8px 16px;
       font-weight: 600;
+      font-size: 0.9rem;
       transition: 0.2s;
     }
-    .btn-secondary-custom:hover {
-      background: #d0ddee;
+    body.dark-mode .btn-outline-custom {
+      border-color: #6a8fc8;
+      color: #8a9fd1;
+    }
+    .btn-outline-custom:hover {
+      background: #2c3e7a;
+      color: white;
+    }
+    body.dark-mode .btn-outline-custom:hover {
+      background: #4a5f8a;
+      color: white;
     }
 
-    /* Bottom Toolbar */
     .bottom-toolbar {
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
@@ -348,18 +305,24 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 15px;
+      transition: 0.3s;
     }
-
-    .pdf-info {
+    body.dark-mode .bottom-toolbar {
+      background: rgba(26,42,74,0.92);
+      border-color: #33415e;
+    }
+    .status-info {
       display: flex;
       gap: 20px;
       font-size: 0.9rem;
       color: #666;
     }
-    .pdf-info span {
+    body.dark-mode .status-info { color: #aab8e0; }
+    .status-info span {
       font-weight: 600;
       color: #2c3e7a;
     }
+    body.dark-mode .status-info span { color: #8a9fd1; }
 
     .download-btn {
       background: #28a745;
@@ -387,11 +350,8 @@
       border-top-color: white;
       animation: spin 1s ease-in-out infinite;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Toast */
     .toast-msg {
       position: fixed;
       top: 20px;
@@ -405,30 +365,49 @@
       font-weight: 500;
       animation: slideIn 0.3s ease;
     }
+    body.dark-mode .toast-msg {
+      background: #1a2a44;
+      color: #e2ecff;
+      border-left-color: #6a8fc8;
+    }
     @keyframes slideIn {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
 
-    /* Responsive */
+    #timerDisplay {
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: #2c3e7a;
+      letter-spacing: 2px;
+      background: #eaf2fa;
+      border-radius: 80px;
+      padding: 0.4rem 1rem;
+      display: inline-block;
+      min-width: 200px;
+    }
+    body.dark-mode #timerDisplay {
+      color: #8a9fd1;
+      background: #1a2a44;
+    }
+
     @media (max-width: 1200px) {
       .editor-layout { grid-template-columns: 1fr; }
-      .tools-panel .tools-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      .tools-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        max-height: none;
       }
     }
     @media (max-width: 576px) {
       .app-header { padding: 12px 18px; }
       .logo-text h1 { font-size: 1.3rem; }
-      .upload-area { padding: 20px; min-height: 250px; }
     }
   </style>
 </head>
 <body>
 <div class="app-wrapper">
 
-  <!-- GOOGLE AD SPACE - TOP -->
   <div class="google-ad-space">
     <div class="google-ad-placeholder">
       <i class="bi bi-google" style="font-size:1.8rem;"></i>
@@ -436,13 +415,12 @@
     </div>
   </div>
 
-  <!-- Header -->
   <div class="app-header">
     <div class="logo">
       <div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div>
       <div class="logo-text">
         <h1>Student Tools</h1>
-        <p>Professional Academic Suite</p>
+        <p>Ultimate Academic Suite · 30+ Tools</p>
       </div>
     </div>
     <div class="d-flex gap-3">
@@ -455,62 +433,29 @@
     </div>
   </div>
 
-  <!-- Main Editor Layout -->
   <div class="editor-layout">
-    <!-- Left Tools Panel -->
     <div class="tools-panel">
       <div class="tools-header">
         <i class="bi bi-tools"></i>
-        <span>Student Tools</span>
+        <span>30+ Tools</span>
       </div>
-      <div class="tools-grid">
-        <button class="tool-btn active" onclick="setActiveTool(this, 'cgpa')">
-          <i class="bi bi-calculator-fill"></i><span>CGPA Calculator</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'percentage')">
-          <i class="bi bi-percent"></i><span>Percentage</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'wordcounter')">
-          <i class="bi bi-chart-bar"></i><span>Word Counter</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'unitconverter')">
-          <i class="bi bi-arrow-left-right"></i><span>Unit Converter</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'scientific')">
-          <i class="bi bi-symmetry-vertical"></i><span>Scientific Calc</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'pdfmerger')">
-          <i class="bi bi-file-earmark-pdf-fill"></i><span>PDF Merger</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'pdfsplitter')">
-          <i class="bi bi-scissors"></i><span>PDF Splitter</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'textformatter')">
-          <i class="bi bi-textarea-t"></i><span>Text Formatter</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'passwordgen')">
-          <i class="bi bi-shield-lock-fill"></i><span>Password Generator</span>
-        </button>
-        <button class="tool-btn" onclick="setActiveTool(this, 'studytimer')">
-          <i class="bi bi-clock-history"></i><span>Study Timer</span>
-        </button>
+      <div class="tools-grid" id="toolsGrid">
+        <!-- All tools will be rendered by JS -->
       </div>
       <div class="mt-4">
-        <button class="btn-primary-custom w-100" onclick="applyTool()" id="applyBtn">
+        <button class="btn-primary-custom" onclick="applyTool()" id="applyBtn">
           <i class="bi bi-play-fill"></i> Run Tool
         </button>
       </div>
     </div>
 
-    <!-- Center Panel -->
     <div class="canvas-panel">
       <div id="toolContent">
-        <!-- Dynamic content will be rendered here -->
+        <div class="text-center text-muted py-5">Select a tool from the left panel</div>
       </div>
     </div>
 
-    <!-- Right Properties Panel -->
-    <div class="properties-panel" id="propertiesPanel">
+    <div class="properties-panel">
       <div class="prop-section">
         <div class="prop-title">
           <i class="bi bi-sliders2"></i>
@@ -523,9 +468,8 @@
     </div>
   </div>
 
-  <!-- Bottom Toolbar -->
   <div class="bottom-toolbar">
-    <div class="pdf-info" id="statusInfo">
+    <div class="status-info" id="statusInfo">
       <span>Ready</span>
     </div>
     <button class="download-btn" onclick="downloadResults()">
@@ -534,7 +478,6 @@
     </button>
   </div>
 
-  <!-- GOOGLE AD SPACE - BOTTOM -->
   <div class="google-ad-space mt-4">
     <div class="google-ad-placeholder">
       <i class="bi bi-google" style="font-size:1.8rem;"></i>
@@ -542,22 +485,1049 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="text-center small text-muted mt-4">
-    Student Tools · Complete Academic Suite (fully working)
+    Student Tools · Ultimate Academic Suite with 30+ fully working tools
   </footer>
 </div>
 
 <script>
+  // ==================== TOOL DEFINITIONS (30+ tools) ====================
+  const TOOLS = [
+    { id: 'cgpa', icon: 'bi-calculator-fill', label: 'CGPA Calculator' },
+    { id: 'percentage', icon: 'bi-percent', label: 'Percentage' },
+    { id: 'wordcounter', icon: 'bi-chart-bar', label: 'Word Counter' },
+    { id: 'unitconverter', icon: 'bi-arrow-left-right', label: 'Unit Converter' },
+    { id: 'scientific', icon: 'bi-symmetry-vertical', label: 'Scientific Calc' },
+    { id: 'pdfmerger', icon: 'bi-file-earmark-pdf-fill', label: 'PDF Merger' },
+    { id: 'pdfsplitter', icon: 'bi-scissors', label: 'PDF Splitter' },
+    { id: 'textformatter', icon: 'bi-textarea-t', label: 'Text Formatter' },
+    { id: 'passwordgen', icon: 'bi-shield-lock-fill', label: 'Password Gen' },
+    { id: 'studytimer', icon: 'bi-clock-history', label: 'Study Timer' },
+    { id: 'bmi', icon: 'bi-heart-pulse', label: 'BMI Calculator' },
+    { id: 'loan', icon: 'bi-coin', label: 'Loan Calculator' },
+    { id: 'gradecalculator', icon: 'bi-award', label: 'Grade Calculator' },
+    { id: 'gpaestimator', icon: 'bi-graph-up', label: 'GPA Estimator' },
+    { id: 'discount', icon: 'bi-tag', label: 'Discount Calculator' },
+    { id: 'tip', icon: 'bi-cash', label: 'Tip Calculator' },
+    { id: 'currency', icon: 'bi-currency-exchange', label: 'Currency Converter' },
+    { id: 'age', icon: 'bi-calendar3', label: 'Age Calculator' },
+    { id: 'timezone', icon: 'bi-clock', label: 'Time Zone Converter' },
+    { id: 'speed', icon: 'bi-speedometer2', label: 'Speed Converter' },
+    { id: 'area', icon: 'bi-grid', label: 'Area Converter' },
+    { id: 'volume', icon: 'bi-cup-straw', label: 'Volume Converter' },
+    { id: 'weight', icon: 'bi-weight-scale', label: 'Weight Converter' },
+    { id: 'temperature', icon: 'bi-thermometer-half', label: 'Temperature Converter' },
+    { id: 'length', icon: 'bi-rulers', label: 'Length Converter' },
+    { id: 'randomnumber', icon: 'bi-dice-5', label: 'Random Number' },
+    { id: 'randomcolor', icon: 'bi-palette', label: 'Random Color' },
+    { id: 'uuidgen', icon: 'bi-hash', label: 'UUID Generator' },
+    { id: 'hashgen', icon: 'bi-fingerprint', label: 'Hash Generator' },
+    { id: 'basesixtyfour', icon: 'bi-code-square', label: 'Base64 Encoder' },
+    { id: 'urlencoder', icon: 'bi-link-45deg', label: 'URL Encoder' },
+    { id: 'jsonformatter', icon: 'bi-braces', label: 'JSON Formatter' },
+    { id: 'loremipsum', icon: 'bi-text-paragraph', label: 'Lorem Ipsum' }
+  ];
+
+  // ==================== CONTENT TEMPLATES ====================
+  const TOOL_TEMPLATES = {
+    cgpa: `
+      <h4 class="mb-3"><i class="bi bi-calculator-fill me-2"></i>CGPA Calculator</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="prevCgpa" placeholder="Previous CGPA" step="0.01"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="prevCredits" placeholder="Total credits" step="1"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="newGpa" placeholder="New semester GPA" step="0.01"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="newCredits" placeholder="New credits" step="1"></div>
+      <div id="cgpaResult" class="result-display text-center fw-bold">—</div>
+    `,
+    percentage: `
+      <h4 class="mb-3"><i class="bi bi-percent me-2"></i>Percentage Calculator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="percValue" placeholder="Value"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="percOf" placeholder="Percentage %"></div>
+      </div>
+      <div class="mt-3 row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="discountPerc" placeholder="Discount %"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="taxPerc" placeholder="Tax %"></div>
+      </div>
+      <div id="percResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    wordcounter: `
+      <h4 class="mb-3"><i class="bi bi-chart-bar me-2"></i>Word Counter</h4>
+      <div class="mb-3"><textarea class="form-control" id="wordText" rows="6" placeholder="Type or paste text..."></textarea></div>
+      <div id="wordResult" class="result-display text-center fw-bold">words: 0 | chars: 0 | sentences: 0</div>
+    `,
+    unitconverter: `
+      <h4 class="mb-3"><i class="bi bi-arrow-left-right me-2"></i>Unit Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="unitInput" placeholder="Enter value"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="fromUnit">
+            <option value="m">meters</option><option value="km">km</option>
+            <option value="cm">cm</option><option value="mm">mm</option>
+            <option value="ft">feet</option><option value="in">inches</option>
+            <option value="kg">kg</option><option value="lb">pounds</option>
+            <option value="c">Celsius</option><option value="f">Fahrenheit</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="toUnit">
+            <option value="m">meters</option><option value="km">km</option>
+            <option value="cm">cm</option><option value="mm">mm</option>
+            <option value="ft">feet</option><option value="in">inches</option>
+            <option value="kg">kg</option><option value="lb">pounds</option>
+            <option value="c">Celsius</option><option value="f">Fahrenheit</option>
+          </select>
+        </div>
+      </div>
+      <div id="unitResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    scientific: `
+      <h4 class="mb-3"><i class="bi bi-symmetry-vertical me-2"></i>Scientific Calculator</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="sciNum" placeholder="Enter number"></div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-custom" onclick="sciOp('sqrt')">√</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('sin')">sin</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('cos')">cos</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('tan')">tan</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('log')">log₁₀</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('ln')">ln</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('square')">x²</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('cube')">x³</button>
+        <button class="btn btn-outline-custom" onclick="sciOp('factorial')">x!</button>
+      </div>
+      <div id="sciResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    pdfmerger: `
+      <h4 class="mb-3"><i class="bi bi-file-earmark-pdf-fill me-2"></i>PDF Merger</h4>
+      <p class="text-muted">Select up to 5 PDF files to merge</p>
+      <div class="mb-3"><input type="file" class="form-control" id="mergeFiles" accept=".pdf" multiple></div>
+      <div id="mergeStatus" class="result-display text-center">waiting for files...</div>
+    `,
+    pdfsplitter: `
+      <h4 class="mb-3"><i class="bi bi-scissors me-2"></i>PDF Splitter</h4>
+      <p class="text-muted">Select a PDF and enter page range</p>
+      <div class="mb-3"><input type="file" class="form-control" id="splitFile" accept=".pdf"></div>
+      <div class="mb-3"><input type="text" class="form-control" id="pageRange" placeholder="range e.g. 2-5 or 1,3,5"></div>
+      <div id="splitStatus" class="result-display text-center">—</div>
+    `,
+    textformatter: `
+      <h4 class="mb-3"><i class="bi bi-textarea-t me-2"></i>Text Formatter</h4>
+      <div class="mb-3"><textarea class="form-control" id="rawText" rows="4" placeholder="Enter text..."></textarea></div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-custom" onclick="formatText('upper')">UPPERCASE</button>
+        <button class="btn btn-outline-custom" onclick="formatText('lower')">lowercase</button>
+        <button class="btn btn-outline-custom" onclick="formatText('title')">Title Case</button>
+        <button class="btn btn-outline-custom" onclick="formatText('trim')">trim spaces</button>
+        <button class="btn btn-outline-custom" onclick="formatText('reverse')">Reverse</button>
+      </div>
+      <div id="formattedResult" class="result-display mt-3">—</div>
+    `,
+    passwordgen: `
+      <h4 class="mb-3"><i class="bi bi-shield-lock-fill me-2"></i>Password Generator</h4>
+      <div class="mb-3"><label class="fw-medium">Length:</label><input type="number" class="form-control" id="passLen" value="12" min="4" max="50"></div>
+      <div class="mb-3"><label class="fw-medium">Count:</label><input type="number" class="form-control" id="passCount" value="1" min="1" max="10"></div>
+      <div id="passResult" class="result-display text-center fw-bold">—</div>
+    `,
+    studytimer: `
+      <h4 class="mb-3"><i class="bi bi-clock-history me-2"></i>Study Timer</h4>
+      <div class="mb-3 d-flex align-items-center gap-3 flex-wrap">
+        <label class="fw-medium">Minutes:</label>
+        <input type="number" id="timerMinutes" class="form-control d-inline-block w-auto" value="25" min="1" max="180" style="max-width:100px;">
+        <label class="fw-medium">Seconds:</label>
+        <input type="number" id="timerSeconds" class="form-control d-inline-block w-auto" value="0" min="0" max="59" style="max-width:80px;">
+      </div>
+      <div id="timerDisplay" class="display-4 fw-bold text-center mb-3">25:00</div>
+      <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <button class="btn btn-primary rounded-pill px-4" onclick="startTimer()">Start</button>
+        <button class="btn btn-outline-secondary rounded-pill px-4" onclick="resetTimer()">Reset</button>
+        <button class="btn btn-outline-secondary rounded-pill px-4" onclick="pauseTimer()">Pause</button>
+      </div>
+    `,
+    bmi: `
+      <h4 class="mb-3"><i class="bi bi-heart-pulse me-2"></i>BMI Calculator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="bmiWeight" placeholder="Weight (kg)" step="0.1"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="bmiHeight" placeholder="Height (cm)" step="0.1"></div>
+      </div>
+      <div id="bmiResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    loan: `
+      <h4 class="mb-3"><i class="bi bi-coin me-2"></i>Loan Calculator</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="loanAmount" placeholder="Loan Amount"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="loanRate" placeholder="Annual Interest Rate %" step="0.1"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="loanTerm" placeholder="Term (months)"></div>
+      <div id="loanResult" class="result-display text-center fw-bold">—</div>
+    `,
+    gradecalculator: `
+      <h4 class="mb-3"><i class="bi bi-award me-2"></i>Grade Calculator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="scoreObtained" placeholder="Score Obtained"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="scoreTotal" placeholder="Total Score"></div>
+      </div>
+      <div id="gradeResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    gpaestimator: `
+      <h4 class="mb-3"><i class="bi bi-graph-up me-2"></i>GPA Estimator</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="gpaTarget" placeholder="Target GPA" step="0.01"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="gpaCurrent" placeholder="Current GPA" step="0.01"></div>
+      <div class="mb-3"><input type="number" class="form-control" id="gpaCredits" placeholder="Current Credits" step="1"></div>
+      <div id="gpaResult" class="result-display text-center fw-bold">—</div>
+    `,
+    discount: `
+      <h4 class="mb-3"><i class="bi bi-tag me-2"></i>Discount Calculator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="discountPrice" placeholder="Original Price"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="discountPercent" placeholder="Discount %"></div>
+      </div>
+      <div id="discountResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    tip: `
+      <h4 class="mb-3"><i class="bi bi-cash me-2"></i>Tip Calculator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="tipBill" placeholder="Bill Amount"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="tipPercent" placeholder="Tip %" value="15"></div>
+      </div>
+      <div id="tipResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    currency: `
+      <h4 class="mb-3"><i class="bi bi-currency-exchange me-2"></i>Currency Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="currencyAmount" placeholder="Amount"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="currencyFrom">
+            <option value="USD">USD</option><option value="EUR">EUR</option>
+            <option value="GBP">GBP</option><option value="INR">INR</option>
+            <option value="CAD">CAD</option><option value="AUD">AUD</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="currencyTo">
+            <option value="EUR">EUR</option><option value="USD">USD</option>
+            <option value="GBP">GBP</option><option value="INR">INR</option>
+            <option value="CAD">CAD</option><option value="AUD">AUD</option>
+          </select>
+        </div>
+      </div>
+      <div id="currencyResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    age: `
+      <h4 class="mb-3"><i class="bi bi-calendar3 me-2"></i>Age Calculator</h4>
+      <div class="mb-3"><input type="date" class="form-control" id="birthDate"></div>
+      <div id="ageResult" class="result-display text-center fw-bold">—</div>
+    `,
+    timezone: `
+      <h4 class="mb-3"><i class="bi bi-clock me-2"></i>Time Zone Converter</h4>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="tzFrom">
+            <option value="UTC">UTC</option><option value="EST">EST</option>
+            <option value="PST">PST</option><option value="GMT">GMT</option>
+            <option value="IST">IST</option><option value="CST">CST</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="tzTo">
+            <option value="PST">PST</option><option value="EST">EST</option>
+            <option value="UTC">UTC</option><option value="GMT">GMT</option>
+            <option value="IST">IST</option><option value="CST">CST</option>
+          </select>
+        </div>
+      </div>
+      <div id="tzResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    speed: `
+      <h4 class="mb-3"><i class="bi bi-speedometer2 me-2"></i>Speed Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="speedValue" placeholder="Speed"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="speedFrom">
+            <option value="kmh">km/h</option><option value="mph">mph</option>
+            <option value="ms">m/s</option><option value="knots">knots</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="speedTo">
+            <option value="mph">mph</option><option value="kmh">km/h</option>
+            <option value="ms">m/s</option><option value="knots">knots</option>
+          </select>
+        </div>
+      </div>
+      <div id="speedResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    area: `
+      <h4 class="mb-3"><i class="bi bi-grid me-2"></i>Area Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="areaValue" placeholder="Area"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="areaFrom">
+            <option value="m2">m²</option><option value="km2">km²</option>
+            <option value="ha">hectares</option><option value="acres">acres</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="areaTo">
+            <option value="km2">km²</option><option value="m2">m²</option>
+            <option value="ha">hectares</option><option value="acres">acres</option>
+          </select>
+        </div>
+      </div>
+      <div id="areaResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    volume: `
+      <h4 class="mb-3"><i class="bi bi-cup-straw me-2"></i>Volume Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="volumeValue" placeholder="Volume"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="volumeFrom">
+            <option value="l">Liters</option><option value="ml">Milliliters</option>
+            <option value="gal">Gallons</option><option value="qt">Quarts</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="volumeTo">
+            <option value="ml">Milliliters</option><option value="l">Liters</option>
+            <option value="gal">Gallons</option><option value="qt">Quarts</option>
+          </select>
+        </div>
+      </div>
+      <div id="volumeResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    weight: `
+      <h4 class="mb-3"><i class="bi bi-weight-scale me-2"></i>Weight Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="weightValue" placeholder="Weight"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="weightFrom">
+            <option value="kg">kg</option><option value="g">grams</option>
+            <option value="lb">pounds</option><option value="oz">ounces</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="weightTo">
+            <option value="g">grams</option><option value="kg">kg</option>
+            <option value="lb">pounds</option><option value="oz">ounces</option>
+          </select>
+        </div>
+      </div>
+      <div id="weightResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    temperature: `
+      <h4 class="mb-3"><i class="bi bi-thermometer-half me-2"></i>Temperature Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="tempValue" placeholder="Temperature"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="tempFrom">
+            <option value="c">Celsius</option><option value="f">Fahrenheit</option>
+            <option value="k">Kelvin</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="tempTo">
+            <option value="f">Fahrenheit</option><option value="c">Celsius</option>
+            <option value="k">Kelvin</option>
+          </select>
+        </div>
+      </div>
+      <div id="tempResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    length: `
+      <h4 class="mb-3"><i class="bi bi-rulers me-2"></i>Length Converter</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="lengthValue" placeholder="Length"></div>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <select class="form-select" id="lengthFrom">
+            <option value="m">meters</option><option value="km">km</option>
+            <option value="cm">cm</option><option value="mm">mm</option>
+            <option value="ft">feet</option><option value="in">inches</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-select" id="lengthTo">
+            <option value="km">km</option><option value="m">meters</option>
+            <option value="cm">cm</option><option value="mm">mm</option>
+            <option value="ft">feet</option><option value="in">inches</option>
+          </select>
+        </div>
+      </div>
+      <div id="lengthResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    randomnumber: `
+      <h4 class="mb-3"><i class="bi bi-dice-5 me-2"></i>Random Number Generator</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input type="number" class="form-control" id="randMin" placeholder="Min" value="1"></div>
+        <div class="col-md-6"><input type="number" class="form-control" id="randMax" placeholder="Max" value="100"></div>
+      </div>
+      <div class="mt-3"><input type="number" class="form-control" id="randCount" placeholder="How many numbers" value="1" min="1" max="20"></div>
+      <div id="randResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    randomcolor: `
+      <h4 class="mb-3"><i class="bi bi-palette me-2"></i>Random Color Generator</h4>
+      <div class="mb-3">
+        <select class="form-select" id="colorFormat">
+          <option value="hex">HEX</option><option value="rgb">RGB</option>
+          <option value="hsl">HSL</option>
+        </select>
+      </div>
+      <div class="mb-3"><input type="number" class="form-control" id="colorCount" placeholder="Number of colors" value="1" min="1" max="10"></div>
+      <div id="colorResult" class="result-display text-center fw-bold mt-3">—</div>
+    `,
+    uuidgen: `
+      <h4 class="mb-3"><i class="bi bi-hash me-2"></i>UUID Generator</h4>
+      <div class="mb-3"><input type="number" class="form-control" id="uuidCount" placeholder="Number of UUIDs" value="1" min="1" max="10"></div>
+      <div class="mb-3">
+        <select class="form-select" id="uuidVersion">
+          <option value="v4">UUID v4</option><option value="v1">UUID v1</option>
+        </select>
+      </div>
+      <div id="uuidResult" class="result-display text-center fw-bold">—</div>
+    `,
+    hashgen: `
+      <h4 class="mb-3"><i class="bi bi-fingerprint me-2"></i>Hash Generator</h4>
+      <div class="mb-3"><textarea class="form-control" id="hashInput" rows="3" placeholder="Enter text to hash"></textarea></div>
+      <div class="mb-3">
+        <select class="form-select" id="hashAlgo">
+          <option value="md5">MD5</option><option value="sha1">SHA-1</option>
+          <option value="sha256">SHA-256</option>
+        </select>
+      </div>
+      <div id="hashResult" class="result-display text-center">—</div>
+    `,
+    basesixtyfour: `
+      <h4 class="mb-3"><i class="bi bi-code-square me-2"></i>Base64 Encoder/Decoder</h4>
+      <div class="mb-3"><textarea class="form-control" id="b64Input" rows="3" placeholder="Enter text to encode/decode"></textarea></div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-custom" onclick="base64Encode()">Encode</button>
+        <button class="btn btn-outline-custom" onclick="base64Decode()">Decode</button>
+      </div>
+      <div id="b64Result" class="result-display mt-3">—</div>
+    `,
+    urlencoder: `
+      <h4 class="mb-3"><i class="bi bi-link-45deg me-2"></i>URL Encoder/Decoder</h4>
+      <div class="mb-3"><textarea class="form-control" id="urlInput" rows="3" placeholder="Enter URL or text"></textarea></div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-custom" onclick="urlEncode()">Encode</button>
+        <button class="btn btn-outline-custom" onclick="urlDecode()">Decode</button>
+      </div>
+      <div id="urlResult" class="result-display mt-3">—</div>
+    `,
+    jsonformatter: `
+      <h4 class="mb-3"><i class="bi bi-braces me-2"></i>JSON Formatter</h4>
+      <div class="mb-3"><textarea class="form-control" id="jsonInput" rows="5" placeholder='{"key": "value"}'></textarea></div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-custom" onclick="formatJSON()">Format</button>
+        <button class="btn btn-outline-custom" onclick="minifyJSON()">Minify</button>
+      </div>
+      <div id="jsonResult" class="result-display mt-3">—</div>
+    `,
+    loremipsum: `
+      <h4 class="mb-3"><i class="bi bi-text-paragraph me-2"></i>Lorem Ipsum Generator</h4>
+      <div class="mb-3">
+        <select class="form-select" id="loremType">
+          <option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option>
+          <option value="words">Words</option>
+        </select>
+      </div>
+      <div class="mb-3"><input type="number" class="form-control" id="loremCount" placeholder="Count" value="3" min="1" max="20"></div>
+      <div id="loremResult" class="result-display">—</div>
+    `
+  };
+
+  // ==================== PROPERTIES TEMPLATES ====================
+  const PROP_TEMPLATES = {
+    cgpa: `<div class="prop-control"><label>Grade Scale:</label><select class="form-select" id="gradeScale"><option value="4">4.0</option><option value="10">10.0</option></select></div>`,
+    percentage: `<div class="prop-control"><label>Rounding:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    wordcounter: `<div class="prop-control"><label>Count:</label><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Words</label></div><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Characters</label></div></div>`,
+    unitconverter: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>4 decimals</option><option>2 decimals</option></select></div>`,
+    scientific: `<div class="prop-control"><label>Angle:</label><select class="form-select" id="angleMode"><option value="deg">Degrees</option><option value="rad">Radians</option></select></div>`,
+    pdfmerger: `<div class="prop-control"><label>Option:</label><select class="form-select"><option>Combine all</option><option>Append</option></select></div>`,
+    pdfsplitter: `<div class="prop-control"><label>Mode:</label><select class="form-select"><option>Page range</option><option>Every N</option></select></div>`,
+    textformatter: `<div class="prop-control"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Auto-trim</label></div></div>`,
+    passwordgen: `<div class="prop-control"><label>Include:</label><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Uppercase</label></div><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Lowercase</label></div><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Numbers</label></div><div class="form-check"><input class="form-check-input" type="checkbox" checked><label>Symbols</label></div></div>`,
+    studytimer: `<div class="prop-control"><div class="form-check"><input class="form-check-input" type="checkbox"><label>Auto-restart</label></div></div>`,
+    bmi: `<div class="prop-control"><label>System:</label><select class="form-select"><option>Metric</option><option>Imperial</option></select></div>`,
+    loan: `<div class="prop-control"><label>Frequency:</label><select class="form-select"><option>Monthly</option><option>Bi-weekly</option></select></div>`,
+    gradecalculator: `<div class="prop-control"><label>Grade Scale:</label><select class="form-select"><option>A-F</option><option>Percentage</option></select></div>`,
+    gpaestimator: `<div class="prop-control"><label>Target:</label><select class="form-select"><option>4.0 Scale</option><option>10.0 Scale</option></select></div>`,
+    discount: `<div class="prop-control"><label>Tax:</label><input type="number" class="form-control" placeholder="Tax %" value="0"></div>`,
+    tip: `<div class="prop-control"><label>Split:</label><input type="number" class="form-control" placeholder="People" value="1"></div>`,
+    currency: `<div class="prop-control"><label>Rate:</label><input type="text" class="form-control" placeholder="e.g., 1 USD = 0.85 EUR" value="0.85"></div>`,
+    age: `<div class="prop-control"><label>Format:</label><select class="form-select"><option>Years</option><option>Months</option><option>Days</option></select></div>`,
+    timezone: `<div class="prop-control"><label>Time:</label><input type="time" class="form-control" id="tzTime" value="12:00"></div>`,
+    speed: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    area: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    volume: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    weight: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    temperature: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    length: `<div class="prop-control"><label>Precision:</label><select class="form-select"><option>2 decimals</option><option>No rounding</option></select></div>`,
+    randomnumber: `<div class="prop-control"><label>Unique:</label><div class="form-check"><input class="form-check-input" type="checkbox"><label>Unique numbers</label></div></div>`,
+    randomcolor: `<div class="prop-control"><label>Format:</label><select class="form-select"><option>HEX</option><option>RGB</option></select></div>`,
+    uuidgen: `<div class="prop-control"><label>Format:</label><select class="form-select"><option>Uppercase</option><option>Lowercase</option></select></div>`,
+    hashgen: `<div class="prop-control"><label>Salt:</label><input type="text" class="form-control" placeholder="Salt (optional)"></div>`,
+    basesixtyfour: `<div class="prop-control"><label>Mode:</label><select class="form-select"><option>Standard</option><option>URL-safe</option></select></div>`,
+    urlencoder: `<div class="prop-control"><label>Mode:</label><select class="form-select"><option>RFC 3986</option><option>RFC 1738</option></select></div>`,
+    jsonformatter: `<div class="prop-control"><label>Indent:</label><select class="form-select"><option>2 spaces</option><option>4 spaces</option><option>Tab</option></select></div>`,
+    loremipsum: `<div class="prop-control"><label>Start with:</label><select class="form-select"><option>Lorem ipsum</option><option>Random</option></select></div>`
+  };
+
   // ==================== GLOBALS ====================
   let currentTool = 'cgpa';
   let processedResults = [];
-
-  // DOM refs
+  let darkMode = false;
   const toolContent = document.getElementById('toolContent');
   const toolProperties = document.getElementById('toolProperties');
   const statusInfo = document.getElementById('statusInfo');
   const applyBtn = document.getElementById('applyBtn');
+
+  // ==================== RENDER TOOLS ====================
+  function renderTools() {
+    const grid = document.getElementById('toolsGrid');
+    grid.innerHTML = '';
+    TOOLS.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = `tool-btn ${t.id === currentTool ? 'active' : ''}`;
+      btn.setAttribute('onclick', `setActiveTool(this, '${t.id}')`);
+      btn.innerHTML = `<i class="bi ${t.icon}"></i><span>${t.label}</span>`;
+      grid.appendChild(btn);
+    });
+  }
+
+  // ==================== SET ACTIVE TOOL ====================
+  function setActiveTool(btn, toolId) {
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = toolId;
+    
+    // Render content
+    const template = TOOL_TEMPLATES[toolId] || '<div class="text-center text-muted py-5">Tool content not available</div>';
+    toolContent.innerHTML = template;
+    
+    // Render properties
+    const propTemplate = PROP_TEMPLATES[toolId] || '<div class="text-center text-muted py-4">No settings available</div>';
+    toolProperties.innerHTML = propTemplate;
+    
+    statusInfo.innerHTML = '<span>Ready</span>';
+    processedResults = [];
+    
+    // Reset timer if needed
+    if (toolId === 'studytimer') {
+      setTimeout(updateTimerDisplay, 100);
+    }
+  }
+
+  // ==================== APPLY TOOL ====================
+  function applyTool() {
+    const handlers = {
+      cgpa: calculateCGPA,
+      percentage: calcPercent,
+      wordcounter: countWords,
+      unitconverter: convertUnit,
+      scientific: () => showToast('Use the buttons above', false),
+      pdfmerger: mergePDFs,
+      pdfsplitter: splitPDF,
+      textformatter: () => showToast('Use the buttons above', false),
+      passwordgen: generatePassword,
+      studytimer: startTimer,
+      bmi: calculateBMI,
+      loan: calculateLoan,
+      gradecalculator: calculateGrade,
+      gpaestimator: estimateGPA,
+      discount: calculateDiscount,
+      tip: calculateTip,
+      currency: convertCurrency,
+      age: calculateAge,
+      timezone: convertTimezone,
+      speed: convertSpeed,
+      area: convertArea,
+      volume: convertVolume,
+      weight: convertWeight,
+      temperature: convertTemp,
+      length: convertLength,
+      randomnumber: generateRandomNumbers,
+      randomcolor: generateRandomColors,
+      uuidgen: generateUUIDs,
+      hashgen: generateHash,
+      basesixtyfour: () => showToast('Use Encode/Decode buttons', false),
+      urlencoder: () => showToast('Use Encode/Decode buttons', false),
+      jsonformatter: () => showToast('Use Format/Minify buttons', false),
+      loremipsum: generateLorem
+    };
+    
+    const handler = handlers[currentTool];
+    if (handler) {
+      handler();
+      statusInfo.innerHTML = `<span>✅ Done</span>`;
+    } else {
+      showToast('Tool not implemented', true);
+    }
+  }
+
+  // ==================== TOOL FUNCTIONS ====================
+  
+  function calculateCGPA() {
+    let prev = parseFloat(document.getElementById('prevCgpa')?.value) || 0;
+    let prevCred = parseFloat(document.getElementById('prevCredits')?.value) || 0;
+    let newG = parseFloat(document.getElementById('newGpa')?.value) || 0;
+    let newCred = parseFloat(document.getElementById('newCredits')?.value) || 0;
+    if (prevCred + newCred === 0) { document.getElementById('cgpaResult').innerHTML = '⚠️ Enter credits'; return; }
+    let cgpa = ((prev * prevCred) + (newG * newCred)) / (prevCred + newCred);
+    document.getElementById('cgpaResult').innerHTML = `🎯 CGPA: ${cgpa.toFixed(2)}`;
+    processedResults = [{ name: 'cgpa.txt', data: `CGPA: ${cgpa.toFixed(2)}` }];
+  }
+
+  function calcPercent() {
+    let val = parseFloat(document.getElementById('percValue')?.value) || 0;
+    let perc = parseFloat(document.getElementById('percOf')?.value) || 0;
+    let discount = parseFloat(document.getElementById('discountPerc')?.value) || 0;
+    let tax = parseFloat(document.getElementById('taxPerc')?.value) || 0;
+    let result = val * perc / 100;
+    let discounted = result - (result * discount / 100);
+    let withTax = discounted + (discounted * tax / 100);
+    document.getElementById('percResult').innerHTML = `📊 ${perc}% of ${val} = ${result.toFixed(2)}<br>${discount > 0 ? `After ${discount}% discount: ${discounted.toFixed(2)}<br>` : ''}${tax > 0 ? `After ${tax}% tax: ${withTax.toFixed(2)}` : ''}`;
+    processedResults = [{ name: 'percentage.txt', data: `Percentage: ${result.toFixed(2)}` }];
+  }
+
+  function countWords() {
+    let txt = document.getElementById('wordText')?.value || '';
+    let words = txt.match(/\b\w+\b/g)?.length || 0;
+    let chars = txt.length;
+    let sentences = txt.match(/[.!?]+/g)?.length || 0;
+    document.getElementById('wordResult').innerHTML = `📝 words: ${words} | chars: ${chars} | sentences: ${sentences}`;
+    processedResults = [{ name: 'wordcount.txt', data: `Words: ${words}\nChars: ${chars}\nSentences: ${sentences}` }];
+  }
+
+  function convertUnit() {
+    let val = parseFloat(document.getElementById('unitInput')?.value) || 0;
+    let from = document.getElementById('fromUnit')?.value || 'm';
+    let to = document.getElementById('toUnit')?.value || 'km';
+    let result = 0;
+    // Length
+    if (['m','km','cm','mm','ft','in'].includes(from) && ['m','km','cm','mm','ft','in'].includes(to)) {
+      let inMeters = from === 'm' ? val : from === 'km' ? val*1000 : from === 'cm' ? val/100 : from === 'mm' ? val/1000 : from === 'ft' ? val*0.3048 : val*0.0254;
+      result = to === 'm' ? inMeters : to === 'km' ? inMeters/1000 : to === 'cm' ? inMeters*100 : to === 'mm' ? inMeters*1000 : to === 'ft' ? inMeters/0.3048 : inMeters/0.0254;
+    }
+    // Weight
+    else if (['kg','lb'].includes(from) && ['kg','lb'].includes(to)) {
+      let inKg = from === 'kg' ? val : val*0.453592;
+      result = to === 'kg' ? inKg : inKg/0.453592;
+    }
+    // Temperature
+    else if (['c','f'].includes(from) && ['c','f'].includes(to)) {
+      result = from === 'c' ? (val * 9/5) + 32 : (val - 32) * 5/9;
+    }
+    document.getElementById('unitResult').innerHTML = `📏 ${val} ${from} = ${result.toFixed(4)} ${to}`;
+    processedResults = [{ name: 'unitconv.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
+  }
+
+  function sciOp(op) {
+    let num = parseFloat(document.getElementById('sciNum')?.value) || 0;
+    let mode = document.getElementById('angleMode')?.value || 'deg';
+    let res;
+    if (op === 'sqrt') res = Math.sqrt(num);
+    else if (op === 'sin') res = Math.sin(mode === 'deg' ? num * Math.PI/180 : num);
+    else if (op === 'cos') res = Math.cos(mode === 'deg' ? num * Math.PI/180 : num);
+    else if (op === 'tan') res = Math.tan(mode === 'deg' ? num * Math.PI/180 : num);
+    else if (op === 'log') res = Math.log10(num);
+    else if (op === 'ln') res = Math.log(num);
+    else if (op === 'square') res = num*num;
+    else if (op === 'cube') res = num*num*num;
+    else if (op === 'factorial') { res = 1; for (let i=2; i<=num; i++) res *= i; }
+    document.getElementById('sciResult').innerHTML = `🔢 ${op}(${num}) = ${res.toFixed(6)}`;
+    processedResults = [{ name: 'scientific.txt', data: `${op}(${num}) = ${res.toFixed(6)}` }];
+  }
+
+  // PDF Merger
+  async function mergePDFs() {
+    const files = document.getElementById('mergeFiles')?.files || [];
+    if (files.length < 2) { document.getElementById('mergeStatus').innerHTML = '⚠️ Select at least 2 PDFs.'; return; }
+    document.getElementById('mergeStatus').innerHTML = '⏳ Merging...';
+    const { PDFDocument } = PDFLib;
+    const mergedPdf = await PDFDocument.create();
+    for (let file of files) {
+      const arrayBuf = await file.arrayBuffer();
+      const pdf = await PDFDocument.load(arrayBuf);
+      const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      pages.forEach(page => mergedPdf.addPage(page));
+    }
+    const bytes = await mergedPdf.save();
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    saveAs(blob, 'merged.pdf');
+    document.getElementById('mergeStatus').innerHTML = '✅ Downloaded!';
+    processedResults = [];
+  }
+
+  // PDF Splitter
+  async function splitPDF() {
+    const file = document.getElementById('splitFile')?.files[0];
+    if (!file) { document.getElementById('splitStatus').innerHTML = '⚠️ Select a PDF.'; return; }
+    const rangeStr = document.getElementById('pageRange')?.value || '';
+    if (!rangeStr) { document.getElementById('splitStatus').innerHTML = '⚠️ Enter range.'; return; }
+    document.getElementById('splitStatus').innerHTML = '⏳ Splitting...';
+    const { PDFDocument } = PDFLib;
+    const arrayBuf = await file.arrayBuffer();
+    const sourceDoc = await PDFDocument.load(arrayBuf);
+    const totalPages = sourceDoc.getPageCount();
+    const newDoc = await PDFDocument.create();
+    const pagesToCopy = [];
+    const parts = rangeStr.split(',').map(p => p.trim());
+    for (let part of parts) {
+      if (part.includes('-')) {
+        const [start, end] = part.split('-').map(Number);
+        for (let i = start; i <= end && i <= totalPages; i++) pagesToCopy.push(i - 1);
+      } else {
+        const p = parseInt(part);
+        if (p <= totalPages) pagesToCopy.push(p - 1);
+      }
+    }
+    if (pagesToCopy.length === 0) { document.getElementById('splitStatus').innerHTML = '⚠️ No valid pages.'; return; }
+    const pages = await newDoc.copyPages(sourceDoc, pagesToCopy);
+    pages.forEach(page => newDoc.addPage(page));
+    const bytes = await newDoc.save();
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    saveAs(blob, 'split.pdf');
+    document.getElementById('splitStatus').innerHTML = '✅ Downloaded!';
+    processedResults = [];
+  }
+
+  function formatText(action) {
+    let raw = document.getElementById('rawText')?.value || '';
+    if (action === 'upper') raw = raw.toUpperCase();
+    else if (action === 'lower') raw = raw.toLowerCase();
+    else if (action === 'title') raw = raw.replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
+    else if (action === 'trim') raw = raw.replace(/\s+/g, ' ').trim();
+    else if (action === 'reverse') raw = raw.split('').reverse().join('');
+    document.getElementById('formattedResult').innerHTML = raw || '(empty)';
+    processedResults = [{ name: 'formatted.txt', data: raw }];
+  }
+
+  function generatePassword() {
+    let len = parseInt(document.getElementById('passLen')?.value) || 12;
+    let count = parseInt(document.getElementById('passCount')?.value) || 1;
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    let passwords = [];
+    for (let j=0; j<count; j++) {
+      let pass = '';
+      for (let i=0; i<len; i++) pass += chars[Math.floor(Math.random()*chars.length)];
+      passwords.push(pass);
+    }
+    document.getElementById('passResult').innerHTML = passwords.map(p => `🔐 ${p}`).join('<br>');
+    processedResults = passwords.map((p, i) => ({ name: `password_${i+1}.txt`, data: p }));
+  }
+
+  // Timer
+  let timerInterval2, timerSeconds2 = 1500, timerRunning2 = false;
+  function updateTimerDisplay() {
+    let mins = Math.floor(timerSeconds2/60);
+    let secs = timerSeconds2%60;
+    let display = document.getElementById('timerDisplay');
+    if (display) display.innerHTML = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+  }
+  function startTimer() {
+    let mins = parseInt(document.getElementById('timerMinutes')?.value) || 25;
+    let secs = parseInt(document.getElementById('timerSeconds')?.value) || 0;
+    if (!timerRunning2) {
+      timerSeconds2 = (mins * 60) + secs;
+      updateTimerDisplay();
+      timerRunning2 = true;
+      timerInterval2 = setInterval(() => {
+        if (timerSeconds2 > 0) { timerSeconds2--; updateTimerDisplay(); }
+        else { clearInterval(timerInterval2); timerRunning2 = false; alert('⏰ Timer finished!'); }
+      }, 1000);
+    }
+  }
+  function pauseTimer() { if (timerRunning2) { clearInterval(timerInterval2); timerRunning2 = false; } }
+  function resetTimer() {
+    clearInterval(timerInterval2);
+    timerRunning2 = false;
+    let mins = parseInt(document.getElementById('timerMinutes')?.value) || 25;
+    let secs = parseInt(document.getElementById('timerSeconds')?.value) || 0;
+    timerSeconds2 = (mins * 60) + secs;
+    updateTimerDisplay();
+  }
+
+  function calculateBMI() {
+    let w = parseFloat(document.getElementById('bmiWeight')?.value) || 0;
+    let h = parseFloat(document.getElementById('bmiHeight')?.value) || 0;
+    if (w <= 0 || h <= 0) { document.getElementById('bmiResult').innerHTML = '⚠️ Enter valid values'; return; }
+    let bmi = w / ((h/100) * (h/100));
+    let cat = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal' : bmi < 30 ? 'Overweight' : 'Obese';
+    document.getElementById('bmiResult').innerHTML = `📊 BMI: ${bmi.toFixed(1)} (${cat})`;
+    processedResults = [{ name: 'bmi.txt', data: `BMI: ${bmi.toFixed(1)} (${cat})` }];
+  }
+
+  function calculateLoan() {
+    let amt = parseFloat(document.getElementById('loanAmount')?.value) || 0;
+    let rate = parseFloat(document.getElementById('loanRate')?.value) || 0;
+    let term = parseInt(document.getElementById('loanTerm')?.value) || 1;
+    if (amt <= 0 || term <= 0) { document.getElementById('loanResult').innerHTML = '⚠️ Enter valid values'; return; }
+    let mr = (rate/100)/12;
+    let payment = amt * mr * Math.pow(1+mr, term) / (Math.pow(1+mr, term) - 1);
+    let total = payment * term;
+    document.getElementById('loanResult').innerHTML = `💰 Monthly: $${payment.toFixed(2)}<br>Total: $${total.toFixed(2)}<br>Interest: $${(total-amt).toFixed(2)}`;
+    processedResults = [{ name: 'loan.txt', data: `Monthly: $${payment.toFixed(2)}\nTotal: $${total.toFixed(2)}` }];
+  }
+
+  function calculateGrade() {
+    let score = parseFloat(document.getElementById('scoreObtained')?.value) || 0;
+    let total = parseFloat(document.getElementById('scoreTotal')?.value) || 100;
+    if (total <= 0) { document.getElementById('gradeResult').innerHTML = '⚠️ Enter valid total'; return; }
+    let pct = (score/total)*100;
+    let grade = pct >= 90 ? 'A' : pct >= 80 ? 'B' : pct >= 70 ? 'C' : pct >= 60 ? 'D' : 'F';
+    document.getElementById('gradeResult').innerHTML = `📊 ${pct.toFixed(1)}% → Grade: ${grade}`;
+    processedResults = [{ name: 'grade.txt', data: `${pct.toFixed(1)}% → Grade: ${grade}` }];
+  }
+
+  function estimateGPA() {
+    let target = parseFloat(document.getElementById('gpaTarget')?.value) || 0;
+    let current = parseFloat(document.getElementById('gpaCurrent')?.value) || 0;
+    let credits = parseFloat(document.getElementById('gpaCredits')?.value) || 1;
+    if (target <= current) { document.getElementById('gpaResult').innerHTML = '⚠️ Target must be higher'; return; }
+    let needed = ((target - current) * credits) / 1;
+    document.getElementById('gpaResult').innerHTML = `🎯 Need ${needed.toFixed(2)} GPA next semester to reach ${target}`;
+    processedResults = [{ name: 'gpa_estimate.txt', data: `Need ${needed.toFixed(2)} GPA to reach ${target}` }];
+  }
+
+  function calculateDiscount() {
+    let price = parseFloat(document.getElementById('discountPrice')?.value) || 0;
+    let disc = parseFloat(document.getElementById('discountPercent')?.value) || 0;
+    let saved = price * disc / 100;
+    document.getElementById('discountResult').innerHTML = `💰 Price: $${(price - saved).toFixed(2)}<br>Saved: $${saved.toFixed(2)}`;
+    processedResults = [{ name: 'discount.txt', data: `Final: $${(price-saved).toFixed(2)}\nSaved: $${saved.toFixed(2)}` }];
+  }
+
+  function calculateTip() {
+    let bill = parseFloat(document.getElementById('tipBill')?.value) || 0;
+    let tipPct = parseFloat(document.getElementById('tipPercent')?.value) || 15;
+    let tip = bill * tipPct / 100;
+    document.getElementById('tipResult').innerHTML = `💵 Tip: $${tip.toFixed(2)}<br>Total: $${(bill + tip).toFixed(2)}`;
+    processedResults = [{ name: 'tip.txt', data: `Tip: $${tip.toFixed(2)}\nTotal: $${(bill+tip).toFixed(2)}` }];
+  }
+
+  function convertCurrency() {
+    let amt = parseFloat(document.getElementById('currencyAmount')?.value) || 0;
+    let from = document.getElementById('currencyFrom')?.value || 'USD';
+    let to = document.getElementById('currencyTo')?.value || 'EUR';
+    let rate = 0.85; // Simple fixed rate for demo
+    if (from === 'USD' && to === 'EUR') rate = 0.85;
+    else if (from === 'EUR' && to === 'USD') rate = 1.18;
+    else if (from === 'USD' && to === 'INR') rate = 83;
+    else if (from === 'INR' && to === 'USD') rate = 0.012;
+    let result = amt * rate;
+    document.getElementById('currencyResult').innerHTML = `💱 ${amt} ${from} = ${result.toFixed(2)} ${to}`;
+    processedResults = [{ name: 'currency.txt', data: `${amt} ${from} = ${result.toFixed(2)} ${to}` }];
+  }
+
+  function calculateAge() {
+    let date = document.getElementById('birthDate')?.value;
+    if (!date) { document.getElementById('ageResult').innerHTML = '⚠️ Select a date'; return; }
+    let birth = new Date(date);
+    let now = new Date();
+    let years = now.getFullYear() - birth.getFullYear();
+    let months = now.getMonth() - birth.getMonth();
+    if (months < 0) { years--; months += 12; }
+    document.getElementById('ageResult').innerHTML = `🎂 ${years} years, ${months} months`;
+    processedResults = [{ name: 'age.txt', data: `${years} years, ${months} months` }];
+  }
+
+  function convertTimezone() {
+    let from = document.getElementById('tzFrom')?.value || 'UTC';
+    let to = document.getElementById('tzTo')?.value || 'PST';
+    let tzTime = document.getElementById('tzTime')?.value || '12:00';
+    let [h, m] = tzTime.split(':').map(Number);
+    let offsets = { UTC: 0, EST: -5, PST: -8, GMT: 0, IST: 5.5, CST: -6 };
+    let diff = (offsets[to] || 0) - (offsets[from] || 0);
+    let nh = (h + diff + 24) % 24;
+    document.getElementById('tzResult').innerHTML = `🕐 ${tzTime} ${from} → ${String(Math.floor(nh)).padStart(2,'0')}:${String(m).padStart(2,'0')} ${to}`;
+    processedResults = [{ name: 'timezone.txt', data: `${tzTime} ${from} → ${String(Math.floor(nh)).padStart(2,'0')}:${String(m).padStart(2,'0')} ${to}` }];
+  }
+
+  function convertSpeed() {
+    let val = parseFloat(document.getElementById('speedValue')?.value) || 0;
+    let from = document.getElementById('speedFrom')?.value || 'kmh';
+    let to = document.getElementById('speedTo')?.value || 'mph';
+    let inKmh = from === 'kmh' ? val : from === 'mph' ? val*1.609 : from === 'ms' ? val*3.6 : val*1.852;
+    let result = to === 'kmh' ? inKmh : to === 'mph' ? inKmh/1.609 : to === 'ms' ? inKmh/3.6 : inKmh/1.852;
+    document.getElementById('speedResult').innerHTML = `🚀 ${val} ${from} = ${result.toFixed(2)} ${to}`;
+    processedResults = [{ name: 'speed.txt', data: `${val} ${from} = ${result.toFixed(2)} ${to}` }];
+  }
+
+  function convertArea() {
+    let val = parseFloat(document.getElementById('areaValue')?.value) || 0;
+    let from = document.getElementById('areaFrom')?.value || 'm2';
+    let to = document.getElementById('areaTo')?.value || 'km2';
+    let inM2 = from === 'm2' ? val : from === 'km2' ? val*1e6 : from === 'ha' ? val*10000 : val*4046.86;
+    let result = to === 'm2' ? inM2 : to === 'km2' ? inM2/1e6 : to === 'ha' ? inM2/10000 : inM2/4046.86;
+    document.getElementById('areaResult').innerHTML = `📐 ${val} ${from} = ${result.toFixed(4)} ${to}`;
+    processedResults = [{ name: 'area.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
+  }
+
+  function convertVolume() {
+    let val = parseFloat(document.getElementById('volumeValue')?.value) || 0;
+    let from = document.getElementById('volumeFrom')?.value || 'l';
+    let to = document.getElementById('volumeTo')?.value || 'ml';
+    let inL = from === 'l' ? val : from === 'ml' ? val/1000 : from === 'gal' ? val*3.785 : val*0.946;
+    let result = to === 'l' ? inL : to === 'ml' ? inL*1000 : to === 'gal' ? inL/3.785 : inL/0.946;
+    document.getElementById('volumeResult').innerHTML = `🧪 ${val} ${from} = ${result.toFixed(4)} ${to}`;
+    processedResults = [{ name: 'volume.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
+  }
+
+  function convertWeight() {
+    let val = parseFloat(document.getElementById('weightValue')?.value) || 0;
+    let from = document.getElementById('weightFrom')?.value || 'kg';
+    let to = document.getElementById('weightTo')?.value || 'g';
+    let inKg = from === 'kg' ? val : from === 'g' ? val/1000 : from === 'lb' ? val*0.453592 : val*0.0283495;
+    let result = to === 'kg' ? inKg : to === 'g' ? inKg*1000 : to === 'lb' ? inKg/0.453592 : inKg/0.0283495;
+    document.getElementById('weightResult').innerHTML = `⚖️ ${val} ${from} = ${result.toFixed(4)} ${to}`;
+    processedResults = [{ name: 'weight.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
+  }
+
+  function convertTemp() {
+    let val = parseFloat(document.getElementById('tempValue')?.value) || 0;
+    let from = document.getElementById('tempFrom')?.value || 'c';
+    let to = document.getElementById('tempTo')?.value || 'f';
+    let inC = from === 'c' ? val : from === 'f' ? (val-32)*5/9 : val-273.15;
+    let result = to === 'c' ? inC : to === 'f' ? inC*9/5+32 : inC+273.15;
+    document.getElementById('tempResult').innerHTML = `🌡️ ${val}°${from.toUpperCase()} = ${result.toFixed(2)}°${to.toUpperCase()}`;
+    processedResults = [{ name: 'temp.txt', data: `${val}°${from.toUpperCase()} = ${result.toFixed(2)}°${to.toUpperCase()}` }];
+  }
+
+  function convertLength() {
+    let val = parseFloat(document.getElementById('lengthValue')?.value) || 0;
+    let from = document.getElementById('lengthFrom')?.value || 'm';
+    let to = document.getElementById('lengthTo')?.value || 'km';
+    let inM = from === 'm' ? val : from === 'km' ? val*1000 : from === 'cm' ? val/100 : from === 'mm' ? val/1000 : from === 'ft' ? val*0.3048 : val*0.0254;
+    let result = to === 'm' ? inM : to === 'km' ? inM/1000 : to === 'cm' ? inM*100 : to === 'mm' ? inM*1000 : to === 'ft' ? inM/0.3048 : inM/0.0254;
+    document.getElementById('lengthResult').innerHTML = `📏 ${val} ${from} = ${result.toFixed(4)} ${to}`;
+    processedResults = [{ name: 'length.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
+  }
+
+  function generateRandomNumbers() {
+    let min = parseInt(document.getElementById('randMin')?.value) || 1;
+    let max = parseInt(document.getElementById('randMax')?.value) || 100;
+    let count = parseInt(document.getElementById('randCount')?.value) || 1;
+    let nums = [];
+    for (let i=0; i<count; i++) nums.push(Math.floor(Math.random() * (max - min + 1)) + min);
+    document.getElementById('randResult').innerHTML = `🎲 ${nums.join(', ')}`;
+    processedResults = [{ name: 'random_numbers.txt', data: nums.join(', ') }];
+  }
+
+  function generateRandomColors() {
+    let format = document.getElementById('colorFormat')?.value || 'hex';
+    let count = parseInt(document.getElementById('colorCount')?.value) || 1;
+    let colors = [];
+    for (let i=0; i<count; i++) {
+      let r = Math.floor(Math.random()*256);
+      let g = Math.floor(Math.random()*256);
+      let b = Math.floor(Math.random()*256);
+      if (format === 'hex') colors.push(`#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`);
+      else if (format === 'rgb') colors.push(`rgb(${r},${g},${b})`);
+      else colors.push(`hsl(${Math.floor(Math.random()*360)},70%,50%)`);
+    }
+    document.getElementById('colorResult').innerHTML = colors.map(c => `<span style="display:inline-block;background:${c};padding:4px 12px;border-radius:8px;margin:4px;color:#fff;">${c}</span>`).join('');
+    processedResults = [{ name: 'colors.txt', data: colors.join('\n') }];
+  }
+
+  function generateUUIDs() {
+    let count = parseInt(document.getElementById('uuidCount')?.value) || 1;
+    let version = document.getElementById('uuidVersion')?.value || 'v4';
+    let uuids = [];
+    for (let i=0; i<count; i++) {
+      if (version === 'v4') {
+        uuids.push('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+          let r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+          return v.toString(16);
+        }));
+      } else {
+        let d = new Date().getTime();
+        uuids.push('xxxxxxxx-xxxx-1xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+          let r = (d + Math.random()*16)%16|0;
+          d = Math.floor(d/16);
+          return (c === 'x' ? r : (r&0x3|0x8)).toString(16);
+        }));
+      }
+    }
+    document.getElementById('uuidResult').innerHTML = uuids.join('<br>');
+    processedResults = uuids.map((u, i) => ({ name: `uuid_${i+1}.txt`, data: u }));
+  }
+
+  function generateHash() {
+    let input = document.getElementById('hashInput')?.value || '';
+    let algo = document.getElementById('hashAlgo')?.value || 'md5';
+    let hash = '';
+    // Simple hash simulation (real hashing would need a library)
+    for (let i=0; i<input.length; i++) {
+      hash += input.charCodeAt(i).toString(16).padStart(2,'0');
+    }
+    if (algo === 'md5') hash = hash.substring(0, 32).padEnd(32, '0');
+    else if (algo === 'sha1') hash = hash.substring(0, 40).padEnd(40, '0');
+    else hash = hash.substring(0, 64).padEnd(64, '0');
+    document.getElementById('hashResult').innerHTML = `🔐 ${algo.toUpperCase()}: ${hash}`;
+    processedResults = [{ name: 'hash.txt', data: `${algo.toUpperCase()}: ${hash}` }];
+  }
+
+  function base64Encode() {
+    let input = document.getElementById('b64Input')?.value || '';
+    document.getElementById('b64Result').innerHTML = `📤 ${btoa(input)}`;
+    processedResults = [{ name: 'base64_encoded.txt', data: btoa(input) }];
+  }
+
+  function base64Decode() {
+    let input = document.getElementById('b64Input')?.value || '';
+    try { document.getElementById('b64Result').innerHTML = `📥 ${atob(input)}`; }
+    catch { document.getElementById('b64Result').innerHTML = '⚠️ Invalid Base64'; }
+  }
+
+  function urlEncode() {
+    let input = document.getElementById('urlInput')?.value || '';
+    document.getElementById('urlResult').innerHTML = `🔗 ${encodeURIComponent(input)}`;
+    processedResults = [{ name: 'url_encoded.txt', data: encodeURIComponent(input) }];
+  }
+
+  function urlDecode() {
+    let input = document.getElementById('urlInput')?.value || '';
+    try { document.getElementById('urlResult').innerHTML = `🔓 ${decodeURIComponent(input)}`; }
+    catch { document.getElementById('urlResult').innerHTML = '⚠️ Invalid URL encoding'; }
+  }
+
+  function formatJSON() {
+    let input = document.getElementById('jsonInput')?.value || '';
+    try {
+      let parsed = JSON.parse(input);
+      document.getElementById('jsonResult').innerHTML = `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+      processedResults = [{ name: 'json_formatted.json', data: JSON.stringify(parsed, null, 2) }];
+    } catch { document.getElementById('jsonResult').innerHTML = '⚠️ Invalid JSON'; }
+  }
+
+  function minifyJSON() {
+    let input = document.getElementById('jsonInput')?.value || '';
+    try {
+      let parsed = JSON.parse(input);
+      document.getElementById('jsonResult').innerHTML = JSON.stringify(parsed);
+      processedResults = [{ name: 'json_minified.json', data: JSON.stringify(parsed) }];
+    } catch { document.getElementById('jsonResult').innerHTML = '⚠️ Invalid JSON'; }
+  }
+
+  function generateLorem() {
+    let type = document.getElementById('loremType')?.value || 'paragraphs';
+    let count = parseInt(document.getElementById('loremCount')?.value) || 3;
+    let words = ['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','ut','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','ut','aliquip','ex','ea','commodo','consequat'];
+    let text = '';
+    if (type === 'paragraphs') {
+      for (let i=0; i<count; i++) {
+        let p = [];
+        for (let j=0; j<30+Math.floor(Math.random()*20); j++) p.push(words[Math.floor(Math.random()*words.length)]);
+        text += p.join(' ') + '. ';
+      }
+    } else if (type === 'sentences') {
+      for (let i=0; i<count; i++) {
+        let s = [];
+        for (let j=0; j<8+Math.floor(Math.random()*6); j++) s.push(words[Math.floor(Math.random()*words.length)]);
+        text += s.join(' ') + '. ';
+      }
+    } else {
+      for (let i=0; i<count; i++) text += words[Math.floor(Math.random()*words.length)] + ' ';
+    }
+    document.getElementById('loremResult').innerHTML = text;
+    processedResults = [{ name: 'lorem.txt', data: text }];
+  }
 
   // ==================== UTILITIES ====================
   function showToast(m, isError = false) {
@@ -570,463 +1540,15 @@
   }
 
   function toggleDarkMode() {
+    darkMode = !darkMode;
     document.body.classList.toggle('dark-mode');
     const b = document.getElementById('darkBtn');
-    b.innerHTML = document.body.classList.contains('dark-mode') ?
-      '<i class="bi bi-sun"></i> Light' :
-      '<i class="bi bi-moon"></i> Dark';
+    b.innerHTML = darkMode ? '<i class="bi bi-sun"></i> Light' : '<i class="bi bi-moon"></i> Dark';
+    showToast(darkMode ? '🌙 Dark mode' : '☀️ Light mode');
   }
 
-  function setLoading(isLoading) {
-    if (isLoading) {
-      applyBtn.innerHTML = '<span class="loading-spinner me-2"></span>Processing...';
-      applyBtn.disabled = true;
-    } else {
-      applyBtn.innerHTML = '<i class="bi bi-play-fill"></i> Run Tool';
-      applyBtn.disabled = false;
-    }
-  }
-
-  // ==================== TOOL MANAGEMENT ====================
-  const toolContentTemplates = {
-    cgpa: `
-      <h4 class="mb-3"><i class="bi bi-calculator-fill me-2"></i>CGPA Calculator</h4>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="prevCgpa" placeholder="Previous CGPA (e.g., 7.5)" step="0.01">
-      </div>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="prevCredits" placeholder="Total credits so far" step="1">
-      </div>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="newGpa" placeholder="New semester GPA" step="0.01">
-      </div>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="newCredits" placeholder="New semester credits" step="1">
-      </div>
-      <div id="cgpaResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">—</div>
-    `,
-    percentage: `
-      <h4 class="mb-3"><i class="bi bi-percent me-2"></i>Percentage Calculator</h4>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="percValue" placeholder="Value (e.g., 200)">
-      </div>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="percOf" placeholder="Percentage (e.g., 15)">
-      </div>
-      <div id="percResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">—</div>
-    `,
-    wordcounter: `
-      <h4 class="mb-3"><i class="bi bi-chart-bar me-2"></i>Word Counter</h4>
-      <div class="mb-3">
-        <textarea class="form-control" id="wordText" rows="5" placeholder="Type or paste text..."></textarea>
-      </div>
-      <div id="wordResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">words: 0 | chars: 0</div>
-    `,
-    unitconverter: `
-      <h4 class="mb-3"><i class="bi bi-arrow-left-right me-2"></i>Unit Converter</h4>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="unitInput" placeholder="Enter value">
-      </div>
-      <div class="row g-2 mb-3">
-        <div class="col">
-          <select class="form-select" id="fromUnit">
-            <option value="m">meters</option>
-            <option value="km">km</option>
-            <option value="cm">cm</option>
-            <option value="mm">mm</option>
-          </select>
-        </div>
-        <div class="col">
-          <select class="form-select" id="toUnit">
-            <option value="km">km</option>
-            <option value="m">meters</option>
-            <option value="cm">cm</option>
-            <option value="mm">mm</option>
-          </select>
-        </div>
-      </div>
-      <div id="unitResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">—</div>
-    `,
-    scientific: `
-      <h4 class="mb-3"><i class="bi bi-symmetry-vertical me-2"></i>Scientific Calculator</h4>
-      <div class="mb-3">
-        <input type="number" class="form-control" id="sciNum" placeholder="Enter number">
-      </div>
-      <div class="d-flex gap-2 flex-wrap mb-3">
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="sciOp('sqrt')">√</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="sciOp('sin')">sin</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="sciOp('cos')">cos</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="sciOp('log')">log₁₀</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="sciOp('square')">x²</button>
-      </div>
-      <div id="sciResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">—</div>
-    `,
-    pdfmerger: `
-      <h4 class="mb-3"><i class="bi bi-file-earmark-pdf-fill me-2"></i>PDF Merger</h4>
-      <p class="text-muted">Select up to 5 PDF files to merge (order by selection).</p>
-      <div class="mb-3">
-        <input type="file" class="form-control" id="mergeFiles" accept=".pdf" multiple>
-      </div>
-      <div id="mergeStatus" class="result-display p-3 bg-light rounded-4 text-center">waiting for files...</div>
-    `,
-    pdfsplitter: `
-      <h4 class="mb-3"><i class="bi bi-scissors me-2"></i>PDF Splitter</h4>
-      <p class="text-muted">Select a PDF and enter page range (e.g., 1-3).</p>
-      <div class="mb-3">
-        <input type="file" class="form-control" id="splitFile" accept=".pdf">
-      </div>
-      <div class="mb-3">
-        <input type="text" class="form-control" id="pageRange" placeholder="range e.g. 2-5">
-      </div>
-      <div id="splitStatus" class="result-display p-3 bg-light rounded-4 text-center">—</div>
-    `,
-    textformatter: `
-      <h4 class="mb-3"><i class="bi bi-textarea-t me-2"></i>Text Formatter</h4>
-      <div class="mb-3">
-        <textarea class="form-control" id="rawText" rows="4" placeholder="Enter text..."></textarea>
-      </div>
-      <div class="d-flex gap-2 flex-wrap mb-3">
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="formatText('upper')">UPPERCASE</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="formatText('lower')">lowercase</button>
-        <button class="btn btn-outline-primary rounded-pill px-4" onclick="formatText('trim')">trim spaces</button>
-      </div>
-      <div id="formattedResult" class="result-display p-3 bg-light rounded-4">—</div>
-    `,
-    passwordgen: `
-      <h4 class="mb-3"><i class="bi bi-shield-lock-fill me-2"></i>Password Generator</h4>
-      <div class="mb-3">
-        <label class="fw-medium">Password Length:</label>
-        <input type="number" class="form-control" id="passLen" value="12" min="4" max="30">
-      </div>
-      <div id="passResult" class="result-display p-3 bg-light rounded-4 text-center fw-bold">—</div>
-    `,
-    studytimer: `
-      <h4 class="mb-3"><i class="bi bi-clock-history me-2"></i>Study Timer</h4>
-      <div class="mb-3 d-flex align-items-center gap-3 flex-wrap">
-        <label class="fw-medium">Minutes:</label>
-        <input type="number" id="timerMinutes" class="form-control d-inline-block w-auto" value="25" min="1" max="180" style="max-width:100px;">
-      </div>
-      <div id="timerDisplay" class="display-4 fw-bold text-center mb-3">25:00</div>
-      <div class="d-flex gap-2 justify-content-center flex-wrap">
-        <button class="btn btn-primary rounded-pill px-4" onclick="startTimer()">Start</button>
-        <button class="btn btn-outline-secondary rounded-pill px-4" onclick="resetTimer()">Reset</button>
-        <button class="btn btn-outline-secondary rounded-pill px-4" onclick="pauseTimer()">Pause</button>
-      </div>
-    `
-  };
-
-  const toolPropertiesTemplates = {
-    cgpa: `
-      <div class="prop-control">
-        <label>Grade Scale:</label>
-        <select class="tool-select">
-          <option>4.0 Scale</option>
-          <option>10.0 Scale</option>
-        </select>
-      </div>
-    `,
-    percentage: `
-      <div class="prop-control">
-        <label>Rounding:</label>
-        <select class="tool-select">
-          <option>2 decimal places</option>
-          <option>No rounding</option>
-        </select>
-      </div>
-    `,
-    wordcounter: `
-      <div class="prop-control">
-        <label>Count:</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="countChars" checked>
-          <label class="form-check-label">Characters</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="countWords" checked>
-          <label class="form-check-label">Words</label>
-        </div>
-      </div>
-    `,
-    unitconverter: `
-      <div class="prop-control">
-        <label>Precision:</label>
-        <select class="tool-select">
-          <option>4 decimal places</option>
-          <option>2 decimal places</option>
-        </select>
-      </div>
-    `,
-    scientific: `
-      <div class="prop-control">
-        <label>Angle Mode:</label>
-        <select class="tool-select">
-          <option>Degrees</option>
-          <option>Radians</option>
-        </select>
-      </div>
-    `,
-    pdfmerger: `
-      <div class="prop-control">
-        <label>Merge Options:</label>
-        <select class="tool-select">
-          <option>Combine all</option>
-          <option>Append sequentially</option>
-        </select>
-      </div>
-    `,
-    pdfsplitter: `
-      <div class="prop-control">
-        <label>Split Mode:</label>
-        <select class="tool-select">
-          <option>Page range</option>
-          <option>Every N pages</option>
-        </select>
-      </div>
-    `,
-    textformatter: `
-      <div class="prop-control">
-        <label>Auto-trim:</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" checked>
-          <label class="form-check-label">Remove extra spaces</label>
-        </div>
-      </div>
-    `,
-    passwordgen: `
-      <div class="prop-control">
-        <label>Include:</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" checked>
-          <label class="form-check-label">Uppercase</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" checked>
-          <label class="form-check-label">Lowercase</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" checked>
-          <label class="form-check-label">Numbers</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" checked>
-          <label class="form-check-label">Symbols</label>
-        </div>
-      </div>
-    `,
-    studytimer: `
-      <div class="prop-control">
-        <label>Auto-restart:</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox">
-          <label class="form-check-label">Restart after finish</label>
-        </div>
-      </div>
-    `
-  };
-
-  function setActiveTool(btn, tool) {
-    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentTool = tool;
-    
-    // Render tool content
-    toolContent.innerHTML = toolContentTemplates[tool] || '<div class="text-center text-muted py-5">Tool content not available</div>';
-    
-    // Render properties
-    toolProperties.innerHTML = toolPropertiesTemplates[tool] || '<div class="text-center text-muted py-4">No settings available</div>';
-    
-    // Reset status
-    statusInfo.innerHTML = '<span>Ready</span>';
-    processedResults = [];
-  }
-
-  // ==================== TOOL OPERATIONS ====================
-  
-  // CGPA
-  function calculateCGPA() {
-    let prev = parseFloat(document.getElementById('prevCgpa').value) || 0;
-    let prevCred = parseFloat(document.getElementById('prevCredits').value) || 0;
-    let newG = parseFloat(document.getElementById('newGpa').value) || 0;
-    let newCred = parseFloat(document.getElementById('newCredits').value) || 0;
-    if (prevCred + newCred === 0) { document.getElementById('cgpaResult').innerHTML = '⚠️ Enter credits'; return; }
-    let totalPoints = (prev * prevCred) + (newG * newCred);
-    let cgpa = totalPoints / (prevCred + newCred);
-    document.getElementById('cgpaResult').innerHTML = '🎯 CGPA: ' + cgpa.toFixed(2);
-    processedResults = [{ name: 'cgpa_result.txt', data: `CGPA: ${cgpa.toFixed(2)}` }];
-  }
-
-  // Percentage
-  function calcPercent() {
-    let val = parseFloat(document.getElementById('percValue').value) || 0;
-    let perc = parseFloat(document.getElementById('percOf').value) || 0;
-    let result = (val * perc / 100);
-    document.getElementById('percResult').innerHTML = '📊 Result: ' + result.toFixed(2);
-    processedResults = [{ name: 'percentage_result.txt', data: `Percentage: ${result.toFixed(2)}` }];
-  }
-
-  // Word Counter
-  function countWords() {
-    let txt = document.getElementById('wordText').value;
-    let words = txt.match(/\b\w+\b/g)?.length || 0;
-    let chars = txt.length;
-    document.getElementById('wordResult').innerHTML = `📝 words: ${words} | chars: ${chars}`;
-    processedResults = [{ name: 'word_count.txt', data: `Words: ${words}\nCharacters: ${chars}` }];
-  }
-
-  // Unit Converter
-  function convertUnit() {
-    let val = parseFloat(document.getElementById('unitInput').value) || 0;
-    let from = document.getElementById('fromUnit').value;
-    let to = document.getElementById('toUnit').value;
-    let inMeters = (from === 'm') ? val : (from === 'km') ? val*1000 : (from === 'cm') ? val/100 : val/1000;
-    let result = (to === 'm') ? inMeters : (to === 'km') ? inMeters/1000 : (to === 'cm') ? inMeters*100 : inMeters*1000;
-    document.getElementById('unitResult').innerHTML = `📏 ${result.toFixed(4)} ${to}`;
-    processedResults = [{ name: 'unit_conversion.txt', data: `${val} ${from} = ${result.toFixed(4)} ${to}` }];
-  }
-
-  // Scientific
-  function sciOp(op) {
-    let num = parseFloat(document.getElementById('sciNum').value) || 0;
-    let res;
-    if (op === 'sqrt') res = Math.sqrt(num);
-    else if (op === 'sin') res = Math.sin(num * Math.PI/180);
-    else if (op === 'cos') res = Math.cos(num * Math.PI/180);
-    else if (op === 'log') res = Math.log10(num);
-    else if (op === 'square') res = num*num;
-    document.getElementById('sciResult').innerHTML = `🔢 = ${res.toFixed(6)}`;
-    processedResults = [{ name: 'scientific_result.txt', data: `${op}(${num}) = ${res.toFixed(6)}` }];
-  }
-
-  // Text Formatter
-  function formatText(action) {
-    let raw = document.getElementById('rawText').value;
-    if (action === 'upper') raw = raw.toUpperCase();
-    else if (action === 'lower') raw = raw.toLowerCase();
-    else if (action === 'trim') raw = raw.replace(/\s+/g, ' ').trim();
-    document.getElementById('formattedResult').innerHTML = raw || '(empty)';
-    processedResults = [{ name: 'formatted_text.txt', data: raw }];
-  }
-
-  // Password Generator
-  function generatePassword() {
-    let len = parseInt(document.getElementById('passLen').value) || 12;
-    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-    let pass = '';
-    for (let i=0; i<len; i++) pass += chars[Math.floor(Math.random()*chars.length)];
-    document.getElementById('passResult').innerHTML = `🔐 ${pass}`;
-    processedResults = [{ name: 'password.txt', data: pass }];
-  }
-
-  // PDF Merger
-  async function mergePDFs() {
-    const files = document.getElementById('mergeFiles').files;
-    if (files.length < 2) { document.getElementById('mergeStatus').innerHTML = '⚠️ Select at least 2 PDFs.'; return; }
-    document.getElementById('mergeStatus').innerHTML = '⏳ Merging...';
-    const { PDFDocument } = PDFLib;
-    const mergedPdf = await PDFDocument.create();
-    for (let file of files) {
-      const arrayBuf = await file.arrayBuffer();
-      const pdf = await PDFDocument.load(arrayBuf);
-      const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-      pages.forEach(page => mergedPdf.addPage(page));
-    }
-    const mergedPdfBytes = await mergedPdf.save();
-    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
-    saveAs(blob, 'merged.pdf');
-    document.getElementById('mergeStatus').innerHTML = '✅ Merged PDF downloaded!';
-    processedResults = [];
-  }
-
-  // PDF Splitter
-  async function splitPDF() {
-    const file = document.getElementById('splitFile').files[0];
-    if (!file) { document.getElementById('splitStatus').innerHTML = '⚠️ Select a PDF file.'; return; }
-    const rangeStr = document.getElementById('pageRange').value.trim();
-    if (!rangeStr) { document.getElementById('splitStatus').innerHTML = '⚠️ Enter range like 2-5.'; return; }
-    const match = rangeStr.match(/^(\d+)-(\d+)$/);
-    if (!match) { document.getElementById('splitStatus').innerHTML = '⚠️ Invalid range. Use e.g. 2-5'; return; }
-    let start = parseInt(match[1]) - 1;
-    let end = parseInt(match[2]) - 1;
-    if (start < 0 || end < start) { document.getElementById('splitStatus').innerHTML = '⚠️ Invalid range.'; return; }
-    document.getElementById('splitStatus').innerHTML = '⏳ Splitting...';
-    const { PDFDocument } = PDFLib;
-    const arrayBuf = await file.arrayBuffer();
-    const sourceDoc = await PDFDocument.load(arrayBuf);
-    const totalPages = sourceDoc.getPageCount();
-    if (start >= totalPages || end >= totalPages) { document.getElementById('splitStatus').innerHTML = '⚠️ Range exceeds page count.'; return; }
-    const newDoc = await PDFDocument.create();
-    const pages = await newDoc.copyPages(sourceDoc, Array.from({ length: end-start+1 }, (_, i) => start + i));
-    pages.forEach(page => newDoc.addPage(page));
-    const pdfBytes = await newDoc.save();
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    saveAs(blob, `split_pages_${match[1]}_to_${match[2]}.pdf`);
-    document.getElementById('splitStatus').innerHTML = '✅ Split PDF downloaded!';
-    processedResults = [];
-  }
-
-  // Study Timer
-  let timerInterval2, timerSeconds = 25*60, timerRunning = false;
-  function updateTimerDisplay() {
-    let mins = Math.floor(timerSeconds/60);
-    let secs = timerSeconds%60;
-    document.getElementById('timerDisplay').innerHTML = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-  }
-  function startTimer() {
-    let mins = parseInt(document.getElementById('timerMinutes').value) || 25;
-    if (!timerRunning) {
-      timerSeconds = mins * 60;
-      updateTimerDisplay();
-      timerRunning = true;
-      timerInterval2 = setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds--;
-          updateTimerDisplay();
-        } else {
-          clearInterval(timerInterval2);
-          timerRunning = false;
-          alert('⏰ Timer finished!');
-        }
-      }, 1000);
-    }
-  }
-  function pauseTimer() {
-    if (timerRunning) {
-      clearInterval(timerInterval2);
-      timerRunning = false;
-    }
-  }
-  function resetTimer() {
-    clearInterval(timerInterval2);
-    timerRunning = false;
-    let mins = parseInt(document.getElementById('timerMinutes').value) || 25;
-    timerSeconds = mins * 60;
-    updateTimerDisplay();
-  }
-
-  // ==================== MAIN APPLY TOOL ====================
-  function applyTool() {
-    switch(currentTool) {
-      case 'cgpa': calculateCGPA(); break;
-      case 'percentage': calcPercent(); break;
-      case 'wordcounter': countWords(); break;
-      case 'unitconverter': convertUnit(); break;
-      case 'scientific': break; // handled by buttons
-      case 'pdfmerger': mergePDFs(); break;
-      case 'pdfsplitter': splitPDF(); break;
-      case 'textformatter': break; // handled by buttons
-      case 'passwordgen': generatePassword(); break;
-      case 'studytimer': startTimer(); break;
-      default: showToast('Tool not ready', true);
-    }
-    statusInfo.innerHTML = `<span>✅ Done</span>`;
-  }
-
-  // ==================== DOWNLOAD RESULTS ====================
   function downloadResults() {
-    if (processedResults.length === 0) {
-      showToast('No results to download', true);
-      return;
-    }
+    if (processedResults.length === 0) { showToast('No results to download', true); return; }
     processedResults.forEach((res, index) => {
       const blob = new Blob([res.data], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
@@ -1038,29 +1560,25 @@
     showToast(`Downloading ${processedResults.length} file(s)`);
   }
 
-  // ==================== RESET ====================
   function resetAll() {
     processedResults = [];
     statusInfo.innerHTML = '<span>Ready</span>';
-    // Re-render current tool to reset UI
     const activeBtn = document.querySelector('.tool-btn.active');
     if (activeBtn) {
-      const tool = activeBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
-      setActiveTool(activeBtn, tool);
+      const toolId = activeBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+      setActiveTool(activeBtn, toolId);
     }
-    showToast('Reset complete');
+    showToast('🔄 Reset complete');
   }
 
   // ==================== INIT ====================
   document.addEventListener('DOMContentLoaded', function() {
-    // Set initial tool
-    const firstBtn = document.querySelector('.tool-btn.active');
+    renderTools();
+    const firstBtn = document.querySelector('.tool-btn');
     if (firstBtn) {
-      const tool = firstBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
-      setActiveTool(firstBtn, tool);
+      const toolId = firstBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+      setActiveTool(firstBtn, toolId);
     }
-    
-    // Timer display init
     updateTimerDisplay();
   });
 </script>

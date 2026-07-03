@@ -330,6 +330,10 @@
             background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         }
 
+        .tool-icon-wrapper.student-bg {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
         .tool-card h3 {
             font-weight: 700;
             font-size: 1.4rem;
@@ -382,6 +386,16 @@
 
         .tool-btn.img:hover {
             background: #059669;
+            color: white;
+        }
+
+        .tool-btn.student {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .tool-btn.student:hover {
+            background: #d97706;
             color: white;
         }
 
@@ -586,12 +600,12 @@
             <div class="section-header fade-in-up">
                 <span class="section-badge">Our Tools</span>
                 <h2>Everything You Need</h2>
-                <p>Three powerful tools designed to make your digital life easier. No signup required, completely free.</p>
+                <p>Four powerful tools designed to make your digital life easier. No signup required, completely free.</p>
             </div>
 
             <div class="row g-4">
                 <!-- PDF Tool -->
-                <div class="col-md-4 fade-in-up">
+                <div class="col-md-3 fade-in-up">
                     <div class="tool-card">
                         <div class="tool-icon-wrapper pdf-bg">
                             <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="PDF Tool">
@@ -603,22 +617,23 @@
                         </a>
                     </div>
                 </div>
-                 <div class="row g-4">
+
                 <!-- Student Tool -->
-                <div class="col-md-4 fade-in-up">
+                <div class="col-md-3 fade-in-up">
                     <div class="tool-card">
-                        <div class="tool-icon-wrapper pdf-bg">
-                            <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="PDF Tool">
+                        <div class="tool-icon-wrapper student-bg">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Student Tools">
                         </div>
-                        <h3>student daily working tools</h3>
-                        <p>Convert, split, merge student tools  instantly. Support for daily work.</p>
-                        <a href="tools/student-tools.html" class="tool-btn pdf">
+                        <h3>Student Daily Tools</h3>
+                        <p>All-in-one student toolkit: GPA calculator, study planner, note taker, assignment tracker, and exam countdown.</p>
+                        <a href="tools/student-tools.html" class="tool-btn student">
                             Use Tool <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
                 </div>
+
                 <!-- Resume Builder -->
-                <div class="col-md-4 fade-in-up">
+                <div class="col-md-3 fade-in-up">
                     <div class="tool-card">
                         <div class="tool-icon-wrapper resume-bg">
                             <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="Resume Builder">
@@ -632,7 +647,7 @@
                 </div>
 
                 <!-- Image Editor -->
-                <div class="col-md-4 fade-in-up">
+                <div class="col-md-3 fade-in-up">
                     <div class="tool-card">
                         <div class="tool-icon-wrapper img-bg">
                             <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="Image Editor">
@@ -724,6 +739,7 @@
                     <h6 class="fw-bold mb-3">Tools</h6>
                     <div class="footer-links">
                         <a href="tools/pdf-tools.html">PDF Converter</a>
+                        <a href="tools/student-tools.html">Student Tools</a>
                         <a href="tools/resume-tools.html">Resume Builder</a>
                         <a href="tools/image-tools.html">Image Editor</a>
                     </div>
@@ -816,7 +832,7 @@
         });
 
         // Console welcome message
-        console.log('%c🚀 Welcome to Zebtoolo!', 'font-size: 24px; font-weight: bold; color: #6366f1;');
+        console.log('%c🚀 Welcome to Zentoolo!', 'font-size: 24px; font-weight: bold; color: #6366f1;');
         console.log('%cBuilt with HTML, CSS, JS & Bootstrap 5', 'font-size: 14px; color: #64748b;');
     </script>
 </body>

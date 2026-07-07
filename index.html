@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Zentoolo offers free online tools including PDF Converter, Resume Builder, Image Editor, and Student Daily Tools.">
-    <meta name="keywords" content="free online tools, PDF converter, resume builder, image editor, student tools, online tools, pdf converter, pdf to word, pdf generator, image to pdf converter, resume builder, resume builder online, resume builder in word, free resume builder, image editor, free online image editor, image resize, image crop, image compressor, student tools, online tools, free online tools, pdf tools, image tools, Zentoolo">
-    <meta name="author" content="Zentoolo">
-    <meta name="robots" content="index, follow">
-     <meta name="google-site-verification" content="z4Og04a1TGaOvRoeMmWBMNtJipJRYmP_M7wUoNx5YJE" />
-    <!-- Verification Meta Tag -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Zentoolo offers free online tools including PDF Converter, Resume Builder, Image Editor, and Student Daily Tools." />
+    <meta name="keywords" content="free online tools, PDF converter, resume builder, image editor, student tools, online tools, pdf converter, pdf to word, pdf generator, image to pdf converter, resume builder, resume builder online, resume builder in word, free resume builder, image editor, free online image editor, image resize, image crop, image compressor, student tools, online tools, free online tools, pdf tools, image tools, Zentoolo" />
+    <meta name="author" content="Zentoolo" />
+    <meta name="robots" content="index, follow" />
+    <meta name="google-site-verification" content="z4Og04a1TGaOvRoeMmWBMNtJipJRYmP_M7wUoNx5YJE" />
     <meta name="8ff885614fffdd8e87ced338c2acb6dfa8308317" content="8ff885614fffdd8e87ced338c2acb6dfa8308317" />
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E2E0ZQ6R43"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-E2E0ZQ6R43');
-</script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E2E0ZQ6R43"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-E2E0ZQ6R43');
+    </script>
     <title>Zentoolo — Free Online Tools</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <style>
+        /* --- SKIP LINK (accessibility) --- */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #6366f1;
+            color: white;
+            padding: 8px 20px;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 0 0 4px 0;
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
@@ -172,9 +189,10 @@ gtag('config', 'G-E2E0ZQ6R43');
             background-clip: text;
         }
 
+        /* improved contrast */
         .hero p {
             font-size: 1.2rem;
-            color: #64748b;
+            color: #334155;  /* darker for contrast */
             max-width: 500px;
             margin-bottom: 30px;
         }
@@ -260,7 +278,7 @@ gtag('config', 'G-E2E0ZQ6R43');
         }
 
         .section-header p {
-            color: #64748b;
+            color: #334155; /* improved contrast */
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
@@ -354,8 +372,9 @@ gtag('config', 'G-E2E0ZQ6R43');
             margin-bottom: 12px;
         }
 
+        /* improved contrast for card descriptions */
         .tool-card p {
-            color: #64748b;
+            color: #334155;
             font-size: 0.95rem;
             margin-bottom: 25px;
             line-height: 1.6;
@@ -465,7 +484,7 @@ gtag('config', 'G-E2E0ZQ6R43');
         }
 
         .footer-links a {
-            color: #94a3b8;
+            color: #cbd5e1; /* improved contrast on dark bg */
             text-decoration: none;
             transition: color 0.3s ease;
             display: block;
@@ -487,11 +506,13 @@ gtag('config', 'G-E2E0ZQ6R43');
             color: white;
             margin-right: 10px;
             transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .social-icon:hover {
             background: var(--primary);
             transform: translateY(-3px);
+            color: white;
         }
 
         .footer-bottom {
@@ -499,7 +520,7 @@ gtag('config', 'G-E2E0ZQ6R43');
             margin-top: 40px;
             padding-top: 20px;
             text-align: center;
-            color: #64748b;
+            color: #94a3b8;
         }
 
         /* ===== ANIMATIONS ===== */
@@ -514,6 +535,12 @@ gtag('config', 'G-E2E0ZQ6R43');
             transform: translateY(0);
         }
 
+        /* focus indicator for keyboard */
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid #6366f1;
+            outline-offset: 2px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
@@ -525,228 +552,238 @@ gtag('config', 'G-E2E0ZQ6R43');
 </head>
 <body>
 
+    <!-- ===== SKIP LINK ===== -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- ===== NAVBAR ===== -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Zen<span>toolo</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tools">Tools</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a href="#tools" class="btn btn-primary-custom">Get Started</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ===== HERO SECTION ===== -->
-    <section class="hero" id="home">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        
-        <div class="container">
-            <div class="row align-items-center min-vh-100 pt-5">
-                <div class="col-lg-7 hero-content">
-                    <div class="badge-item d-inline-flex mb-4" style="background: rgba(99,102,241,0.1); color: var(--primary);">
-                        <i class="bi bi-stars"></i>
-                        <span>100% Free Online Tools</span>
-                    </div>
-                    <h1>Powerful Tools for <span class="gradient-text">Everyone</span></h1>
-                    <p>Zentoolo provides a suite of free, easy-to-use online tools. Convert PDFs, build professional resumes, and edit images — all in one place.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#tools" class="btn btn-primary-custom btn-lg">Explore Tools</a>
-                        <a href="#features" class="btn btn-outline-dark btn-lg rounded-pill px-4">Learn More</a>
-                    </div>
-                    <div class="hero-badges">
-                        <div class="badge-item">
-                            <i class="bi bi-shield-check"></i>
-                            <span>Secure & Private</span>
-                        </div>
-                        <div class="badge-item">
-                            <i class="bi bi-lightning-charge"></i>
-                            <span>Fast Processing</span>
-                        </div>
-                        <div class="badge-item">
-                            <i class="bi bi-phone"></i>
-                            <span>Mobile Friendly</span>
-                        </div>
-                    </div>
+    <header role="banner">
+        <nav class="navbar navbar-expand-lg fixed-top" role="navigation" aria-label="Main navigation">
+            <div class="container">
+                <a class="navbar-brand" href="#">Zen<span>toolo</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="navbar-toggler-icon" aria-hidden="true"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#tools">Tools</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="#tools" class="btn btn-primary-custom">Get Started</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="position-relative">
-                        <div class="text-center">
-                            <div style="font-size: 15rem; opacity: 0.1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                <i class="bi bi-tools"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content" role="main">
+
+        <!-- ===== HERO SECTION ===== -->
+        <section class="hero" id="home" aria-labelledby="hero-heading">
+            <div class="shape shape-1" aria-hidden="true"></div>
+            <div class="shape shape-2" aria-hidden="true"></div>
+            <div class="shape shape-3" aria-hidden="true"></div>
+
+            <div class="container">
+                <div class="row align-items-center min-vh-100 pt-5">
+                    <div class="col-lg-7 hero-content">
+                        <div class="badge-item d-inline-flex mb-4" style="background: rgba(99,102,241,0.1); color: var(--primary);">
+                            <i class="bi bi-stars" aria-hidden="true"></i>
+                            <span>100% Free Online Tools</span>
+                        </div>
+                        <h1 id="hero-heading">Powerful Tools for <span class="gradient-text">Everyone</span></h1>
+                        <p>Zentoolo provides a suite of free, easy-to-use online tools. Convert PDFs, build professional resumes, and edit images — all in one place.</p>
+                        <div class="d-flex gap-3">
+                            <a href="#tools" class="btn btn-primary-custom btn-lg">Explore Tools</a>
+                            <a href="#features" class="btn btn-outline-dark btn-lg rounded-pill px-4">Learn More</a>
+                        </div>
+                        <div class="hero-badges">
+                            <div class="badge-item">
+                                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                                <span>Secure &amp; Private</span>
                             </div>
-                            <div class="position-relative" style="z-index: 2;">
-                                <div class="d-flex justify-content-center gap-3 mb-3">
-                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #fee2e2, #fecaca); transform: rotate(-5deg);">
-                                        <i class="bi bi-file-earmark-pdf-fill text-danger" style="font-size: 3rem;"></i>
-                                    </div>
-                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); transform: rotate(5deg); margin-top: 30px;">
-                                        <i class="bi bi-file-person-fill text-primary" style="font-size: 3rem;"></i>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); transform: rotate(-3deg);">
-                                        <i class="bi bi-image-fill text-success" style="font-size: 3rem;"></i>
-                                    </div>
-                                </div>
+                            <div class="badge-item">
+                                <i class="bi bi-lightning-charge" aria-hidden="true"></i>
+                                <span>Fast Processing</span>
+                            </div>
+                            <div class="badge-item">
+                                <i class="bi bi-phone" aria-hidden="true"></i>
+                                <span>Mobile Friendly</span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== TOOLS SECTION ===== -->
-    <section class="tools-section" id="tools">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="section-badge">Our Tools</span>
-                <h2>Everything You Need</h2>
-                <p>Four powerful tools designed to make your digital life easier. No signup required, completely free.</p>
-            </div>
-
-            <div class="row g-4">
-                <!-- PDF Tool -->
-                <div class="col-md-3 fade-in-up">
-                    <div class="tool-card">
-                        <div class="tool-icon-wrapper pdf-bg">
-                            <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="PDF Tool">
-                        </div>
-                        <h3>PDF Converter</h3>
-                        <p>Convert, merge, split, and compress PDF files instantly. Support for Word, Excel, JPG, and more formats.</p>
-                        <a href="tools/pdf-tools.html" class="tool-btn pdf">
-                            Use Tool <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Student Tool -->
-                <div class="col-md-3 fade-in-up">
-                    <div class="tool-card">
-                        <div class="tool-icon-wrapper student-bg">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Student Tools">
-                        </div>
-                        <h3>Student Daily Tools</h3>
-                        <p>All-in-one student toolkit: GPA calculator, study planner, note taker, assignment tracker, and exam countdown.</p>
-                        <a href="tools/student-tools.html" class="tool-btn student">
-                            Use Tool <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Resume Builder -->
-                <div class="col-md-3 fade-in-up">
-                    <div class="tool-card">
-                        <div class="tool-icon-wrapper resume-bg">
-                            <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="Resume Builder">
-                        </div>
-                        <h3>Resume Builder</h3>
-                        <p>Create professional, ATS-friendly resumes in minutes. Choose from 50+ modern templates and export to PDF.</p>
-                        <a href="tools/resume-tools.html" class="tool-btn resume">
-                            Use Tool <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Image Editor -->
-                <div class="col-md-3 fade-in-up">
-                    <div class="tool-card">
-                        <div class="tool-icon-wrapper img-bg">
-                            <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="Image Editor">
-                        </div>
-                        <h3>Image Editor</h3>
-                        <p>Edit, resize, crop, and enhance your images online. Add filters, remove backgrounds, and optimize for web.</p>
-                        <a href="tools/image-tools.html" class="tool-btn img">
-                            Use Tool <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FEATURES SECTION ===== -->
-    <section class="features-section" id="features">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <span class="section-badge">Why Zentoolo</span>
-                <h2>Built for Simplicity</h2>
-                <p>We believe great tools should be accessible to everyone. Here's what makes us different.</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-4 fade-in-up">
-                    <div class="feature-box">
-                        <div class="feature-icon purple">
-                            <i class="bi bi-lightning-charge-fill"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold mb-2">Lightning Fast</h5>
-                            <p class="text-muted mb-0">Process files in seconds with our optimized cloud infrastructure.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 fade-in-up">
-                    <div class="feature-box">
-                        <div class="feature-icon pink">
-                            <i class="bi bi-shield-lock-fill"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold mb-2">Privacy First</h5>
-                            <p class="text-muted mb-0">Your files are processed securely and deleted automatically after use.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 fade-in-up">
-                    <div class="feature-box">
-                        <div class="feature-icon blue">
-                            <i class="bi bi-phone-fill"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold mb-2">Works Everywhere</h5>
-                            <p class="text-muted mb-0">Fully responsive design that works on desktop, tablet, and mobile.</p>
+                    <div class="col-lg-5 d-none d-lg-block">
+                        <div class="position-relative">
+                            <div class="text-center">
+                                <div style="font-size: 15rem; opacity: 0.1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                    <i class="bi bi-tools" aria-hidden="true"></i>
+                                </div>
+                                <div class="position-relative" style="z-index: 2;">
+                                    <div class="d-flex justify-content-center gap-3 mb-3">
+                                        <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #fee2e2, #fecaca); transform: rotate(-5deg);" aria-hidden="true">
+                                            <i class="bi bi-file-earmark-pdf-fill text-danger" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); transform: rotate(5deg); margin-top: 30px;" aria-hidden="true">
+                                            <i class="bi bi-file-person-fill text-primary" style="font-size: 3rem;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); transform: rotate(-3deg);" aria-hidden="true">
+                                            <i class="bi bi-image-fill text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ===== ABOUT / CTA SECTION ===== -->
-    <section class="py-5" id="about" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
-        <div class="container py-5 text-center text-white">
-            <h2 class="fw-bold mb-3" style="font-size: 2.5rem;">Ready to Get Started?</h2>
-            <p class="mb-4 opacity-75" style="font-size: 1.1rem;">Join thousands of users who trust Zentoolo for their daily tasks.</p>
-            <a href="#tools" class="btn btn-light btn-lg rounded-pill px-5 fw-bold" style="color: var(--primary);">
-                Explore All Tools <i class="bi bi-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </section>
+        <!-- ===== TOOLS SECTION ===== -->
+        <section class="tools-section" id="tools" aria-labelledby="tools-heading">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-badge">Our Tools</span>
+                    <h2 id="tools-heading">Everything You Need</h2>
+                    <p>Four powerful tools designed to make your digital life easier. No signup required, completely free.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- PDF Tool -->
+                    <div class="col-md-3 fade-in-up">
+                        <div class="tool-card">
+                            <div class="tool-icon-wrapper pdf-bg" aria-hidden="true">
+                                <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="">
+                            </div>
+                            <h3>PDF Converter</h3>
+                            <p>Convert, merge, split, and compress PDF files instantly. Support for Word, Excel, JPG, and more formats.</p>
+                            <a href="tools/pdf-tools.html" class="tool-btn pdf" aria-label="Use PDF Converter tool">
+                                Use Tool <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Student Tool -->
+                    <div class="col-md-3 fade-in-up">
+                        <div class="tool-card">
+                            <div class="tool-icon-wrapper student-bg" aria-hidden="true">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="">
+                            </div>
+                            <h3>Student Daily Tools</h3>
+                            <p>All-in-one student toolkit: GPA calculator, study planner, note taker, assignment tracker, and exam countdown.</p>
+                            <a href="tools/student-tools.html" class="tool-btn student" aria-label="Use Student Daily Tools">
+                                Use Tool <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Resume Builder -->
+                    <div class="col-md-3 fade-in-up">
+                        <div class="tool-card">
+                            <div class="tool-icon-wrapper resume-bg" aria-hidden="true">
+                                <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="">
+                            </div>
+                            <h3>Resume Builder</h3>
+                            <p>Create professional, ATS-friendly resumes in minutes. Choose from 50+ modern templates and export to PDF.</p>
+                            <a href="tools/resume-tools.html" class="tool-btn resume" aria-label="Use Resume Builder tool">
+                                Use Tool <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Image Editor -->
+                    <div class="col-md-3 fade-in-up">
+                        <div class="tool-card">
+                            <div class="tool-icon-wrapper img-bg" aria-hidden="true">
+                                <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="">
+                            </div>
+                            <h3>Image Editor</h3>
+                            <p>Edit, resize, crop, and enhance your images online. Add filters, remove backgrounds, and optimize for web.</p>
+                            <a href="tools/image-tools.html" class="tool-btn img" aria-label="Use Image Editor tool">
+                                Use Tool <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURES SECTION ===== -->
+        <section class="features-section" id="features" aria-labelledby="features-heading">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-badge">Why Zentoolo</span>
+                    <h2 id="features-heading">Built for Simplicity</h2>
+                    <p>We believe great tools should be accessible to everyone. Here's what makes us different.</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4 fade-in-up">
+                        <div class="feature-box">
+                            <div class="feature-icon purple" aria-hidden="true">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Lightning Fast</h5>
+                                <p class="text-muted mb-0">Process files in seconds with our optimized cloud infrastructure.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 fade-in-up">
+                        <div class="feature-box">
+                            <div class="feature-icon pink" aria-hidden="true">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Privacy First</h5>
+                                <p class="text-muted mb-0">Your files are processed securely and deleted automatically after use.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 fade-in-up">
+                        <div class="feature-box">
+                            <div class="feature-icon blue" aria-hidden="true">
+                                <i class="bi bi-phone-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Works Everywhere</h5>
+                                <p class="text-muted mb-0">Fully responsive design that works on desktop, tablet, and mobile.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ABOUT / CTA SECTION ===== -->
+        <section class="py-5" id="about" aria-labelledby="about-heading" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+            <div class="container py-5 text-center text-white">
+                <h2 id="about-heading" class="fw-bold mb-3" style="font-size: 2.5rem;">Ready to Get Started?</h2>
+                <p class="mb-4 opacity-75" style="font-size: 1.1rem;">Join thousands of users who trust Zentoolo for their daily tasks.</p>
+                <a href="#tools" class="btn btn-light btn-lg rounded-pill px-5 fw-bold" style="color: var(--primary);">
+                    Explore All Tools <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <div class="footer-brand mb-3">Zen<span style="color: var(--secondary); -webkit-text-fill-color: var(--secondary);">toolo</span></div>
                     <p class="text-muted">Free online tools for everyone. Simple, fast, and secure.</p>
                     <div class="mt-3">
-                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Follow us on Twitter"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+                        <a href="#" class="social-icon" aria-label="Follow us on GitHub"><i class="bi bi-github" aria-hidden="true"></i></a>
+                        <a href="#" class="social-icon" aria-label="Follow us on LinkedIn"><i class="bi bi-linkedin" aria-hidden="true"></i></a>
+                        <a href="#" class="social-icon" aria-label="Follow us on Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
@@ -776,7 +813,7 @@ gtag('config', 'G-E2E0ZQ6R43');
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="mb-0">© 2026 Zentoolo. All rights reserved. Built with ❤️ for everyone.</p>
+                <p class="mb-0">&copy; 2026 Zentoolo. All rights reserved. Built with ❤️ for everyone.</p>
             </div>
         </div>
     </footer>
@@ -832,7 +869,7 @@ gtag('config', 'G-E2E0ZQ6R43');
 
         // Add stagger delay to tool cards
         document.querySelectorAll('.tool-card').forEach((card, index) => {
-            card.parentElement.style.transitionDelay = `${index * 0.15}s`;
+            card.parentElement.style.transitionDelay = index * 0.15 + 's';
         });
 
         // Tool card click effect
@@ -840,7 +877,7 @@ gtag('config', 'G-E2E0ZQ6R43');
             card.addEventListener('click', function(e) {
                 if (!e.target.closest('.tool-btn')) {
                     const btn = this.querySelector('.tool-btn');
-                    btn.click();
+                    if (btn) btn.click();
                 }
             });
         });

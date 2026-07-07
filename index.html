@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Zentoolo offers free online tools including PDF Converter, Resume Builder, Image Editor, and Student Daily Tools." />
-    <meta name="keywords" content="free online tools, PDF converter, resume builder, image editor, student tools, online tools, pdf converter, pdf to word, pdf generator, image to pdf converter, resume builder, resume builder online, resume builder in word, free resume builder, image editor, free online image editor, image resize, image crop, image compressor, student tools, online tools, free online tools, pdf tools, image tools, Zentoolo" />
+    <meta name="description" content="Zentoolo offers free online tools including PDF Converter, Resume Builder, Image Editor, Student Daily Tools, and AI Agents Generator." />
+    <meta name="keywords" content="free online tools, PDF converter, resume builder, image editor, student tools, AI generator, online tools, pdf converter, pdf to word, pdf generator, image to pdf converter, resume builder, resume builder online, resume builder in word, free resume builder, image editor, free online image editor, image resize, image crop, image compressor, student tools, online tools, free online tools, pdf tools, image tools, Zentoolo" />
     <meta name="author" content="Zentoolo" />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="z4Og04a1TGaOvRoeMmWBMNtJipJRYmP_M7wUoNx5YJE" />
@@ -189,10 +189,9 @@
             background-clip: text;
         }
 
-        /* improved contrast */
         .hero p {
             font-size: 1.2rem;
-            color: #334155;  /* darker for contrast */
+            color: #334155;
             max-width: 500px;
             margin-bottom: 30px;
         }
@@ -220,7 +219,6 @@
             font-size: 1.1rem;
         }
 
-        /* Floating shapes */
         .shape {
             position: absolute;
             border-radius: 20px;
@@ -278,7 +276,7 @@
         }
 
         .section-header p {
-            color: #334155; /* improved contrast */
+            color: #334155;
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
@@ -366,13 +364,16 @@
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
         }
 
+        .tool-icon-wrapper.ai-bg {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        }
+
         .tool-card h3 {
             font-weight: 700;
             font-size: 1.4rem;
             margin-bottom: 12px;
         }
 
-        /* improved contrast for card descriptions */
         .tool-card p {
             color: #334155;
             font-size: 0.95rem;
@@ -432,6 +433,16 @@
             color: white;
         }
 
+        .tool-btn.ai {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .tool-btn.ai:hover {
+            background: #4f46e5;
+            color: white;
+        }
+
         /* ===== FEATURES SECTION ===== */
         .features-section {
             padding: 80px 0;
@@ -484,7 +495,7 @@
         }
 
         .footer-links a {
-            color: #cbd5e1; /* improved contrast on dark bg */
+            color: #cbd5e1;
             text-decoration: none;
             transition: color 0.3s ease;
             display: block;
@@ -535,13 +546,11 @@
             transform: translateY(0);
         }
 
-        /* focus indicator for keyboard */
         a:focus-visible, button:focus-visible {
             outline: 3px solid #6366f1;
             outline-offset: 2px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .hero-badges { flex-direction: column; }
@@ -595,7 +604,7 @@
                             <span>100% Free Online Tools</span>
                         </div>
                         <h1 id="hero-heading">Powerful Tools for <span class="gradient-text">Everyone</span></h1>
-                        <p>Zentoolo provides a suite of free, easy-to-use online tools. Convert PDFs, build professional resumes, and edit images — all in one place.</p>
+                        <p>Zentoolo provides a suite of free, easy-to-use online tools. Convert PDFs, build professional resumes, edit images, and generate AI content — all in one place.</p>
                         <div class="d-flex gap-3">
                             <a href="#tools" class="btn btn-primary-custom btn-lg">Explore Tools</a>
                             <a href="#features" class="btn btn-outline-dark btn-lg rounded-pill px-4">Learn More</a>
@@ -630,9 +639,12 @@
                                             <i class="bi bi-file-person-fill text-primary" style="font-size: 3rem;"></i>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center gap-3">
                                         <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); transform: rotate(-3deg);" aria-hidden="true">
                                             <i class="bi bi-image-fill text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <div class="p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); transform: rotate(3deg); margin-top: 30px;" aria-hidden="true">
+                                            <i class="bi bi-cpu-fill text-primary" style="font-size: 3rem;"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -649,15 +661,15 @@
                 <div class="section-header fade-in-up">
                     <span class="section-badge">Our Tools</span>
                     <h2 id="tools-heading">Everything You Need</h2>
-                    <p>Four powerful tools designed to make your digital life easier. No signup required, completely free.</p>
+                    <p>Five powerful tools designed to make your digital life easier. No signup required, completely free.</p>
                 </div>
 
                 <div class="row g-4">
                     <!-- PDF Tool -->
-                    <div class="col-md-3 fade-in-up">
+                    <div class="col-md-4 fade-in-up">
                         <div class="tool-card">
                             <div class="tool-icon-wrapper pdf-bg" aria-hidden="true">
-                                <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="">
+                                <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/8c8fedd6bc7442e12d49da16a5ec0583498d890b.png" alt="PDF Converter icon">
                             </div>
                             <h3>PDF Converter</h3>
                             <p>Convert, merge, split, and compress PDF files instantly. Support for Word, Excel, JPG, and more formats.</p>
@@ -668,10 +680,10 @@
                     </div>
 
                     <!-- Student Tool -->
-                    <div class="col-md-3 fade-in-up">
+                    <div class="col-md-4 fade-in-up">
                         <div class="tool-card">
                             <div class="tool-icon-wrapper student-bg" aria-hidden="true">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Student Tools icon">
                             </div>
                             <h3>Student Daily Tools</h3>
                             <p>All-in-one student toolkit: GPA calculator, study planner, note taker, assignment tracker, and exam countdown.</p>
@@ -682,10 +694,10 @@
                     </div>
 
                     <!-- Resume Builder -->
-                    <div class="col-md-3 fade-in-up">
+                    <div class="col-md-4 fade-in-up">
                         <div class="tool-card">
                             <div class="tool-icon-wrapper resume-bg" aria-hidden="true">
-                                <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="">
+                                <img src="https://kimi-web-img.moonshot.cn/img/cdn-icons-png.flaticon.com/7a6bcedab23070d1d6d20235852b03f12a06b2b9.png" alt="Resume Builder icon">
                             </div>
                             <h3>Resume Builder</h3>
                             <p>Create professional, ATS-friendly resumes in minutes. Choose from 50+ modern templates and export to PDF.</p>
@@ -695,11 +707,25 @@
                         </div>
                     </div>
 
+                    <!-- AI Agents Generator -->
+                    <div class="col-md-4 fade-in-up">
+                        <div class="tool-card">
+                            <div class="tool-icon-wrapper ai-bg" aria-hidden="true">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="AI Agents Generator icon">
+                            </div>
+                            <h3>AI Agents Generator</h3>
+                            <p>Smart AI toolkit: text generation, image creation, code assistant, idea brainstorming, and instant summarization.</p>
+                            <a href="https://getopenmind.in" target="_blank" class="tool-btn ai" aria-label="Use AI Agents Generator">
+                                Use Tool <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- Image Editor -->
-                    <div class="col-md-3 fade-in-up">
+                    <div class="col-md-4 fade-in-up">
                         <div class="tool-card">
                             <div class="tool-icon-wrapper img-bg" aria-hidden="true">
-                                <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="">
+                                <img src="https://kimi-web-img.moonshot.cn/img/img.icons8.com/c74cbb22a47d3a98ac5364dbe0e6d7f6816c7a64.jpg" alt="Image Editor icon">
                             </div>
                             <h3>Image Editor</h3>
                             <p>Edit, resize, crop, and enhance your images online. Add filters, remove backgrounds, and optimize for web.</p>
@@ -793,6 +819,7 @@
                         <a href="tools/student-tools.html">Student Tools</a>
                         <a href="tools/resume-tools.html">Resume Builder</a>
                         <a href="tools/image-tools.html">Image Editor</a>
+                        <a href="https://getopenmind.in" target="_blank">AI Generator</a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">

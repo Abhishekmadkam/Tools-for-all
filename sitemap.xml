@@ -20,7 +20,7 @@
     <loc>https://getopenmind.in/ai-studio.html</loc>
     <lastmod>2026-07-06</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.9</priority>
+    <priority>0.9</priority>
 </url>
     <!-- Student Daily Tools -->
     <url>
@@ -45,5 +45,13 @@
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
+     <url>
+        <loc>https://zentoolo.com/pdf.html</loc>
+        <lastmod>2026-07-06</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    
 
 </urlset>

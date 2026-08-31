@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF · Professional PDF Tools - Fully Working</title> 
+    <title>PDF · Professional PDF Tools - Fully Working</title>
     <meta name="description" content="Complete PDF toolkit - merge, split, compress, protect, rotate, extract, convert to images, extract text, and more — fully working">
     
     <!-- Bootstrap + icons + font -->
@@ -638,6 +638,139 @@ body{padding:0!important;overflow-x:hidden}.app-wrapper{max-width:var(--max)!imp
 }
 </style>
 
+
+<style id="teamorbits-footer-smooth">
+html{scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,.tool-btn,.file-item,.download-btn,.btn-primary-custom,input,select,textarea{
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease,opacity .18s ease,transform .18s ease!important;
+}
+button:active,.tool-btn:active,.download-btn:active,.btn-primary-custom:active{transform:scale(.98)!important}
+.tools-panel,.canvas-panel,.properties-panel,.file-item,.result-preview,.text-preview{
+  will-change:transform;
+}
+footer,.app-footer,.footer{
+  display:none!important;
+}
+#teamorbits-powered{
+  display:block;
+  width:100%;
+  padding:18px 14px 110px;
+  text-align:center;
+  font-family:Inter,Arial,sans-serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.01em;
+  color:#777;
+  background:#050505;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+#teamorbits-powered a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+}
+#teamorbits-powered a:active{opacity:.7}
+@media(min-width:769px){
+ #teamorbits-powered{padding-bottom:28px}
+}
+@media(max-width:768px){
+ #teamorbits-powered{
+   padding:16px 14px calc(92px + env(safe-area-inset-bottom));
+   font-size:12px;
+   min-height:58px;
+ }
+}
+</style>
+
+<style id="responsive-download-final">
+#mobileDownloadWrap{display:none}
+@media(max-width:768px){
+  /* Keep one clear fixed action area; the process button stays accessible,
+     and the download button appears only after results exist. */
+  #mobileDownloadWrap{
+    display:none;
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:1200;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(5,5,5,.96);
+    border-top:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(14px);
+  }
+  #mobileDownloadResults{
+    width:100%!important;
+    min-height:50px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:9px!important;
+    border:1px solid #fff!important;
+    border-radius:10px!important;
+    background:#fff!important;
+    color:#000!important;
+    font-weight:800!important;
+    font-size:15px!important;
+    cursor:pointer!important;
+  }
+  #mobileDownloadResults:active{transform:scale(.985)!important}
+  body.mobile-results-ready #mobileDownloadWrap{display:block!important}
+  body.mobile-results-ready .properties-panel,
+  body.mobile-results-ready .canvas-panel{padding-bottom:105px!important}
+}
+@media(min-width:769px){
+  #mobileDownloadWrap{display:none!important}
+}
+</style>
+
+
+<style id="mobile-apply-position-fix">
+@media(max-width:768px){
+  /* Remove the desktop/sidebar action from the top mobile tool strip */
+  .tools-panel .mt-4,
+  .tools-panel .apply-btn,
+  .tools-panel .btn-primary-custom,
+  .tools-panel button[onclick*="applyTool"]{
+    position:static!important;
+    display:none!important;
+  }
+
+  /* Dedicated mobile Apply button: directly after the upload/work area */
+  #mobileApplyWrap{
+    display:block!important;
+    order:2!important;
+    width:100%!important;
+    padding:0 14px 14px!important;
+    background:#050505!important;
+    border-bottom:1px solid rgba(255,255,255,.12)!important;
+  }
+  #mobileApplyButton{
+    width:100%!important;
+    min-height:52px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:9px!important;
+    background:#fff!important;
+    color:#000!important;
+    border:1px solid #fff!important;
+    border-radius:10px!important;
+    font-size:15px!important;
+    font-weight:800!important;
+  }
+  #mobileApplyButton:active{transform:scale(.985)!important}
+
+  /* Do not fix Apply at the top/bottom. It belongs in the content flow after upload. */
+  .bottom-toolbar .apply-btn,
+  .bottom-toolbar button[onclick*="applyTool"]{
+    display:none!important;
+  }
+}
+@media(min-width:769px){
+  #mobileApplyWrap{display:none!important}
+}
+</style>
+
 </head>
 <body>
 <div class="app-wrapper">
@@ -659,7 +792,8 @@ body{padding:0!important;overflow-x:hidden}.app-wrapper{max-width:var(--max)!imp
             </div>
         </div>
         
-      
+        <div class="d-flex gap-3">
+          
             <button class="btn btn-outline-primary rounded-pill" onclick="resetAll()">
                 <i class="bi bi-arrow-counterclockwise"></i> Reset
             </button>
@@ -782,7 +916,7 @@ body{padding:0!important;overflow-x:hidden}.app-wrapper{max-width:var(--max)!imp
     </div>
 
     <footer class="text-center small text-muted mt-4">
-        PDF STUDIO · Powered By Teamorbits 
+        
     </footer>
 </div>
 
@@ -1798,5 +1932,58 @@ body{padding:0!important;overflow-x:hidden}.app-wrapper{max-width:var(--max)!imp
     document.getElementById('toolProperties').innerHTML = toolPropertiesTemplates.merge;
     showToast('PDF Toolkit loaded! Upload files and select a tool.');
 </script>
+
+<div id="teamorbits-powered">Powered by <a href="https://teamorbits.com" target="_blank" rel="noopener">TeamOrbits</a></div>
+
+<div id="mobileDownloadWrap">
+  <button id="mobileDownloadResults" type="button" onclick="downloadAllResults()">
+    <i class="bi bi-download"></i>
+    <span>Download Results</span>
+  </button>
+</div>
+
+
+<script id="mobile-download-hook">
+(function(){
+  const originalApply = window.applyTool;
+  if (typeof originalApply === 'function' && !window.__mobileDownloadHooked) {
+    window.__mobileDownloadHooked = true;
+    window.applyTool = async function(){
+      document.body.classList.remove('mobile-results-ready');
+      const output = await originalApply.apply(this, arguments);
+      if (Array.isArray(window.results) && window.results.length > 0) {
+        document.body.classList.add('mobile-results-ready');
+      }
+      return output;
+    };
+  }
+})();
+</script>
+
+
+<div id="mobileApplyWrap">
+  <button id="mobileApplyButton" type="button" onclick="applyTool()">
+    <i class="bi bi-play-fill"></i><span>Apply Tool</span>
+  </button>
+</div>
+
+
+<script id="mobile-apply-placement-hook">
+(function(){
+  function placeApply(){
+    const wrap=document.getElementById('mobileApplyWrap');
+    if(!wrap) return;
+    const canvas=document.querySelector('.canvas-panel') ||
+                 document.querySelector('.main-panel') ||
+                 document.querySelector('#uploadArea')?.parentElement;
+    if(canvas && canvas.parentNode){
+      canvas.insertAdjacentElement('afterend',wrap);
+    }
+  }
+  document.addEventListener('DOMContentLoaded',placeApply);
+  placeApply();
+})();
+</script>
+
 </body>
 </html>

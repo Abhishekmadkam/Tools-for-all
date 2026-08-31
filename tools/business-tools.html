@@ -1,495 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Tools · Complete Working Suite</title>
-  <!-- Bootstrap 5 + icons + font -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <!-- PDF generation library for invoice generator -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-  <style>
-    * {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    body {
-      background: #f4f9ff;
-      padding: 2rem 1rem;
-    }
-    .dashboard-title {
-      font-weight: 700;
-      font-size: 2.5rem;
-      color: #0a2647;
-      margin-bottom: 1.5rem;
-    }
-    .ad-container {
-      background: linear-gradient(145deg, #e6f0fa, #ffffff);
-      border: 2px dashed #9bb5d1;
-      border-radius: 24px;
-      color: #1e3a5f;
-      font-weight: 500;
-    }
-    .ad-placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 1.5rem 1rem;
-    }
-    .ad-icon {
-      font-size: 2rem;
-      opacity: 0.5;
-    }
-    .tool-card {
-      background: white;
-      border: none;
-      border-radius: 28px;
-      padding: 1.5rem 1.2rem;
-      box-shadow: 0 15px 30px -12px rgba(0,35,70,0.15);
-      transition: all 0.25s ease;
-      height: 100%;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.6);
-    }
-    .tool-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 40px -16px #0f3a60;
-    }
-    .card-icon-circle {
-      width: 65px;
-      height: 65px;
-      background: linear-gradient(145deg, #e2edfc, #c7ddf7);
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      color: #0c3a62;
-      margin-bottom: 1.2rem;
-    }
-    .card-title {
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #0b2b4a;
-      margin-bottom: 0.3rem;
-    }
-    .card-text {
-      color: #3c5b7c;
-      font-size: 0.9rem;
-      margin-bottom: 1.4rem;
-    }
-    .btn-open {
-      background: white;
-      border: 2px solid #b7cde4;
-      border-radius: 50px;
-      padding: 0.5rem 1.8rem;
-      font-weight: 600;
-      color: #103b60;
-      transition: 0.15s;
-      width: fit-content;
-      pointer-events: none;
-    }
-    .modal-content {
-      border-radius: 36px;
-      background: #f9fcff;
-    }
-    .modal-header {
-      border-bottom: 1px solid #dae6f2;
-      border-radius: 36px 36px 0 0;
-      background: white;
-    }
-    .modal-title i {
-      margin-right: 12px;
-      color: #1d5b9e;
-    }
-    .btn-tool-action {
-      background: #1b3a5c;
-      border: none;
-      border-radius: 40px;
-      padding: 0.7rem 2rem;
-      font-weight: 600;
-      color: white;
-      transition: 0.15s;
-    }
-    .btn-tool-action:hover {
-      background: #254f78;
-    }
-    .result-badge {
-      background: #e8f1fe;
-      border-radius: 40px;
-      padding: 0.8rem 1.5rem;
-      font-weight: 600;
-      color: #123a60;
-      border: 1px solid #bfd5ef;
-    }
-    .main-container {
-      max-width: 1440px;
-      margin: 0 auto;
-    }
-    .feature-card {
-      background: white;
-      border-radius: 28px;
-      padding: 1.8rem;
-      box-shadow: 0 15px 30px -12px #b8cde0;
-    }
-    .feature-icon {
-      font-size: 2.5rem;
-      color: #1b4f82;
-    }
-    input, select, textarea {
-      border-radius: 40px !important;
-      border: 1.5px solid #d4e2f2 !important;
-      padding: 0.7rem 1.2rem !important;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #1b4f82 !important;
-      box-shadow: 0 0 0 3px rgba(27,79,130,0.2) !important;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Tools · Coming Soon</title>
+    <!-- Bootstrap 5 + Icons + Font -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f2f6fe;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(43, 110, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(43, 110, 255, 0.06) 0%, transparent 60%);
+            padding: 1.5rem;
+        }
+
+        .coming-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 64px;
+            padding: 3.5rem 3rem;
+            max-width: 780px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(11, 26, 51, 0.10), 0 10px 30px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 576px) {
+            .coming-card {
+                padding: 2.5rem 1.5rem;
+                border-radius: 40px;
+            }
+        }
+
+        /* ----- LOGO / BRAND ICON ----- */
+        .brand-icon {
+            background: #0b1a33;
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 14px 34px rgba(11, 26, 51, 0.15);
+            transition: transform 0.2s ease;
+        }
+        .brand-icon i {
+            color: #6c9bff;
+        }
+        .brand-icon:hover {
+            transform: scale(1.02);
+        }
+
+        /* ----- TITLE ----- */
+        .coming-title {
+            font-weight: 800;
+            font-size: 3.6rem;
+            letter-spacing: -0.03em;
+            color: #0b1a33;
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+        }
+        .coming-title span {
+            color: #2b6eff;
+            background: #eef5ff;
+            padding: 0 0.5rem;
+            border-radius: 18px;
+            display: inline-block;
+        }
+
+        @media (max-width: 576px) {
+            .coming-title {
+                font-size: 2.6rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .coming-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* ----- DESCRIPTION ----- */
+        .coming-desc {
+            color: #4a6582;
+            font-size: 1.2rem;
+            font-weight: 400;
+            max-width: 580px;
+            margin: 0.6rem auto 0;
+            line-height: 1.7;
+        }
+        .coming-desc br {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .coming-desc {
+                font-size: 1rem;
+            }
+        }
+
+        /* ----- DECORATIVE SHAPES (background only) ----- */
+        .bg-shape {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(43, 110, 255, 0.03);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            bottom: -150px;
+            right: -150px;
+            background: rgba(43, 110, 255, 0.02);
+        }
+
+        /* subtle pulse on logo */
+        @keyframes soft-pulse {
+            0% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+            100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+        }
+        .brand-icon {
+            animation: soft-pulse 4s infinite ease-in-out;
+        }
+    </style>
 </head>
 <body>
-<div class="main-container">
 
-  <!-- TOP ADS -->
-  <!-- Google Ads Top Banner -->
-  <div class="ad-container w-100 mb-5">
-    <div class="ad-placeholder">
-      <i class="bi bi-google ad-icon"></i>
-      <span>Google Ads · 728x90 (responsive top)</span>
-      <i class="bi bi-megaphone ad-icon"></i>
+    <!-- background decorative shapes -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <!-- MAIN CARD -->
+    <div class="coming-card">
+
+        <!-- LOGO -->
+        <div class="brand-icon">
+            <i class="bi bi-tools"></i>
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="coming-title">
+            Business Tools <br /><span>coming soon</span>
+        </h1>
+
+        <!-- DESCRIPTION -->
+        <p class="coming-desc">
+            The all‑in‑one toolkit for modern businesses.<br />
+            Invoicing, analytics, inventory, tasks &amp; more — built for every kind of business.
+        </p>
+
+        <!-- absolutely nothing else -->
     </div>
-  </div>
 
-  <!-- Dashboard Title -->
-  <h1 class="dashboard-title text-center mb-4">
-    <i class="bi bi-grid-3x3-gap-fill me-3" style="color:#1f5882;"></i>
-    Business Tools · Fully Functional
-  </h1>
-
-  <!-- TOOL GRID - 15 cards all clickable -->
-  <div class="row g-4 mb-5">
-    <!-- 1. Profit Margin Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#profitMarginModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-percent"></i></div><h3 class="card-title">Profit Margin</h3><p class="card-text">Calculate gross & net profit instantly.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 2. ROI Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#roiModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-arrow-return-left"></i></div><h3 class="card-title">ROI Calculator</h3><p class="card-text">Return on investment analysis.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 3. Invoice Generator (Real PDF) -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#invoiceModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-receipt"></i></div><h3 class="card-title">Invoice Generator</h3><p class="card-text">Create & download PDF invoices.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 4. GST Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#gstModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-calculator"></i></div><h3 class="card-title">GST Calculator</h3><p class="card-text">Add/remove GST, tax inclusive.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 5. Loan EMI Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#emiModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-bank"></i></div><h3 class="card-title">Loan EMI Calc</h3><p class="card-text">Monthly EMI & interest.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 6. Currency Converter (Real rates) -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#currencyModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-currency-exchange"></i></div><h3 class="card-title">Currency Converter</h3><p class="card-text">Live exchange rates.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 7. Break-Even Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#breakevenModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-bar-chart-steps"></i></div><h3 class="card-title">Break-Even</h3><p class="card-text">Find break-even point.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 8. Business Name Generator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#nameGenModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-magic"></i></div><h3 class="card-title">Business Name Gen</h3><p class="card-text">AI-inspired name ideas.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 9. Email Signature Generator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#signatureModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-envelope-paper"></i></div><h3 class="card-title">Email Signature</h3><p class="card-text">HTML signature generator.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 10. Meeting Agenda Generator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#agendaModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-calendar-check"></i></div><h3 class="card-title">Meeting Agenda</h3><p class="card-text">Structured agenda template.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 11. Project Cost Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#costModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-cash-stack"></i></div><h3 class="card-title">Project Cost</h3><p class="card-text">Estimate total expenses.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 12. Time Tracker (Fully Working) -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#timeModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-stopwatch"></i></div><h3 class="card-title">Time Tracker</h3><p class="card-text">Track work hours.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 13. Invoice Number Generator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#invNumModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-hash"></i></div><h3 class="card-title">Invoice # Gen</h3><p class="card-text">Unique invoice numbers.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 14. Tax Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#taxModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-file-spreadsheet"></i></div><h3 class="card-title">Tax Calculator</h3><p class="card-text">Estimate income tax.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-    <!-- 15. Freelance Rate Calculator -->
-    <div class="col-sm-6 col-md-4 col-xl-3" data-bs-toggle="modal" data-bs-target="#rateModal">
-      <div class="tool-card"><div class="card-icon-circle"><i class="bi bi-pc-display"></i></div><h3 class="card-title">Freelance Rate</h3><p class="card-text">Hourly/project rates.</p><button class="btn-open" disabled>Open →</button></div>
-    </div>
-  </div>
-
-  <!-- MIDDLE FEATURE SECTION -->
-  <div class="row g-4 mb-5">
-    <div class="col-md-4"><div class="feature-card text-center"><i class="bi bi-lightning-charge-fill feature-icon"></i><h4 class="fw-semibold mt-3">Fast & Easy</h4><p class="text-secondary">Results in seconds, no learning curve.</p></div></div>
-    <div class="col-md-4"><div class="feature-card text-center"><i class="bi bi-unlock-fill feature-icon"></i><h4 class="fw-semibold mt-3">Free to Use</h4><p class="text-secondary">100% free, no subscriptions.</p></div></div>
-    <div class="col-md-4"><div class="feature-card text-center"><i class="bi bi-shield-check feature-icon"></i><h4 class="fw-semibold mt-3">Secure & Private</h4><p class="text-secondary">All data stays on your device.</p></div></div>
-  </div>
-
-  <!-- BOTTOM ADS -->
-  <!-- Google Ads Bottom Banner -->
-  <div class="ad-container w-100 my-5">
-    <div class="ad-placeholder">
-      <i class="bi bi-google ad-icon"></i>
-      <span>Google Ads · 728x90 (bottom)</span>
-      <i class="bi bi-cash-stack ad-icon"></i>
-    </div>
-  </div>
-</div>
-
-<!-- ========== ALL MODALS - FULLY WORKING ========== -->
-
-<!-- 1. Profit Margin Modal -->
-<div class="modal fade" id="profitMarginModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-percent"></i> Profit Margin Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="revenue" placeholder="Revenue ($)"></div><div class="mb-2"><input type="number" class="form-control" id="cost" placeholder="Cost ($)"></div><button class="btn-tool-action w-100" onclick="calcProfitMargin()">Calculate Margin</button><div class="result-badge mt-4 text-center" id="profitResult">—</div></div></div></div></div>
-
-<!-- 2. ROI Modal -->
-<div class="modal fade" id="roiModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-arrow-return-left"></i> ROI Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="investment" placeholder="Initial Investment"></div><div class="mb-2"><input type="number" class="form-control" id="returnVal" placeholder="Return Value"></div><button class="btn-tool-action w-100" onclick="calcROI()">Calculate ROI</button><div class="result-badge mt-4 text-center" id="roiResult">—</div></div></div></div></div>
-
-<!-- 3. Invoice Generator (Real PDF) -->
-<div class="modal fade" id="invoiceModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-receipt"></i> Invoice Generator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="text" class="form-control" id="clientName" placeholder="Client Name"></div><div class="mb-2"><input type="text" class="form-control" id="invoiceAmount" placeholder="Amount $"></div><div class="mb-2"><input type="text" class="form-control" id="invoiceDesc" placeholder="Description"></div><button class="btn-tool-action w-100" onclick="generatePDFInvoice()">Download PDF Invoice</button><div class="result-badge mt-3 text-center" id="invoiceStatus">Ready</div></div></div></div></div>
-
-<!-- 4. GST Calculator -->
-<div class="modal fade" id="gstModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-calculator"></i> GST Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="gstAmount" placeholder="Amount"></div><div class="mb-2"><select class="form-select" id="gstRate"><option value="5">5% GST</option><option value="12">12% GST</option><option value="18" selected>18% GST</option><option value="28">28% GST</option></select></div><button class="btn-tool-action w-100" onclick="calcGST()">Calculate</button><div class="result-badge mt-4 text-center" id="gstResult">—</div></div></div></div></div>
-
-<!-- 5. EMI Calculator -->
-<div class="modal fade" id="emiModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-bank"></i> EMI Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="loanAmount" placeholder="Loan Amount"></div><div class="mb-2"><input type="number" class="form-control" id="interestRate" placeholder="Interest Rate %"></div><div class="mb-2"><input type="number" class="form-control" id="loanTenure" placeholder="Tenure (months)"></div><button class="btn-tool-action w-100" onclick="calcEMI()">Calculate EMI</button><div class="result-badge mt-4 text-center" id="emiResult">—</div></div></div></div></div>
-
-<!-- 6. Currency Converter (Real rates via API) -->
-<div class="modal fade" id="currencyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-currency-exchange"></i> Currency Converter</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="currAmount" placeholder="Amount" value="1"></div><div class="row g-2"><div class="col"><select class="form-select" id="fromCurr"><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="INR" selected>INR</option></select></div><div class="col"><select class="form-select" id="toCurr"><option value="USD">USD</option><option value="EUR" selected>EUR</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="INR">INR</option></select></div></div><button class="btn-tool-action w-100 mt-3" onclick="convertCurrency()">Convert</button><div class="result-badge mt-4 text-center" id="currencyResult">—</div></div></div></div></div>
-
-<!-- 7. Break-Even -->
-<div class="modal fade" id="breakevenModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-bar-chart-steps"></i> Break-Even</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="fixedCost" placeholder="Fixed Costs"></div><div class="mb-2"><input type="number" class="form-control" id="pricePerUnit" placeholder="Price per unit"></div><div class="mb-2"><input type="number" class="form-control" id="varCostPerUnit" placeholder="Variable cost/unit"></div><button class="btn-tool-action w-100" onclick="calcBreakEven()">Calculate</button><div class="result-badge mt-4 text-center" id="beResult">—</div></div></div></div></div>
-
-<!-- 8. Business Name Generator -->
-<div class="modal fade" id="nameGenModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-magic"></i> Name Generator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><button class="btn-tool-action w-100 mb-3" onclick="generateBizName()">Generate Names</button><div class="result-badge" id="nameResult">Click to generate</div></div></div></div></div>
-
-<!-- 9. Email Signature Generator -->
-<div class="modal fade" id="signatureModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-envelope-paper"></i> Email Signature</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="text" class="form-control" id="sigName" placeholder="Your Name"></div><div class="mb-2"><input type="text" class="form-control" id="sigTitle" placeholder="Title"></div><div class="mb-2"><input type="text" class="form-control" id="sigEmail" placeholder="Email"></div><div class="mb-2"><input type="text" class="form-control" id="sigPhone" placeholder="Phone"></div><button class="btn-tool-action w-100" onclick="generateSignature()">Generate HTML</button><div class="result-badge mt-4" id="sigResult">—</div></div></div></div></div>
-
-<!-- 10. Meeting Agenda Generator -->
-<div class="modal fade" id="agendaModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-calendar-check"></i> Meeting Agenda</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="text" class="form-control" id="meetingTopic" placeholder="Topic"></div><div class="mb-2"><textarea class="form-control" id="agendaItems" rows="3" placeholder="Items (comma separated)">Budget review, Timeline, Marketing</textarea></div><button class="btn-tool-action w-100" onclick="generateAgenda()">Generate Agenda</button><div class="result-badge mt-4" id="agendaResult">—</div></div></div></div></div>
-
-<!-- 11. Project Cost Calculator -->
-<div class="modal fade" id="costModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-cash-stack"></i> Project Cost</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="laborCost" placeholder="Labor Cost"></div><div class="mb-2"><input type="number" class="form-control" id="materialCost" placeholder="Material Cost"></div><div class="mb-2"><input type="number" class="form-control" id="otherCost" placeholder="Other Cost"></div><button class="btn-tool-action w-100" onclick="calcProjectCost()">Calculate Total</button><div class="result-badge mt-4 text-center" id="costResult">—</div></div></div></div></div>
-
-<!-- 12. Time Tracker (Working) -->
-<div class="modal fade" id="timeModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-stopwatch"></i> Time Tracker</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body text-center"><h2 id="timerDisplay">00:00:00</h2><div class="mt-3"><button class="btn-tool-action me-2" onclick="startTimeTracker()">Start</button><button class="btn btn-outline-secondary rounded-pill me-2" onclick="pauseTimeTracker()">Pause</button><button class="btn btn-outline-secondary rounded-pill" onclick="resetTimeTracker()">Reset</button></div><div class="result-badge mt-4" id="timeLog">Not started</div></div></div></div></div>
-
-<!-- 13. Invoice Number Generator -->
-<div class="modal fade" id="invNumModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-hash"></i> Invoice # Generator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><button class="btn-tool-action w-100 mb-3" onclick="generateInvoiceNum()">Generate New</button><div class="result-badge text-center" id="invNumResult">INV-2026-001</div></div></div></div></div>
-
-<!-- 14. Tax Calculator -->
-<div class="modal fade" id="taxModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-file-spreadsheet"></i> Tax Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="income" placeholder="Annual Income"></div><div class="mb-2"><select class="form-select" id="taxRegime"><option value="old">Old Regime</option><option value="new" selected>New Regime</option></select></div><button class="btn-tool-action w-100" onclick="calcTax()">Estimate Tax</button><div class="result-badge mt-4 text-center" id="taxResult">—</div></div></div></div></div>
-
-<!-- 15. Freelance Rate Calculator -->
-<div class="modal fade" id="rateModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5><i class="bi bi-pc-display"></i> Freelance Rate</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><input type="number" class="form-control" id="desiredSalary" placeholder="Desired Annual Salary"></div><div class="mb-2"><input type="number" class="form-control" id="billableHours" placeholder="Billable Hours/Year" value="1500"></div><button class="btn-tool-action w-100" onclick="calcFreelanceRate()">Calculate Hourly Rate</button><div class="result-badge mt-4 text-center" id="rateResult">—</div></div></div></div></div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-// ========== ALL TOOL FUNCTIONS ==========
-
-// 1. Profit Margin
-function calcProfitMargin() {
-  let rev = parseFloat(document.getElementById('revenue').value) || 0;
-  let cst = parseFloat(document.getElementById('cost').value) || 0;
-  if (rev === 0) { document.getElementById('profitResult').innerText = 'Enter revenue'; return; }
-  let gross = rev - cst;
-  let margin = (gross / rev) * 100;
-  document.getElementById('profitResult').innerHTML = `Gross Profit: $${gross.toFixed(2)}<br>Margin: ${margin.toFixed(2)}%`;
-}
-
-// 2. ROI
-function calcROI() {
-  let inv = parseFloat(document.getElementById('investment').value) || 0;
-  let ret = parseFloat(document.getElementById('returnVal').value) || 0;
-  if (inv === 0) return;
-  let roi = ((ret - inv) / inv) * 100;
-  document.getElementById('roiResult').innerText = `ROI: ${roi.toFixed(2)}%`;
-}
-
-// 3. PDF Invoice Generator (using jspdf)
-function generatePDFInvoice() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  let client = document.getElementById('clientName').value || 'Client';
-  let amount = document.getElementById('invoiceAmount').value || '0';
-  let desc = document.getElementById('invoiceDesc').value || 'Services';
-  doc.text('INVOICE', 20, 20);
-  doc.text(`Client: ${client}`, 20, 40);
-  doc.text(`Description: ${desc}`, 20, 50);
-  doc.text(`Amount: $${amount}`, 20, 60);
-  doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 70);
-  doc.save(`invoice_${client}.pdf`);
-  document.getElementById('invoiceStatus').innerText = '✅ PDF Downloaded';
-}
-
-// 4. GST
-function calcGST() {
-  let amt = parseFloat(document.getElementById('gstAmount').value) || 0;
-  let rate = parseFloat(document.getElementById('gstRate').value);
-  let gst = amt * rate / 100;
-  let total = amt + gst;
-  document.getElementById('gstResult').innerHTML = `GST: $${gst.toFixed(2)}<br>Total: $${total.toFixed(2)}`;
-}
-
-// 5. EMI
-function calcEMI() {
-  let p = parseFloat(document.getElementById('loanAmount').value) || 0;
-  let r = parseFloat(document.getElementById('interestRate').value) || 0;
-  let n = parseFloat(document.getElementById('loanTenure').value) || 1;
-  let monthlyRate = r / 12 / 100;
-  let emi = p * monthlyRate * Math.pow(1 + monthlyRate, n) / (Math.pow(1 + monthlyRate, n) - 1);
-  if (isNaN(emi)) emi = 0;
-  document.getElementById('emiResult').innerText = `Monthly EMI: $${emi.toFixed(2)}`;
-}
-
-// 6. Currency Converter (using fetch with fallback)
-async function convertCurrency() {
-  let amount = parseFloat(document.getElementById('currAmount').value) || 1;
-  let from = document.getElementById('fromCurr').value;
-  let to = document.getElementById('toCurr').value;
-  document.getElementById('currencyResult').innerText = 'Fetching...';
-  try {
-    let response = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
-    let data = await response.json();
-    let rate = data.rates[to];
-    let result = amount * rate;
-    document.getElementById('currencyResult').innerText = `${amount} ${from} = ${result.toFixed(4)} ${to}`;
-  } catch {
-    // fallback rates
-    const fallback = { USD: 1, EUR: 0.92, GBP: 0.78, JPY: 148, INR: 83.5 };
-    let result = amount * (fallback[to] / fallback[from]);
-    document.getElementById('currencyResult').innerText = `${amount} ${from} ≈ ${result.toFixed(2)} ${to} (offline)`;
-  }
-}
-
-// 7. Break Even
-function calcBreakEven() {
-  let fc = parseFloat(document.getElementById('fixedCost').value) || 0;
-  let price = parseFloat(document.getElementById('pricePerUnit').value) || 0;
-  let vc = parseFloat(document.getElementById('varCostPerUnit').value) || 0;
-  if (price - vc <= 0) { document.getElementById('beResult').innerText = 'Price must be > var cost'; return; }
-  let beUnits = fc / (price - vc);
-  document.getElementById('beResult').innerText = `Break-even units: ${Math.ceil(beUnits)}`;
-}
-
-// 8. Business Name Generator
-function generateBizName() {
-  const prefixes = ['Nova', 'Crest', 'Peak', 'Apex', 'Summit', 'Bright', 'Smart', 'Fast', 'Core', 'Fusion'];
-  const suffixes = ['Solutions', 'Consulting', 'Ventures', 'Group', 'Labs', 'Studio', 'Partners', 'Co', 'Inc', 'Global'];
-  let name = prefixes[Math.floor(Math.random() * prefixes.length)] + ' ' + suffixes[Math.floor(Math.random() * suffixes.length)];
-  document.getElementById('nameResult').innerText = name;
-}
-
-// 9. Email Signature Generator
-function generateSignature() {
-  let name = document.getElementById('sigName').value || 'John Doe';
-  let title = document.getElementById('sigTitle').value || 'Business Owner';
-  let email = document.getElementById('sigEmail').value || 'john@example.com';
-  let phone = document.getElementById('sigPhone').value || '+1 234 567 890';
-  let sig = `${name} | ${title} | ${email} | ${phone}`;
-  document.getElementById('sigResult').innerText = sig;
-}
-
-// 10. Meeting Agenda Generator
-function generateAgenda() {
-  let topic = document.getElementById('meetingTopic').value || 'Team Meeting';
-  let items = document.getElementById('agendaItems').value.split(',').map(i => i.trim());
-  let agenda = `📋 ${topic}\n` + items.map((i, idx) => `${idx+1}. ${i}`).join('\n');
-  document.getElementById('agendaResult').innerText = agenda;
-}
-
-// 11. Project Cost
-function calcProjectCost() {
-  let labor = parseFloat(document.getElementById('laborCost').value) || 0;
-  let material = parseFloat(document.getElementById('materialCost').value) || 0;
-  let other = parseFloat(document.getElementById('otherCost').value) || 0;
-  let total = labor + material + other;
-  document.getElementById('costResult').innerText = `Total Project Cost: $${total.toFixed(2)}`;
-}
-
-// 12. Time Tracker
-let timerInterval;
-let seconds = 0;
-let running = false;
-function updateTimerDisplay() {
-  let hrs = Math.floor(seconds / 3600);
-  let mins = Math.floor((seconds % 3600) / 60);
-  let secs = seconds % 60;
-  document.getElementById('timerDisplay').innerText = 
-    `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-}
-function startTimeTracker() {
-  if (!running) {
-    running = true;
-    timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000);
-    document.getElementById('timeLog').innerText = 'Tracking...';
-  }
-}
-function pauseTimeTracker() {
-  clearInterval(timerInterval);
-  running = false;
-  document.getElementById('timeLog').innerText = `Paused at ${seconds}s`;
-}
-function resetTimeTracker() {
-  clearInterval(timerInterval);
-  running = false;
-  seconds = 0;
-  updateTimerDisplay();
-  document.getElementById('timeLog').innerText = 'Reset';
-}
-
-// 13. Invoice Number Generator
-let invCounter = 1;
-function generateInvoiceNum() {
-  let date = new Date();
-  let year = date.getFullYear();
-  let invNum = `INV-${year}-${String(invCounter++).padStart(3,'0')}`;
-  document.getElementById('invNumResult').innerText = invNum;
-}
-
-// 14. Tax Calculator (simplified)
-function calcTax() {
-  let income = parseFloat(document.getElementById('income').value) || 0;
-  let regime = document.getElementById('taxRegime').value;
-  let tax = 0;
-  if (regime === 'new') {
-    if (income > 1200000) tax = (income - 1200000) * 0.3 + 150000;
-    else if (income > 900000) tax = (income - 900000) * 0.2 + 60000;
-    else if (income > 600000) tax = (income - 600000) * 0.1 + 15000;
-    else if (income > 300000) tax = (income - 300000) * 0.05;
-  } else {
-    if (income > 1000000) tax = (income - 1000000) * 0.3 + 125000;
-    else if (income > 500000) tax = (income - 500000) * 0.2 + 12500;
-    else if (income > 250000) tax = (income - 250000) * 0.05;
-  }
-  document.getElementById('taxResult').innerText = `Estimated Tax: $${tax.toFixed(2)}`;
-}
-
-// 15. Freelance Rate
-function calcFreelanceRate() {
-  let salary = parseFloat(document.getElementById('desiredSalary').value) || 0;
-  let hours = parseFloat(document.getElementById('billableHours').value) || 1500;
-  let rate = salary / hours;
-  document.getElementById('rateResult').innerText = `Hourly Rate: $${rate.toFixed(2)}`;
-}
-</script>
-
+    <!-- Bootstrap JS (not required but included for completeness) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
+    </script>
 </body>
 </html>

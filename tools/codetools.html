@@ -1,2476 +1,1392 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Code Tools | Powered by TeamOrbits</title>
-
-  <!-- External libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-
-  <style>
-    :root {
-      --bg: #08080b;
-      --bg-soft: #0d0d12;
-      --panel: #111116;
-      --panel-hover: #17171f;
-      --border: #252530;
-
-      --text: #f5f5f7;
-      --muted: #90909d;
-
-      --primary: #7c5cff;
-      --primary-light: #a78bfa;
-      --blue: #3b82f6;
-      --green: #22c55e;
-      --red: #ef4444;
-      --yellow: #f59e0b;
-
-      --sidebar-width: 280px;
-      --radius: 18px;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top right, rgba(124,92,255,.10), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(59,130,246,.06), transparent 25%),
-        var(--bg);
-      color: var(--text);
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* =====================================================
-       APP
-    ===================================================== */
-
-    .app {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* =====================================================
-       SIDEBAR
-    ===================================================== */
-
-    .sidebar {
-      width: var(--sidebar-width);
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 100;
-
-      background: rgba(12,12,17,.94);
-      backdrop-filter: blur(25px);
-
-      border-right: 1px solid var(--border);
-
-      padding: 20px 14px;
-
-      display: flex;
-      flex-direction: column;
-
-      overflow-y: auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      padding: 8px 10px 22px;
-    }
-
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-
-      border-radius: 14px;
-
-      display: grid;
-      place-items: center;
-
-      background:
-        linear-gradient(135deg, var(--primary), var(--blue));
-
-      font-weight: 900;
-      font-size: 18px;
-
-      box-shadow:
-        0 10px 30px rgba(124,92,255,.35);
-    }
-
-    .brand-info h1 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -.4px;
-    }
-
-    .brand-info p {
-      margin: 3px 0 0;
-      color: var(--primary-light);
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .search-box {
-      position: relative;
-      margin-bottom: 14px;
-    }
-
-    .search-box span {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 12px 12px 12px 38px;
-
-      background: var(--panel);
-      border: 1px solid var(--border);
-
-      border-radius: 11px;
-
-      color: var(--text);
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-    }
-
-    .nav-title {
-      margin: 16px 10px 7px;
-
-      color: #656572;
-      font-size: 10px;
-      font-weight: 800;
-
-      letter-spacing: 1.4px;
-    }
-
-    .nav-item {
-      width: 100%;
-      border: 0;
-      background: transparent;
-
-      color: #a2a2ad;
-
-      padding: 10px 12px;
-      margin: 2px 0;
-
-      border-radius: 10px;
-
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      text-align: left;
-
-      transition: .2s ease;
-    }
-
-    .nav-item:hover {
-      background: var(--panel-hover);
-      color: white;
-    }
-
-    .nav-item.active {
-      background: rgba(124,92,255,.14);
-      color: white;
-
-      box-shadow:
-        inset 0 0 0 1px rgba(124,92,255,.15);
-    }
-
-    .nav-icon {
-      width: 24px;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-
-      padding: 15px 10px 5px;
-
-      color: #666672;
-      font-size: 11px;
-    }
-
-    .sidebar-footer strong {
-      color: var(--primary-light);
-    }
-
-    /* =====================================================
-       MOBILE TOPBAR
-    ===================================================== */
-
-    .mobile-header {
-      display: none;
-    }
-
-    /* =====================================================
-       MAIN
-    ===================================================== */
-
-    .main {
-      width: 100%;
-      margin-left: var(--sidebar-width);
-      padding: 40px;
-    }
-
-    .container {
-      max-width: 1300px;
-      margin: auto;
-    }
-
-    .hero {
-      margin-bottom: 30px;
-    }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-    }
-
-    .hero h2 {
-      margin: 0;
-
-      font-size: clamp(28px, 4vw, 42px);
-      letter-spacing: -1.5px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      margin: 10px 0 0;
-    }
-
-    .powered {
-      color: var(--primary-light) !important;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .status-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      padding: 9px 13px;
-
-      border: 1px solid var(--border);
-      border-radius: 100px;
-
-      color: var(--muted);
-      font-size: 12px;
-
-      background: rgba(17,17,22,.7);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-
-      border-radius: 50%;
-
-      background: var(--green);
-
-      box-shadow: 0 0 12px var(--green);
-    }
-
-    /* =====================================================
-       TOOL
-    ===================================================== */
-
-    .tool {
-      display: none;
-      animation: fade .25s ease;
-    }
-
-    .tool.active {
-      display: block;
-    }
-
-    @keyframes fade {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .tool-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-
-      margin-bottom: 20px;
-    }
-
-    .tool-header h3 {
-      margin: 0;
-      font-size: 25px;
-      letter-spacing: -.5px;
-    }
-
-    .tool-header p {
-      margin: 7px 0 0;
-      color: var(--muted);
-    }
-
-    .shortcut {
-      padding: 8px 10px;
-
-      border: 1px solid rgba(124,92,255,.25);
-
-      background: rgba(124,92,255,.08);
-
-      border-radius: 9px;
-
-      color: var(--primary-light);
-      font-size: 11px;
-    }
-
-    /* =====================================================
-       CARD
-    ===================================================== */
-
-    .card {
-      padding: 22px;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(18,18,24,.95),
-          rgba(12,12,16,.95)
-        );
-
-      border: 1px solid var(--border);
-
-      border-radius: var(--radius);
-
-      box-shadow: var(--shadow);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 18px;
-    }
-
-    label {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color: #b2b2bc;
-
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-
-      background: #0a0a0e;
-
-      border: 1px solid var(--border);
-
-      color: var(--text);
-
-      padding: 13px;
-
-      border-radius: 11px;
-
-      outline: none;
-
-      transition: .2s ease;
-    }
-
-    textarea {
-      min-height: 260px;
-      resize: vertical;
-
-      line-height: 1.55;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--primary);
-
-      box-shadow:
-        0 0 0 3px rgba(124,92,255,.12);
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-
-      margin-top: 16px;
-    }
-
-    .btn {
-      border: 1px solid var(--border);
-
-      background: var(--panel);
-
-      color: var(--text);
-
-      padding: 10px 15px;
-
-      border-radius: 10px;
-
-      transition: .2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: #454552;
-    }
-
-    .btn.primary {
-      background: var(--primary);
-      border-color: var(--primary);
-
-      box-shadow:
-        0 8px 22px rgba(124,92,255,.22);
-    }
-
-    .btn.danger {
-      color: #ff8d9b;
-      border-color: rgba(239,68,68,.25);
-    }
-
-    .result {
-      margin-top: 15px;
-
-      padding: 15px;
-
-      min-height: 60px;
-
-      background: #09090d;
-
-      border: 1px solid var(--border);
-
-      border-radius: 11px;
-
-      white-space: pre-wrap;
-      word-break: break-word;
-
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-    }
-
-    /* =====================================================
-       CASE CONVERTER
-    ===================================================== */
-
-    .case-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 12px;
-
-      margin-top: 18px;
-    }
-
-    .case-box {
-      position: relative;
-
-      padding: 15px;
-
-      background: #0a0a0e;
-
-      border: 1px solid var(--border);
-
-      border-radius: 12px;
-    }
-
-    .case-box strong {
-      display: block;
-
-      color: var(--primary-light);
-
-      font-size: 11px;
-
-      margin-bottom: 8px;
-    }
-
-    .case-box button {
-      position: absolute;
-
-      top: 10px;
-      right: 10px;
-
-      background: transparent;
-      border: 0;
-
-      color: var(--muted);
-    }
-
-    .case-value {
-      padding-right: 30px;
-
-      word-break: break-word;
-
-      color: #ddd;
-    }
-
-    /* =====================================================
-       HASH
-    ===================================================== */
-
-    .hash-list {
-      display: grid;
-      gap: 10px;
-
-      margin-top: 18px;
-    }
-
-    .hash-item {
-      position: relative;
-
-      padding: 14px;
-
-      background: #09090d;
-
-      border: 1px solid var(--border);
-
-      border-radius: 11px;
-    }
-
-    .hash-item strong {
-      display: block;
-
-      margin-bottom: 7px;
-
-      color: var(--primary-light);
-      font-size: 11px;
-    }
-
-    .hash-item code {
-      display: block;
-
-      color: #d7d7e0;
-
-      word-break: break-all;
-
-      font-size: 12px;
-    }
-
-    /* =====================================================
-       COLOR
-    ===================================================== */
-
-    .color-preview {
-      width: 100%;
-      height: 150px;
-
-      border-radius: 14px;
-
-      border: 1px solid var(--border);
-
-      margin-bottom: 15px;
-    }
-
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 10px;
-    }
-
-    .color-item {
-      padding: 12px;
-
-      background: #0a0a0e;
-
-      border: 1px solid var(--border);
-
-      border-radius: 10px;
-    }
-
-    .color-item small {
-      display: block;
-
-      color: var(--muted);
-
-      margin-bottom: 5px;
-    }
-
-    /* =====================================================
-       QR
-    ===================================================== */
-
-    .visual-output {
-      margin-top: 20px;
-
-      min-height: 320px;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      padding: 25px;
-
-      background: white;
-
-      border-radius: 14px;
-    }
-
-    #qrCode img,
-    #qrCode canvas {
-      max-width: 100%;
-    }
-
-    #barcode {
-      max-width: 100%;
-    }
-
-    /* =====================================================
-       CSV
-    ===================================================== */
-
-    .table-wrap {
-      margin-top: 18px;
-
-      max-height: 500px;
-
-      overflow: auto;
-
-      border: 1px solid var(--border);
-
-      border-radius: 12px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 12px;
-
-      border-bottom: 1px solid var(--border);
-
-      text-align: left;
-
-      white-space: nowrap;
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-
-      background: #17171e;
-
-      color: var(--primary-light);
-    }
-
-    /* =====================================================
-       GIT
-    ===================================================== */
-
-    .git-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap: 15px;
-    }
-
-    .git-card {
-      padding: 17px;
-
-      background: var(--panel);
-
-      border: 1px solid var(--border);
-
-      border-radius: 14px;
-    }
-
-    .git-card h4 {
-      margin: 0 0 12px;
-    }
-
-    .git-command {
-      display: flex;
-      justify-content: space-between;
-
-      padding: 9px 0;
-
-      border-bottom: 1px solid #24242d;
-    }
-
-    .git-command:last-child {
-      border-bottom: 0;
-    }
-
-    .git-command code {
-      color: #8ab4ff;
-      font-size: 12px;
-    }
-
-    /* =====================================================
-       TOAST
-    ===================================================== */
-
-    .toast {
-      position: fixed;
-
-      right: 25px;
-      bottom: 25px;
-
-      z-index: 999;
-
-      padding: 12px 17px;
-
-      background: #202028;
-
-      border: 1px solid var(--border);
-
-      border-radius: 12px;
-
-      box-shadow: var(--shadow);
-
-      opacity: 0;
-      transform: translateY(20px);
-
-      pointer-events: none;
-
-      transition: .25s ease;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media (max-width: 950px) {
-
-      .sidebar {
-        transform: translateX(-100%);
-        transition: .25s ease;
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 85px 18px 30px;
-      }
-
-      .mobile-header {
-        position: fixed;
-
-        top: 0;
-        left: 0;
-        right: 0;
-
-        height: 65px;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        padding: 0 18px;
-
-        z-index: 90;
-
-        background: rgba(10,10,14,.92);
-
-        backdrop-filter: blur(20px);
-
-        border-bottom: 1px solid var(--border);
-      }
-
-      .mobile-brand {
-        font-weight: 800;
-      }
-
-      .menu-btn {
-        background: var(--panel);
-
-        border: 1px solid var(--border);
-
-        color: white;
-
-        width: 40px;
-        height: 40px;
-
-        border-radius: 10px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-top {
-        flex-direction: column;
-      }
-
-      .case-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 560px) {
-
-      .main {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      .card {
-        padding: 15px;
-      }
-
-      .tool-header {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .color-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .controls .btn {
-        flex: 1;
-      }
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Code Tools — Powered by TeamOrbits</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: #0b0b0b;
+            --panel2: #101010;
+            --panel3: #151515;
+            --text: #f5f5f2;
+            --muted: #898989;
+            --dim: #555;
+            --line: rgba(255, 255, 255, .09);
+            --line2: rgba(255, 255, 255, .16);
+            --white: #fff;
+            --green: #67d391;
+            --red: #ff7474;
+            --amber: #ffc266;
+            --blue: #8eb9ff;
+            --radius: 18px;
+            --ease: cubic-bezier(.22, 1, .36, 1);
+            --side: 272px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "DM Sans", sans-serif;
+            overflow-x: hidden
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .7s var(--ease), visibility .7s
+        }
+
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden
+        }
+
+        .loader-mark {
+            display: grid;
+            gap: 18px;
+            text-align: center
+        }
+
+        .loader-code {
+            font: 700 34px "Space Grotesk";
+            letter-spacing: -2px
+        }
+
+        .loader-line {
+            width: 160px;
+            height: 1px;
+            background: #222;
+            overflow: hidden
+        }
+
+        .loader-line:after {
+            content: "";
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+            animation: load 1.1s var(--ease) infinite
+        }
+
+        @keyframes load {
+            from {
+                transform: translateX(-100%)
+            }
+
+            to {
+                transform: translateX(220%)
+            }
+        }
+
+        .cursor {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #fff;
+            position: fixed;
+            z-index: 10000;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh
+        }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--side);
+            padding: 22px 14px;
+            background: #080808;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform .45s var(--ease)
+        }
+
+        .brand {
+            padding: 10px 12px 27px;
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--line2);
+            display: grid;
+            place-items: center;
+            font: 700 15px monospace;
+            background: #0d0d0d
+        }
+
+        .brand h1 {
+            margin: 0;
+            font: 700 16px "Space Grotesk";
+            letter-spacing: -.6px
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #8c8c8c;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px
+        }
+
+        .search {
+            position: relative;
+            margin: 0 6px 18px
+        }
+
+        .search span {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777
+        }
+
+        .search input {
+            width: 100%;
+            background: #0d0d0d;
+            border: 1px solid var(--line);
+            padding: 12px 38px;
+            color: #fff;
+            outline: 0;
+            border-radius: 10px
+        }
+
+        .search input:focus {
+            border-color: var(--line2)
+        }
+
+        .search kbd {
+            position: absolute;
+            right: 9px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #666;
+            border: 1px solid var(--line);
+            padding: 2px 5px
+        }
+
+        .nav {
+            overflow: auto;
+            padding: 0 6px
+        }
+
+        .nav-group {
+            margin: 12px 0 20px
+        }
+
+        .nav-label {
+            font-size: 9px;
+            letter-spacing: 1.7px;
+            color: #666;
+            font-weight: 700;
+            padding: 0 9px;
+            margin-bottom: 6px
+        }
+
+        .nav-item {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #9b9b9b;
+            padding: 10px 9px;
+            border-radius: 9px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            transition: .25s var(--ease)
+        }
+
+        .nav-item:hover {
+            color: #fff;
+            background: #111
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: #161616;
+            box-shadow: inset 0 0 0 1px var(--line)
+        }
+
+        .nav-item i {
+            font-style: normal;
+            width: 19px;
+            text-align: center;
+            color: #d0d0d0;
+            font-size: 13px
+        }
+
+        .nav-item small {
+            margin-left: auto;
+            color: #555
+        }
+
+        .side-foot {
+            margin-top: auto;
+            border-top: 1px solid var(--line);
+            padding: 16px 12px 4px;
+            font-size: 10px;
+            color: #666;
+            letter-spacing: .6px
+        }
+
+        .ready {
+            color: var(--green);
+            margin-bottom: 8px
+        }
+
+        .main {
+            margin-left: var(--side);
+            width: calc(100% - var(--side));
+            min-height: 100vh
+        }
+
+        .topbar {
+            height: 76px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 42px;
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 5, .82);
+            backdrop-filter: blur(18px);
+            z-index: 50
+        }
+
+        .crumb {
+            font-size: 12px;
+            color: #888
+        }
+
+        .crumb strong {
+            color: #fff;
+            font-weight: 600
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .icon-btn {
+            border: 1px solid var(--line);
+            background: #0b0b0b;
+            color: #bbb;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px
+        }
+
+        .top-search {
+            border: 1px solid var(--line);
+            background: #0b0b0b;
+            color: #aaa;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px
+        }
+
+        .content {
+            max-width: 1380px;
+            margin: auto;
+            padding: 58px 42px 70px
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #777;
+            font-weight: 700;
+            text-transform: uppercase
+        }
+
+        .hero {
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .hero h2 {
+            font: 700 clamp(44px, 7vw, 90px)/.93 "Space Grotesk";
+            letter-spacing: -5px;
+            margin: 16px 0 22px;
+            max-width: 850px
+        }
+
+        .hero h2 span {
+            color: #666
+        }
+
+        .hero p {
+            max-width: 610px;
+            color: #8f8f8f;
+            font-size: 16px;
+            line-height: 1.75;
+            margin: 0
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 27px
+        }
+
+        .btn {
+            border: 1px solid var(--line2);
+            background: #111;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            transition: .3s var(--ease)
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: #1a1a1a
+        }
+
+        .btn.primary {
+            background: #fff;
+            color: #000;
+            border-color: #fff
+        }
+
+        .btn.primary:hover {
+            background: #e8e8e8
+        }
+
+        .btn.ghost {
+            color: #aaa
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin: 44px 0 18px
+        }
+
+        .section-head h3 {
+            font: 600 22px "Space Grotesk";
+            letter-spacing: -1px;
+            margin: 0
+        }
+
+        .section-head p {
+            margin: 0;
+            color: #777;
+            font-size: 12px
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        .quick-card {
+            border: 1px solid var(--line);
+            background: linear-gradient(145deg, #101010, #090909);
+            padding: 22px;
+            min-height: 210px;
+            position: relative;
+            overflow: hidden;
+            transition: .4s var(--ease);
+            text-align: left;
+            color: #fff
+        }
+
+        .quick-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--line2)
+        }
+
+        .quick-num {
+            font: 600 10px monospace;
+            color: #666
+        }
+
+        .quick-icon {
+            font: 700 28px "Space Grotesk";
+            margin: 35px 0 16px
+        }
+
+        .quick-card h4 {
+            margin: 0;
+            font: 600 18px "Space Grotesk";
+            letter-spacing: -.5px
+        }
+
+        .quick-card p {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 8px 0
+        }
+
+        .quick-arrow {
+            position: absolute;
+            right: 18px;
+            bottom: 17px;
+            color: #777
+        }
+
+        .workspace {
+            display: none;
+            animation: enter .45s var(--ease)
+        }
+
+        .workspace.active {
+            display: block
+        }
+
+        @keyframes enter {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .tool-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 26px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .tool-title h2 {
+            font: 700 clamp(34px, 5vw, 62px)/.95 "Space Grotesk";
+            letter-spacing: -3px;
+            margin: 12px 0 0
+        }
+
+        .tool-title p {
+            color: #888;
+            margin: 13px 0 0;
+            max-width: 550px
+        }
+
+        .shortcut {
+            border: 1px solid var(--line);
+            color: #777;
+            padding: 7px 9px;
+            font: 10px monospace;
+            border-radius: 7px
+        }
+
+        .tool-panel {
+            border: 1px solid var(--line);
+            background: #090909;
+            padding: 20px;
+            border-radius: var(--radius)
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .field-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #777;
+            margin: 0 0 9px
+        }
+
+        .input,
+        textarea,
+        select {
+            background: #050505;
+            border: 1px solid var(--line);
+            color: #eee;
+            width: 100%;
+            border-radius: 10px;
+            padding: 13px;
+            outline: 0
+        }
+
+        .input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #555
+        }
+
+        textarea {
+            min-height: 280px;
+            resize: vertical;
+            font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px
+        }
+
+        .result {
+            margin-top: 14px;
+            background: #050505;
+            border: 1px solid var(--line);
+            padding: 15px;
+            border-radius: 10px;
+            min-height: 55px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font: 12px/1.6 ui-monospace, monospace
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px
+        }
+
+        .case-card {
+            border: 1px solid var(--line);
+            padding: 15px;
+            background: #070707;
+            border-radius: 10px
+        }
+
+        .case-card b {
+            font-size: 10px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .case-card div {
+            margin-top: 9px;
+            word-break: break-word;
+            font: 13px monospace
+        }
+
+        .case-card button {
+            float: right;
+            background: none;
+            border: 0;
+            color: #888
+        }
+
+        .hash-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px
+        }
+
+        .hash {
+            border: 1px solid var(--line);
+            padding: 13px;
+            border-radius: 10px
+        }
+
+        .hash b {
+            font-size: 10px;
+            color: #777
+        }
+
+        .hash code {
+            display: block;
+            margin-top: 8px;
+            color: #bbb;
+            word-break: break-all;
+            font-size: 11px
+        }
+
+        .color-preview {
+            height: 220px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #fff
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px
+        }
+
+        .data-box {
+            border: 1px solid var(--line);
+            padding: 13px;
+            border-radius: 10px;
+            color: #bbb
+        }
+
+        .data-box small {
+            display: block;
+            color: #666;
+            margin-bottom: 5px
+        }
+
+        .visual {
+            margin-top: 15px;
+            background: #fff;
+            border-radius: 12px;
+            min-height: 290px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .visual svg {
+            max-width: 100%;
+            background: #fff
+        }
+
+        .visual #qrOut canvas,
+        .visual #qrOut img {
+            max-width: 100%;
+            height: auto;
+            display: block
+        }
+
+        .table-wrap {
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            margin-top: 15px
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px
+        }
+
+        th,
+        td {
+            padding: 11px 13px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            white-space: nowrap
+        }
+
+        th {
+            background: #111;
+            color: #ddd
+        }
+
+        .git-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px
+        }
+
+        .git-card {
+            border: 1px solid var(--line);
+            padding: 18px;
+            border-radius: 12px;
+            background: #090909
+        }
+
+        .git-card h4 {
+            margin: 0 0 13px;
+            font: 600 17px "Space Grotesk"
+        }
+
+        .git-card code {
+            display: block;
+            padding: 9px 0;
+            border-top: 1px solid var(--line);
+            color: #aaa;
+            font-size: 11px
+        }
+
+        .mobile-menu {
+            display: none
+        }
+
+        .overlay {
+            display: none
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #fff;
+            color: #000;
+            padding: 11px 15px;
+            border-radius: 9px;
+            font-size: 12px;
+            z-index: 10001;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: .3s var(--ease)
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: none
+        }
+
+        @media(max-width:980px) {
+            .cursor {
+                display: none
+            }
+
+            .sidebar {
+                transform: translateX(-105%)
+            }
+
+            .sidebar.open {
+                transform: none
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%
+            }
+
+            .topbar {
+                padding: 0 18px
+            }
+
+            .content {
+                padding: 38px 18px 55px
+            }
+
+            .mobile-menu {
+                display: block
+            }
+
+            .overlay.show {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .55);
+                z-index: 90
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .top-search {
+                display: none
+            }
+
+            .hero h2 {
+                letter-spacing: -3px
+            }
+
+            .split {
+                grid-template-columns: 1fr
+            }
+
+            .tool-title {
+                display: block
+            }
+
+            .tool-title .shortcut {
+                display: inline-block;
+                margin-top: 16px
+            }
+        }
+
+        @media(max-width:620px) {
+            .topbar {
+                height: 66px
+            }
+
+            .content {
+                padding-top: 30px
+            }
+
+            .hero h2 {
+                font-size: 47px
+            }
+
+            .quick-grid,
+            .case-grid,
+            .hash-grid,
+            .git-grid {
+                grid-template-columns: 1fr
+            }
+
+            .section-head {
+                display: block
+            }
+
+            .section-head p {
+                margin-top: 7px
+            }
+
+            .hero-actions {
+                flex-wrap: wrap
+            }
+
+            .data-grid {
+                grid-template-columns: 1fr
+            }
+
+            .tool-panel {
+                padding: 13px
+            }
+
+            .top-actions .icon-btn:last-child {
+                display: none
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 </head>
 
 <body>
-
-<div class="mobile-header">
-  <div class="mobile-brand">Code Tools</div>
-  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-</div>
-
-<div class="app">
-
-  <!-- ===================================================
-       SIDEBAR
-  ==================================================== -->
-
-  <aside class="sidebar" id="sidebar">
-
-    <div class="brand">
-      <div class="brand-logo">&lt;/&gt;</div>
-
-      <div class="brand-info">
-        <h1>Code Tools</h1>
-        <p>Powered by TeamOrbits</p>
-      </div>
+    <div id="loader">
+        <div class="loader-mark">
+            <div class="loader-code">&lt;/&gt; CODE TOOLS</div>
+            <div class="loader-line"></div>
+        </div>
     </div>
-
-    <div class="search-box">
-      <span>⌕</span>
-      <input
-        id="toolSearch"
-        placeholder="Search tools..."
-        oninput="searchTools()"
-      />
+    <div class="cursor" id="cursor"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="toast" id="toast"></div>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <div class="brand-icon">&lt;/&gt;</div>
+                <div>
+                    <h1>Code Tools</h1>
+                    <p>Powered by TeamOrbits</p>
+                </div>
+            </div>
+            <div class="search"><span>⌕</span><input id="toolSearch" oninput="filterTools()"
+                    placeholder="Search tools"><kbd>⌘K</kbd></div>
+            <div class="nav">
+                <div class="nav-group">
+                    <div class="nav-label">WORKSPACE</div>
+                    <button class="nav-item active" data-tool="home" onclick="showView('home',this)"><i>✦</i>Quick
+                        Start</button>
+                    <button class="nav-item" data-tool="case" onclick="showView('case',this)"><i>Aa</i>Case
+                        Converter</button>
+                    <button class="nav-item" data-tool="json" onclick="showView('json',this)"><i>{}</i>JSON
+                        Formatter</button>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-label">TEXT & DATA</div>
+                    <button class="nav-item" data-tool="regex" onclick="showView('regex',this)"><i>.*</i>Regex
+                        Tester</button>
+                    <button class="nav-item" data-tool="base64" onclick="showView('base64',this)"><i>64</i>Base64
+                        Encode</button>
+                    <button class="nav-item" data-tool="csv" onclick="showView('csv',this)"><i>▦</i>CSV / TSV
+                        Viewer</button>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-label">GENERATORS</div>
+                    <button class="nav-item" data-tool="timestamp" onclick="showView('timestamp',this)"><i>◷</i>Unix
+                        Timestamp</button>
+                    <button class="nav-item" data-tool="color" onclick="showView('color',this)"><i>●</i>Color
+                        Picker</button>
+                    <button class="nav-item" data-tool="hash" onclick="showView('hash',this)"><i>#</i>Hash
+                        Generator</button>
+                    <button class="nav-item" data-tool="qr" onclick="showView('qr',this)"><i>▣</i>QR & Barcode</button>
+                    <button class="nav-item" data-tool="uuid" onclick="showView('uuid',this)"><i>◇</i>UUID / ID</button>
+                    <button class="nav-item" data-tool="lorem" onclick="showView('lorem',this)"><i>¶</i>Lorem
+                        Ipsum</button>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-label">REFERENCE</div><button class="nav-item" data-tool="git"
+                        onclick="showView('git',this)"><i>⌘</i>Git Cheat</button>
+                </div>
+            </div>
+            <div class="side-foot">
+                <div class="ready">● SYSTEM READY</div>TEAMORBITS PLATFORM<br>© 2026 CODE TOOLS
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div class="crumb"><button class="icon-btn mobile-menu" onclick="toggleMenu()">☰</button> <strong
+                        id="crumb">Code Tools</strong> <span> / Developer Workspace</span></div>
+                <div class="top-actions"><button class="top-search" onclick="focusSearch()">⌕ Search tools &nbsp; <b>⌘
+                            K</b></button><button class="icon-btn" onclick="toggleTheme()">◐</button><button
+                        class="icon-btn"
+                        onclick="showView('home',document.querySelector('[data-tool=home]'))">⌂</button></div>
+            </header>
+            <div class="content">
+                <section class="workspace active" id="home">
+                    <div class="hero">
+                        <div class="eyebrow">Code Tools · Developer Workspace</div>
+                        <h2>Build faster.<br><span>Format. Convert. Generate.</span></h2>
+                        <p>A focused collection of practical developer utilities for text, data, identifiers, encoding,
+                            debugging and everyday development workflows.</p>
+                        <div class="hero-actions"><button class="btn primary"
+                                onclick="showView('json',document.querySelector('[data-tool=json]'))">Open JSON
+                                Formatter →</button><button class="btn ghost"
+                                onclick="document.getElementById('quick').scrollIntoView({behavior:'smooth'})">Explore
+                                tools ↓</button></div>
+                    </div>
+                    <div id="quick">
+                        <div class="section-head">
+                            <div>
+                                <div class="eyebrow">Quick Start</div>
+                                <h3>Most used tools</h3>
+                            </div>
+                            <p>Everything runs locally in your browser.</p>
+                        </div>
+                        <div class="quick-grid">
+                            <button class="quick-card"
+                                onclick="showView('case',document.querySelector('[data-tool=case]'))">
+                                <div class="quick-num">01 / TEXT</div>
+                                <div class="quick-icon">Aa</div>
+                                <h4>Case Converter</h4>
+                                <p>camelCase, snake_case, kebab-case and CONSTANT_CASE.</p>
+                                <div class="quick-arrow">→</div>
+                            </button>
+                            <button class="quick-card"
+                                onclick="showView('json',document.querySelector('[data-tool=json]'))">
+                                <div class="quick-num">02 / DATA</div>
+                                <div class="quick-icon">{ }</div>
+                                <h4>JSON Formatter</h4>
+                                <p>Beautify, minify, validate and escape JSON.</p>
+                                <div class="quick-arrow">→</div>
+                            </button>
+                            <button class="quick-card"
+                                onclick="showView('uuid',document.querySelector('[data-tool=uuid]'))">
+                                <div class="quick-num">03 / GENERATE</div>
+                                <div class="quick-icon">◇</div>
+                                <h4>UUID / ID</h4>
+                                <p>UUID v4, sortable IDs and secure random strings.</p>
+                                <div class="quick-arrow">→</div>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <section class="workspace" id="case">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">01 / Text & Data</div>
+                            <h2>Case<br>Converter.</h2>
+                            <p>Convert text instantly into common programming naming conventions.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ U</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Input Text</div><textarea id="caseInput" oninput="convertCases()"
+                            placeholder="Enter your text here..."></textarea>
+                        <div class="case-grid" id="caseResults"></div>
+                    </div>
+                </section>
+                <section class="workspace" id="json">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">02 / Data</div>
+                            <h2>JSON<br>Formatter.</h2>
+                            <p>Beautify, minify, validate and escape JSON without leaving the workspace.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ J</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="split">
+                            <div>
+                                <div class="field-label">Input</div><textarea id="jsonInput"
+                                    placeholder='{"hello":"world"}'></textarea>
+                            </div>
+                            <div>
+                                <div class="field-label">Output</div><textarea id="jsonOutput" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="actions"><button class="btn primary" onclick="jsonFormat()">Beautify</button><button
+                                class="btn" onclick="jsonMinify()">Minify</button><button class="btn"
+                                onclick="jsonValidate()">Validate</button><button class="btn"
+                                onclick="jsonEscape()">Escape</button><button class="btn"
+                                onclick="copyValue('jsonOutput')">Copy</button></div>
+                        <div class="result" id="jsonStatus">Ready.</div>
+                    </div>
+                </section>
+                <section class="workspace" id="regex">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">03 / Debug</div>
+                            <h2>Regex<br>Tester.</h2>
+                            <p>Test and inspect regular expressions with real-time match information.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ R</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Regular Expression</div><input class="input" id="regexPattern"
+                            placeholder="\b\w+\b">
+                        <div style="height:12px"></div>
+                        <div class="field-label">Flags</div><input class="input" id="regexFlags" value="g">
+                        <div style="height:12px"></div>
+                        <div class="field-label">Test Text</div><textarea id="regexText"
+                            placeholder="Enter text to test..."></textarea>
+                        <div class="actions"><button class="btn primary" onclick="testRegex()">Test Regex</button></div>
+                        <div class="result" id="regexResult">Matches will appear here.</div>
+                    </div>
+                </section>
+                <section class="workspace" id="timestamp">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">04 / Time</div>
+                            <h2>Unix<br>Timestamp.</h2>
+                            <p>Convert timestamps to local, UTC and ISO dates, and back again.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ T</div>
+                    </div>
+                    <div class="tool-panel split">
+                        <div>
+                            <div class="field-label">Unix Timestamp</div><input class="input" id="unixInput"
+                                placeholder="1720000000">
+                            <div class="actions"><button class="btn primary"
+                                    onclick="unixToDate()">Convert</button><button class="btn"
+                                    onclick="currentUnix()">Current</button></div>
+                            <div class="result" id="unixResult"></div>
+                        </div>
+                        <div>
+                            <div class="field-label">Date & Time</div><input class="input" type="datetime-local"
+                                id="dateInput">
+                            <div class="actions"><button class="btn primary" onclick="dateToUnix()">Convert</button>
+                            </div>
+                            <div class="result" id="dateResult"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="workspace" id="color">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">05 / CSS</div>
+                            <h2>Color<br>Picker.</h2>
+                            <p>Inspect HEX, RGB, HSL and readable foreground contrast.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ C</div>
+                    </div>
+                    <div class="tool-panel split">
+                        <div>
+                            <div class="field-label">Choose Color</div><input class="input"
+                                style="height:62px;padding:5px" type="color" id="colorPicker" value="#ffffff"
+                                oninput="updateColor()">
+                            <div style="height:12px"></div>
+                            <div class="field-label">HEX</div><input class="input" id="hexInput" value="#ffffff"
+                                oninput="updateHex()">
+                        </div>
+                        <div>
+                            <div class="color-preview" id="colorPreview"></div>
+                            <div class="data-grid">
+                                <div class="data-box"><small>RGB</small><span id="rgbValue"></span></div>
+                                <div class="data-box"><small>HSL</small><span id="hslValue"></span></div>
+                                <div class="data-box"><small>CSS</small><span id="cssValue"></span></div>
+                                <div class="data-box"><small>Contrast</small><span id="contrastValue"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="workspace" id="hash">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">06 / Security</div>
+                            <h2>Hash<br>Generator.</h2>
+                            <p>Generate common hashes directly in the browser with optional salt.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ H</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Text</div><textarea id="hashInput"
+                            placeholder="Enter text to hash..."></textarea>
+                        <div style="height:12px"></div>
+                        <div class="field-label">Salt (Optional)</div><input class="input" id="hashSalt"
+                            placeholder="Optional salt">
+                        <div class="actions"><button class="btn primary" onclick="generateHashes()">Generate
+                                Hashes</button></div>
+                        <div class="hash-grid" id="hashResults"></div>
+                    </div>
+                </section>
+                <section class="workspace" id="qr">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">07 / Generate</div>
+                            <h2>QR &<br>Barcode.</h2>
+                            <p>Generate QR codes and CODE128 barcodes from text or links.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ Q</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Text or URL</div><textarea id="qrInput"
+                            placeholder="https://teamorbits.com"></textarea>
+                        <div class="actions"><button class="btn primary" onclick="generateQR()">Generate
+                                QR</button><button class="btn" onclick="generateBarcode()">Generate
+                                Barcode</button><button class="btn" onclick="downloadGeneratedCode('qr')">Download
+                                QR</button><button class="btn" onclick="downloadGeneratedCode('barcode')">Download
+                                Barcode</button></div>
+                        <div class="visual">
+                            <div id="qrOut"></div><svg id="barcodeOut"></svg>
+                        </div>
+                    </div>
+                </section>
+                <section class="workspace" id="uuid">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">08 / Generate</div>
+                            <h2>UUID /<br>ID.</h2>
+                            <p>Create UUIDs, sortable v7-style IDs, slugs and secure random strings.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ U</div>
+                    </div>
+                    <div class="tool-panel"><select id="idType">
+                            <option value="uuid4">UUID v4</option>
+                            <option value="uuid7">UUID v7-style</option>
+                            <option value="nanoid">NanoID Style</option>
+                            <option value="slug">Slug</option>
+                            <option value="random">Secure Random</option>
+                        </select>
+                        <div class="actions"><button class="btn primary" onclick="generateID()">Generate</button><button
+                                class="btn" onclick="copyTextResult('idResult')">Copy</button></div>
+                        <div class="result" id="idResult"></div>
+                    </div>
+                </section>
+                <section class="workspace" id="base64">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">09 / Encoding</div>
+                            <h2>Base64<br>Encode.</h2>
+                            <p>Encode and decode Unicode text, files and image Data URLs.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ B</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="split">
+                            <div>
+                                <div class="field-label">Input</div><textarea id="base64Input"></textarea>
+                            </div>
+                            <div>
+                                <div class="field-label">Output</div><textarea id="base64Output" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="actions"><button class="btn primary" onclick="encode64()">Encode</button><button
+                                class="btn" onclick="decode64()">Decode</button><button class="btn"
+                                onclick="copyValue('base64Output')">Copy</button></div>
+                        <div style="margin-top:15px">
+                            <div class="field-label">Encode File / Image</div><input class="input" type="file"
+                                onchange="file64(this)">
+                        </div>
+                    </div>
+                </section>
+                <section class="workspace" id="csv">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">10 / Data</div>
+                            <h2>CSV / TSV<br>Viewer.</h2>
+                            <p>Preview pasted CSV or TSV data as a clean table.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ V</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Paste Data</div><textarea id="csvInput"
+                            placeholder="name,email,role&#10;John,john@example.com,Developer&#10;Jane,jane@example.com,Designer"></textarea>
+                        <div class="actions"><button class="btn primary" onclick="parseCSV()">Preview Data</button>
+                        </div>
+                        <div class="table-wrap" id="csvResult"></div>
+                    </div>
+                </section>
+                <section class="workspace" id="lorem">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">11 / Content</div>
+                            <h2>Lorem<br>Ipsum.</h2>
+                            <p>Generate clean placeholder paragraphs for designs and development.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ L</div>
+                    </div>
+                    <div class="tool-panel">
+                        <div class="field-label">Paragraph Count</div><input class="input" type="number" id="loremCount"
+                            value="3" min="1" max="20">
+                        <div class="actions"><button class="btn primary"
+                                onclick="generateLorem()">Generate</button><button class="btn"
+                                onclick="copyValue('loremOutput')">Copy</button></div><textarea id="loremOutput"
+                            style="margin-top:15px"></textarea>
+                    </div>
+                </section>
+                <section class="workspace" id="git">
+                    <div class="tool-title">
+                        <div>
+                            <div class="eyebrow">12 / Reference</div>
+                            <h2>Git<br>Cheat.</h2>
+                            <p>Useful everyday Git commands for setup, branches and recovery.</p>
+                        </div>
+                        <div class="shortcut">⌘ ⇧ G</div>
+                    </div>
+                    <div class="git-grid">
+                        <div class="git-card">
+                            <h4>Getting Started</h4>
+                            <code>git init</code><code>git clone URL</code><code>git status</code><code>git log --oneline</code>
+                        </div>
+                        <div class="git-card">
+                            <h4>Commit Changes</h4>
+                            <code>git add .</code><code>git commit -m "message"</code><code>git push origin main</code><code>git pull</code>
+                        </div>
+                        <div class="git-card">
+                            <h4>Branches</h4>
+                            <code>git branch</code><code>git switch -c feature</code><code>git switch main</code><code>git merge feature</code>
+                        </div>
+                        <div class="git-card">
+                            <h4>Undo / Reset</h4>
+                            <code>git restore file</code><code>git reset --soft HEAD~1</code><code>git revert COMMIT</code><code>git stash</code>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
-
-    <div class="nav-title">TEXT & DATA</div>
-
-    <button class="nav-item active" data-tool="case" onclick="showTool('case',this)">
-      <span class="nav-icon">Aa</span> Case Converter
-    </button>
-
-    <button class="nav-item" data-tool="json" onclick="showTool('json',this)">
-      <span class="nav-icon">{ }</span> JSON Formatter
-    </button>
-
-    <button class="nav-item" data-tool="regex" onclick="showTool('regex',this)">
-      <span class="nav-icon">.*</span> Regex Tester
-    </button>
-
-    <button class="nav-item" data-tool="base64" onclick="showTool('base64',this)">
-      <span class="nav-icon">64</span> Base64 Encode
-    </button>
-
-    <button class="nav-item" data-tool="csv" onclick="showTool('csv',this)">
-      <span class="nav-icon">▦</span> CSV / TSV Viewer
-    </button>
-
-    <div class="nav-title">GENERATORS</div>
-
-    <button class="nav-item" data-tool="timestamp" onclick="showTool('timestamp',this)">
-      <span class="nav-icon">◷</span> Unix Timestamp
-    </button>
-
-    <button class="nav-item" data-tool="color" onclick="showTool('color',this)">
-      <span class="nav-icon">●</span> Color Picker
-    </button>
-
-    <button class="nav-item" data-tool="hash" onclick="showTool('hash',this)">
-      <span class="nav-icon">#</span> Hash Generator
-    </button>
-
-    <button class="nav-item" data-tool="qr" onclick="showTool('qr',this)">
-      <span class="nav-icon">▣</span> QR & Barcode
-    </button>
-
-    <button class="nav-item" data-tool="uuid" onclick="showTool('uuid',this)">
-      <span class="nav-icon">◇</span> UUID / ID
-    </button>
-
-    <button class="nav-item" data-tool="lorem" onclick="showTool('lorem',this)">
-      <span class="nav-icon">¶</span> Lorem Ipsum
-    </button>
-
-    <div class="nav-title">REFERENCE</div>
-
-    <button class="nav-item" data-tool="git" onclick="showTool('git',this)">
-      <span class="nav-icon">⌘</span> Git Cheat
-    </button>
-
-    <div class="sidebar-footer">
-      © 2026 <strong>Code Tools</strong><br>
-      Powered by TeamOrbits
-    </div>
-
-  </aside>
-
-  <!-- ===================================================
-       MAIN
-  ==================================================== -->
-
-  <main class="main">
-
-    <div class="container">
-
-      <div class="hero">
-
-        <div class="hero-top">
-
-          <div>
-            <h2>Code Tools</h2>
-
-            <p>
-              Fast, private and powerful developer utilities in one place.
-            </p>
-
-            <p class="powered">
-              Powered by TeamOrbits
-            </p>
-          </div>
-
-          <div class="status-badge">
-            <span class="status-dot"></span>
-            All tools ready
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- =================================================
-           CASE CONVERTER
-      ================================================== -->
-
-      <section class="tool active" id="case">
-
-        <div class="tool-header">
-          <div>
-            <h3>Case Converter</h3>
-            <p>Convert text instantly into popular programming case formats.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ U</div>
-        </div>
-
-        <div class="card">
-
-          <label>Input Text</label>
-
-          <textarea
-            id="caseInput"
-            placeholder="Enter your text here..."
-            oninput="convertCases()"
-          ></textarea>
-
-          <div class="case-grid">
-
-            <div class="case-box">
-              <strong>camelCase</strong>
-              <button onclick="copyElement('camelCase')">⧉</button>
-              <div class="case-value" id="camelCase"></div>
-            </div>
-
-            <div class="case-box">
-              <strong>snake_case</strong>
-              <button onclick="copyElement('snakeCase')">⧉</button>
-              <div class="case-value" id="snakeCase"></div>
-            </div>
-
-            <div class="case-box">
-              <strong>kebab-case</strong>
-              <button onclick="copyElement('kebabCase')">⧉</button>
-              <div class="case-value" id="kebabCase"></div>
-            </div>
-
-            <div class="case-box">
-              <strong>CONSTANT_CASE</strong>
-              <button onclick="copyElement('constantCase')">⧉</button>
-              <div class="case-value" id="constantCase"></div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- JSON -->
-
-      <section class="tool" id="json">
-
-        <div class="tool-header">
-          <div>
-            <h3>JSON Formatter</h3>
-            <p>Beautify, minify, validate and escape JSON.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ J</div>
-        </div>
-
-        <div class="card">
-
-          <div class="grid">
-
-            <div>
-              <label>JSON Input</label>
-              <textarea id="jsonInput" placeholder='{"hello":"world"}'></textarea>
-            </div>
-
-            <div>
-              <label>Output</label>
-              <textarea id="jsonOutput" readonly></textarea>
-            </div>
-
-          </div>
-
-          <div class="controls">
-            <button class="btn primary" onclick="formatJSON()">Beautify</button>
-            <button class="btn" onclick="minifyJSON()">Minify</button>
-            <button class="btn" onclick="validateJSON()">Validate</button>
-            <button class="btn" onclick="escapeJSON()">Escape</button>
-            <button class="btn" onclick="copyInput('jsonOutput')">Copy</button>
-          </div>
-
-          <div id="jsonStatus" style="margin-top:12px;color:var(--muted);font-size:12px"></div>
-
-        </div>
-
-      </section>
-
-      <!-- REGEX -->
-
-      <section class="tool" id="regex">
-
-        <div class="tool-header">
-          <div>
-            <h3>Regex Tester</h3>
-            <p>Test and debug regular expressions in real time.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ R</div>
-        </div>
-
-        <div class="card">
-
-          <label>Regular Expression</label>
-          <input id="regexPattern" placeholder="\b\w+\b" />
-
-          <div style="height:14px"></div>
-
-          <label>Flags</label>
-          <input id="regexFlags" value="g" placeholder="gim" />
-
-          <div style="height:14px"></div>
-
-          <label>Test Text</label>
-          <textarea id="regexText" placeholder="Enter text to test..."></textarea>
-
-          <div class="controls">
-            <button class="btn primary" onclick="testRegex()">Test Regex</button>
-          </div>
-
-          <div class="result" id="regexOutput">
-Your regex matches will appear here.
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- TIMESTAMP -->
-
-      <section class="tool" id="timestamp">
-
-        <div class="tool-header">
-          <div>
-            <h3>Unix Timestamp</h3>
-            <p>Convert between Unix timestamps and human-readable dates.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ T</div>
-        </div>
-
-        <div class="card">
-
-          <div class="grid">
-
-            <div>
-
-              <label>Unix Timestamp</label>
-
-              <input
-                type="number"
-                id="unixInput"
-                placeholder="1720000000"
-              />
-
-              <div class="controls">
-                <button class="btn primary" onclick="unixToDate()">Convert</button>
-                <button class="btn" onclick="currentUnix()">Current</button>
-              </div>
-
-              <div class="result" id="unixResult"></div>
-
-            </div>
-
-            <div>
-
-              <label>Date & Time</label>
-
-              <input type="datetime-local" id="dateInput" />
-
-              <div class="controls">
-                <button class="btn primary" onclick="dateToUnix()">Convert</button>
-              </div>
-
-              <div class="result" id="dateResult"></div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- COLOR -->
-
-      <section class="tool" id="color">
-
-        <div class="tool-header">
-          <div>
-            <h3>Color Picker</h3>
-            <p>HEX, RGB, HSL, CSS variables and contrast information.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ C</div>
-        </div>
-
-        <div class="card">
-
-          <div class="grid">
-
-            <div>
-
-              <label>Choose Color</label>
-
-              <input
-                type="color"
-                id="colorPicker"
-                value="#7c5cff"
-                style="height:60px"
-                oninput="updateColor()"
-              />
-
-              <div style="height:15px"></div>
-
-              <label>HEX</label>
-
-              <input
-                id="hexInput"
-                value="#7c5cff"
-                oninput="updateHex()"
-              />
-
-            </div>
-
-            <div>
-
-              <div class="color-preview" id="colorPreview"></div>
-
-              <div class="color-grid">
-
-                <div class="color-item">
-                  <small>RGB</small>
-                  <span id="rgbValue"></span>
-                </div>
-
-                <div class="color-item">
-                  <small>HSL</small>
-                  <span id="hslValue"></span>
-                </div>
-
-                <div class="color-item">
-                  <small>CSS</small>
-                  <span id="cssValue"></span>
-                </div>
-
-                <div class="color-item">
-                  <small>Contrast</small>
-                  <span id="contrastValue"></span>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- HASH -->
-
-      <section class="tool" id="hash">
-
-        <div class="tool-header">
-          <div>
-            <h3>Hash Generator</h3>
-            <p>Generate MD5, SHA-1, SHA-256 and SHA-512 hashes.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ H</div>
-        </div>
-
-        <div class="card">
-
-          <label>Text</label>
-          <textarea id="hashInput" placeholder="Enter text to hash..."></textarea>
-
-          <div style="height:14px"></div>
-
-          <label>Salt (Optional)</label>
-          <input id="hashSalt" placeholder="Optional salt" />
-
-          <div class="controls">
-            <button class="btn primary" onclick="generateHashes()">
-              Generate Hashes
-            </button>
-          </div>
-
-          <div class="hash-list">
-
-            <div class="hash-item">
-              <strong>MD5</strong>
-              <code id="md5"></code>
-            </div>
-
-            <div class="hash-item">
-              <strong>SHA-1</strong>
-              <code id="sha1"></code>
-            </div>
-
-            <div class="hash-item">
-              <strong>SHA-256</strong>
-              <code id="sha256"></code>
-            </div>
-
-            <div class="hash-item">
-              <strong>SHA-512</strong>
-              <code id="sha512"></code>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- QR -->
-
-      <section class="tool" id="qr">
-
-        <div class="tool-header">
-          <div>
-            <h3>QR & Barcode</h3>
-            <p>Generate QR codes and barcodes from text or links.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ Q</div>
-        </div>
-
-        <div class="card">
-
-          <label>Text or URL</label>
-
-          <textarea
-            id="qrInput"
-            placeholder="https://teamorbits.com"
-          ></textarea>
-
-          <div class="controls">
-            <button class="btn primary" onclick="generateQR()">
-              Generate QR
-            </button>
-
-            <button class="btn" onclick="generateBarcode()">
-              Generate Barcode
-            </button>
-          </div>
-
-          <div class="visual-output">
-            <div id="qrCode"></div>
-            <svg id="barcode"></svg>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- UUID -->
-
-      <section class="tool" id="uuid">
-
-        <div class="tool-header">
-          <div>
-            <h3>UUID / ID Generator</h3>
-            <p>Generate UUIDs, NanoID-style strings, slugs and secure IDs.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ U</div>
-        </div>
-
-        <div class="card">
-
-          <div class="controls">
-
-            <select id="idType">
-              <option value="uuid4">UUID v4</option>
-              <option value="uuid7">UUID v7</option>
-              <option value="nanoid">NanoID Style</option>
-              <option value="slug">Slug</option>
-              <option value="random">Secure Random</option>
-            </select>
-
-            <button class="btn primary" onclick="generateID()">
-              Generate
-            </button>
-
-          </div>
-
-          <div class="result" id="idOutput"></div>
-
-        </div>
-
-      </section>
-
-      <!-- BASE64 -->
-
-      <section class="tool" id="base64">
-
-        <div class="tool-header">
-          <div>
-            <h3>Base64 Encode</h3>
-            <p>Encode or decode text and convert files into Base64 Data URLs.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ B</div>
-        </div>
-
-        <div class="card">
-
-          <div class="grid">
-
-            <div>
-              <label>Input</label>
-              <textarea id="base64Input"></textarea>
-            </div>
-
-            <div>
-              <label>Output</label>
-              <textarea id="base64Output" readonly></textarea>
-            </div>
-
-          </div>
-
-          <div class="controls">
-
-            <button class="btn primary" onclick="encodeBase64()">
-              Encode
-            </button>
-
-            <button class="btn" onclick="decodeBase64()">
-              Decode
-            </button>
-
-            <button class="btn" onclick="copyInput('base64Output')">
-              Copy
-            </button>
-
-          </div>
-
-          <div style="margin-top:15px">
-
-            <label>Encode File / Image</label>
-
-            <input
-              type="file"
-              id="base64File"
-              onchange="encodeFileBase64()"
-            />
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- CSV -->
-
-      <section class="tool" id="csv">
-
-        <div class="tool-header">
-          <div>
-            <h3>CSV / TSV Viewer</h3>
-            <p>Preview CSV or TSV data as an interactive table.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ V</div>
-        </div>
-
-        <div class="card">
-
-          <label>Paste CSV or TSV</label>
-
-          <textarea
-            id="csvInput"
-            placeholder="name,email,role
-John,john@example.com,Developer
-Jane,jane@example.com,Designer"
-          ></textarea>
-
-          <div class="controls">
-            <button class="btn primary" onclick="parseCSV()">
-              Preview Data
-            </button>
-          </div>
-
-          <div class="table-wrap" id="csvOutput"></div>
-
-        </div>
-
-      </section>
-
-      <!-- LOREM -->
-
-      <section class="tool" id="lorem">
-
-        <div class="tool-header">
-          <div>
-            <h3>Lorem Ipsum</h3>
-            <p>Generate placeholder text for designs, layouts and testing.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ L</div>
-        </div>
-
-        <div class="card">
-
-          <label>Paragraph Count</label>
-
-          <input
-            type="number"
-            id="loremCount"
-            min="1"
-            max="20"
-            value="3"
-          />
-
-          <div class="controls">
-
-            <button class="btn primary" onclick="generateLorem()">
-              Generate
-            </button>
-
-            <button class="btn" onclick="copyInput('loremOutput')">
-              Copy
-            </button>
-
-          </div>
-
-          <textarea
-            id="loremOutput"
-            style="margin-top:15px"
-          ></textarea>
-
-        </div>
-
-      </section>
-
-      <!-- GIT -->
-
-      <section class="tool" id="git">
-
-        <div class="tool-header">
-          <div>
-            <h3>Git Cheat Sheet</h3>
-            <p>Useful Git commands for everyday development.</p>
-          </div>
-
-          <div class="shortcut">⌘ ⇧ G</div>
-        </div>
-
-        <div class="git-grid">
-
-          <div class="git-card">
-            <h4>Getting Started</h4>
-            <div class="git-command"><code>git init</code></div>
-            <div class="git-command"><code>git clone URL</code></div>
-            <div class="git-command"><code>git status</code></div>
-            <div class="git-command"><code>git log --oneline</code></div>
-          </div>
-
-          <div class="git-card">
-            <h4>Commit Changes</h4>
-            <div class="git-command"><code>git add .</code></div>
-            <div class="git-command"><code>git commit -m "message"</code></div>
-            <div class="git-command"><code>git push origin main</code></div>
-            <div class="git-command"><code>git pull</code></div>
-          </div>
-
-          <div class="git-card">
-            <h4>Branches</h4>
-            <div class="git-command"><code>git branch</code></div>
-            <div class="git-command"><code>git switch -c feature</code></div>
-            <div class="git-command"><code>git switch main</code></div>
-            <div class="git-command"><code>git merge feature</code></div>
-          </div>
-
-          <div class="git-card">
-            <h4>Undo / Reset</h4>
-            <div class="git-command"><code>git restore file</code></div>
-            <div class="git-command"><code>git reset --soft HEAD~1</code></div>
-            <div class="git-command"><code>git revert COMMIT</code></div>
-            <div class="git-command"><code>git stash</code></div>
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </main>
-
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-
-  /* =====================================================
-     NAVIGATION
-  ===================================================== */
-
-  function showTool(id, button) {
-
-    document.querySelectorAll(".tool").forEach(tool => {
-      tool.classList.remove("active");
-    });
-
-    document.getElementById(id).classList.add("active");
-
-    document.querySelectorAll(".nav-item").forEach(item => {
-      item.classList.remove("active");
-    });
-
-    if (button) {
-      button.classList.add("active");
-    }
-
-    if (window.innerWidth <= 950) {
-      document.getElementById("sidebar").classList.remove("open");
-    }
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-
-
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-  }
-
-
-  function searchTools() {
-
-    const query =
-      document.getElementById("toolSearch")
-      .value
-      .toLowerCase();
-
-    document.querySelectorAll(".nav-item").forEach(item => {
-
-      item.style.display =
-        item.innerText.toLowerCase().includes(query)
-          ? "flex"
-          : "none";
-
-    });
-  }
-
-
-  /* =====================================================
-     TOAST
-  ===================================================== */
-
-  function toast(message) {
-
-    const element =
-      document.getElementById("toast");
-
-    element.textContent = message;
-
-    element.classList.add("show");
-
-    setTimeout(() => {
-      element.classList.remove("show");
-    }, 2200);
-  }
-
-
-  function copyInput(id) {
-
-    const element =
-      document.getElementById(id);
-
-    navigator.clipboard.writeText(element.value);
-
-    toast("Copied to clipboard");
-  }
-
-
-  function copyElement(id) {
-
-    const element =
-      document.getElementById(id);
-
-    navigator.clipboard.writeText(
-      element.innerText
-    );
-
-    toast("Copied to clipboard");
-  }
-
-
-  /* =====================================================
-     CASE CONVERTER
-  ===================================================== */
-
-  function getWords(text) {
-
-    return text
-      .replace(/([a-z])([A-Z])/g, "$1 $2")
-      .replace(/[_-]+/g, " ")
-      .replace(/[^\w\s]/g, " ")
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
-  }
-
-
-  function convertCases() {
-
-    const input =
-      document.getElementById("caseInput").value;
-
-    const words =
-      getWords(input);
-
-    document.getElementById("camelCase").textContent =
-      words
-        .map((word, index) =>
-          index === 0
-            ? word
-            : word.charAt(0).toUpperCase() + word.slice(1)
-        )
-        .join("");
-
-    document.getElementById("snakeCase").textContent =
-      words.join("_");
-
-    document.getElementById("kebabCase").textContent =
-      words.join("-");
-
-    document.getElementById("constantCase").textContent =
-      words.join("_").toUpperCase();
-  }
-
-
-  /* =====================================================
-     JSON
-  ===================================================== */
-
-  function formatJSON() {
-
-    try {
-
-      const data =
-        JSON.parse(
-          document.getElementById("jsonInput").value
-        );
-
-      document.getElementById("jsonOutput").value =
-        JSON.stringify(data, null, 2);
-
-      document.getElementById("jsonStatus").textContent =
-        "✓ Valid JSON";
-
-    } catch (error) {
-
-      document.getElementById("jsonStatus").textContent =
-        "✕ " + error.message;
-    }
-  }
-
-
-  function minifyJSON() {
-
-    try {
-
-      const data =
-        JSON.parse(
-          document.getElementById("jsonInput").value
-        );
-
-      document.getElementById("jsonOutput").value =
-        JSON.stringify(data);
-
-      document.getElementById("jsonStatus").textContent =
-        "✓ JSON minified";
-
-    } catch (error) {
-
-      document.getElementById("jsonStatus").textContent =
-        "✕ " + error.message;
-    }
-  }
-
-
-  function validateJSON() {
-
-    try {
-
-      JSON.parse(
-        document.getElementById("jsonInput").value
-      );
-
-      document.getElementById("jsonStatus").textContent =
-        "✓ JSON is valid";
-
-    } catch (error) {
-
-      document.getElementById("jsonStatus").textContent =
-        "✕ Invalid JSON: " + error.message;
-    }
-  }
-
-
-  function escapeJSON() {
-
-    const value =
-      document.getElementById("jsonInput").value;
-
-    document.getElementById("jsonOutput").value =
-      JSON.stringify(value);
-  }
-
-
-  /* =====================================================
-     REGEX
-  ===================================================== */
-
-  function testRegex() {
-
-    const pattern =
-      document.getElementById("regexPattern").value;
-
-    const flags =
-      document.getElementById("regexFlags").value;
-
-    const text =
-      document.getElementById("regexText").value;
-
-    try {
-
-      const regex =
-        new RegExp(
-          pattern,
-          flags.includes("g") ? flags : flags + "g"
-        );
-
-      const matches =
-        [...text.matchAll(regex)];
-
-      document.getElementById("regexOutput").textContent =
-        matches.length
-          ? matches.map((match, index) =>
-              `Match ${index + 1}: "${match[0]}" at index ${match.index}`
-            ).join("\n")
-          : "No matches found.";
-
-    } catch (error) {
-
-      document.getElementById("regexOutput").textContent =
-        "Invalid Regex: " + error.message;
-    }
-  }
-
-
-  /* =====================================================
-     TIMESTAMP
-  ===================================================== */
-
-  function unixToDate() {
-
-    let timestamp =
-      Number(
-        document.getElementById("unixInput").value
-      );
-
-    if (!timestamp) return;
-
-    if (timestamp < 100000000000) {
-      timestamp *= 1000;
-    }
-
-    const date =
-      new Date(timestamp);
-
-    document.getElementById("unixResult").textContent =
-      "Local: " + date.toString() +
-      "\n\nUTC: " + date.toUTCString() +
-      "\n\nISO: " + date.toISOString();
-  }
-
-
-  function currentUnix() {
-
-    document.getElementById("unixInput").value =
-      Math.floor(Date.now() / 1000);
-
-    unixToDate();
-  }
-
-
-  function dateToUnix() {
-
-    const value =
-      document.getElementById("dateInput").value;
-
-    if (!value) return;
-
-    const date =
-      new Date(value);
-
-    document.getElementById("dateResult").textContent =
-      Math.floor(date.getTime() / 1000) +
-      " seconds\n\n" +
-      date.getTime() +
-      " milliseconds";
-  }
-
-
-  /* =====================================================
-     COLOR
-  ===================================================== */
-
-  function updateColor() {
-
-    const hex =
-      document.getElementById("colorPicker").value;
-
-    document.getElementById("hexInput").value =
-      hex;
-
-    renderColor(hex);
-  }
-
-
-  function updateHex() {
-
-    const hex =
-      document.getElementById("hexInput").value;
-
-    if (/^#[0-9A-F]{6}$/i.test(hex)) {
-
-      document.getElementById("colorPicker").value =
-        hex;
-
-      renderColor(hex);
-    }
-  }
-
-
-  function renderColor(hex) {
-
-    document.getElementById("colorPreview")
-      .style.background =
-      hex;
-
-    const r =
-      parseInt(hex.substring(1,3), 16);
-
-    const g =
-      parseInt(hex.substring(3,5), 16);
-
-    const b =
-      parseInt(hex.substring(5,7), 16);
-
-    document.getElementById("rgbValue").textContent =
-      `rgb(${r}, ${g}, ${b})`;
-
-    const hsl =
-      rgbToHsl(r,g,b);
-
-    document.getElementById("hslValue").textContent =
-      `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
-
-    document.getElementById("cssValue").textContent =
-      `--color: ${hex}`;
-
-    const luminance =
-      (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-    document.getElementById("contrastValue").textContent =
-      luminance > 0.5
-        ? "Use dark text"
-        : "Use light text";
-  }
-
-
-  function rgbToHsl(r,g,b) {
-
-    r /= 255;
-    g /= 255;
-    b /= 255;
-
-    const max =
-      Math.max(r,g,b);
-
-    const min =
-      Math.min(r,g,b);
-
-    let h = 0;
-    let s = 0;
-
-    const l =
-      (max + min) / 2;
-
-    if (max !== min) {
-
-      const d =
-        max - min;
-
-      s =
-        l > .5
-          ? d / (2 - max - min)
-          : d / (max + min);
-
-      switch(max) {
-
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
-          break;
-
-        case g:
-          h = (b - r) / d + 2;
-          break;
-
-        case b:
-          h = (r - g) / d + 4;
-          break;
-      }
-
-      h /= 6;
-    }
-
-    return [
-      Math.round(h * 360),
-      Math.round(s * 100),
-      Math.round(l * 100)
-    ];
-  }
-
-
-  /* =====================================================
-     HASH
-  ===================================================== */
-
-  function generateHashes() {
-
-    const text =
-      document.getElementById("hashInput").value +
-      document.getElementById("hashSalt").value;
-
-    document.getElementById("md5").textContent =
-      CryptoJS.MD5(text).toString();
-
-    document.getElementById("sha1").textContent =
-      CryptoJS.SHA1(text).toString();
-
-    document.getElementById("sha256").textContent =
-      CryptoJS.SHA256(text).toString();
-
-    document.getElementById("sha512").textContent =
-      CryptoJS.SHA512(text).toString();
-  }
-
-
-  /* =====================================================
-     QR / BARCODE
-  ===================================================== */
-
-  function generateQR() {
-
-    const text =
-      document.getElementById("qrInput").value.trim();
-
-    if (!text) {
-      toast("Enter text or URL first");
-      return;
-    }
-
-    const container =
-      document.getElementById("qrCode");
-
-    container.innerHTML = "";
-
-    document.getElementById("barcode")
-      .style.display =
-      "none";
-
-    new QRCode(container, {
-      text: text,
-      width: 220,
-      height: 220
-    });
-  }
-
-
-  function generateBarcode() {
-
-    const text =
-      document.getElementById("qrInput").value.trim();
-
-    if (!text) {
-      toast("Enter text first");
-      return;
-    }
-
-    document.getElementById("qrCode").innerHTML =
-      "";
-
-    const barcode =
-      document.getElementById("barcode");
-
-    barcode.style.display =
-      "block";
-
-    JsBarcode(
-      barcode,
-      text,
-      {
-        format: "CODE128",
-        width: 2,
-        height: 100,
-        displayValue: true
-      }
-    );
-  }
-
-
-  /* =====================================================
-     UUID / ID
-  ===================================================== */
-
-  function randomString(length) {
-
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    const values =
-      new Uint32Array(length);
-
-    crypto.getRandomValues(values);
-
-    return Array.from(values)
-      .map(value =>
-        characters[value % characters.length]
-      )
-      .join("");
-  }
-
-
-  function uuidV7() {
-
-    const timestamp =
-      Date.now().toString(16).padStart(12,"0");
-
-    const random =
-      randomString(20)
-        .toLowerCase()
-        .replace(/[^a-f0-9]/g,"a");
-
-    return (
-      timestamp.slice(0,8) +
-      "-" +
-      timestamp.slice(8,12) +
-      "-7" +
-      random.slice(0,3) +
-      "-a" +
-      random.slice(3,6) +
-      "-" +
-      random.slice(6,18)
-    );
-  }
-
-
-  function generateID() {
-
-    const type =
-      document.getElementById("idType").value;
-
-    let result = "";
-
-    if (type === "uuid4") {
-      result = crypto.randomUUID();
-    }
-
-    if (type === "uuid7") {
-      result = uuidV7();
-    }
-
-    if (type === "nanoid") {
-      result = randomString(21);
-    }
-
-    if (type === "slug") {
-      result =
-        "project-" +
-        randomString(10).toLowerCase();
-    }
-
-    if (type === "random") {
-      result =
-        randomString(32);
-    }
-
-    document.getElementById("idOutput").textContent =
-      result;
-  }
-
-
-  /* =====================================================
-     BASE64
-  ===================================================== */
-
-  function encodeBase64() {
-
-    try {
-
-      const input =
-        document.getElementById("base64Input").value;
-
-      document.getElementById("base64Output").value =
-        btoa(
-          unescape(
-            encodeURIComponent(input)
-          )
-        );
-
-    } catch(error) {
-
-      toast("Unable to encode text");
-    }
-  }
-
-
-  function decodeBase64() {
-
-    try {
-
-      const input =
-        document.getElementById("base64Input").value;
-
-      document.getElementById("base64Output").value =
-        decodeURIComponent(
-          escape(
-            atob(input)
-          )
-        );
-
-    } catch(error) {
-
-      toast("Invalid Base64 data");
-    }
-  }
-
-
-  function encodeFileBase64() {
-
-    const file =
-      document.getElementById("base64File").files[0];
-
-    if (!file) return;
-
-    const reader =
-      new FileReader();
-
-    reader.onload =
-      function(event) {
-
-        document.getElementById("base64Output").value =
-          event.target.result;
-      };
-
-    reader.readAsDataURL(file);
-  }
-
-
-  /* =====================================================
-     CSV / TSV
-  ===================================================== */
-
-  function parseCSV() {
-
-    const input =
-      document.getElementById("csvInput")
-      .value
-      .trim();
-
-    if (!input) return;
-
-    const delimiter =
-      input.includes("\t")
-        ? "\t"
-        : ",";
-
-    const rows =
-      input
-        .split(/\r?\n/)
-        .map(row =>
-          row.split(delimiter)
-        );
-
-    let html =
-      "<table>";
-
-    rows.forEach((row,index) => {
-
-      html += "<tr>";
-
-      row.forEach(cell => {
-
-        const safe =
-          escapeHTML(cell);
-
-        html +=
-          index === 0
-            ? `<th>${safe}</th>`
-            : `<td>${safe}</td>`;
-      });
-
-      html += "</tr>";
-    });
-
-    html += "</table>";
-
-    document.getElementById("csvOutput").innerHTML =
-      html;
-  }
-
-
-  function escapeHTML(text) {
-
-    return text
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;");
-  }
-
-
-  /* =====================================================
-     LOREM
-  ===================================================== */
-
-  const loremWords =
-    `lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum`
-    .split(" ");
-
-
-  function generateLorem() {
-
-    const count =
-      Number(
-        document.getElementById("loremCount").value
-      ) || 3;
-
-    const paragraphs = [];
-
-    for (let i = 0; i < count; i++) {
-
-      const words = [];
-
-      for (let j = 0; j < 70; j++) {
-
-        words.push(
-          loremWords[
-            Math.floor(
-              Math.random() *
-              loremWords.length
-            )
-          ]
-        );
-      }
-
-      let paragraph =
-        words.join(" ");
-
-      paragraph =
-        paragraph.charAt(0).toUpperCase() +
-        paragraph.slice(1) +
-        ".";
-
-      paragraphs.push(paragraph);
-    }
-
-    document.getElementById("loremOutput").value =
-      paragraphs.join("\n\n");
-  }
-
-
-  /* =====================================================
-     KEYBOARD SHORTCUTS
-  ===================================================== */
-
-  document.addEventListener("keydown", event => {
-
-    if (
-      !(event.metaKey || event.ctrlKey) ||
-      !event.shiftKey
-    ) return;
-
-    const key =
-      event.key.toLowerCase();
-
-    const shortcuts = {
-      u: "case",
-      j: "json",
-      r: "regex",
-      t: "timestamp",
-      c: "color",
-      h: "hash",
-      q: "qr",
-      b: "base64",
-      g: "git",
-      v: "csv",
-      l: "lorem"
-    };
-
-    if (shortcuts[key]) {
-
-      event.preventDefault();
-
-      const tool =
-        shortcuts[key];
-
-      const button =
-        document.querySelector(
-          `.nav-item[data-tool="${tool}"]`
-        );
-
-      showTool(tool, button);
-    }
-  });
-
-
-  /* =====================================================
-     INITIALIZATION
-  ===================================================== */
-
-  updateColor();
-
-</script>
-
+    <script>
+        const $ = id => document.getElementById(id), qs = s => document.querySelector(s), qsa = s => document.querySelectorAll(s);
+        window.addEventListener('load', () => setTimeout(() => $('loader').classList.add('hide'), 650));
+        const cursor = $('cursor'); if (matchMedia('(pointer:fine)').matches) document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px' });
+        function toggleMenu() { $('sidebar').classList.toggle('open'); $('overlay').classList.toggle('show') } $('overlay').onclick = toggleMenu;
+        function showView(id, btn) { qsa('.workspace').forEach(x => x.classList.remove('active')); $(id).classList.add('active'); qsa('.nav-item').forEach(x => x.classList.remove('active')); if (btn) btn.classList.add('active'); $('crumb').textContent = id === 'home' ? 'Code Tools' : (btn ? btn.textContent.trim() : 'Code Tools'); if (innerWidth <= 980 && $('sidebar').classList.contains('open')) toggleMenu(); scrollTo({ top: 0, behavior: 'smooth' }) }
+        function focusSearch() { if (innerWidth <= 980 && !$('sidebar').classList.contains('open')) toggleMenu(); setTimeout(() => $('toolSearch').focus(), 150) }
+        function filterTools() { let q = $('toolSearch').value.toLowerCase(); qsa('.nav-item').forEach(x => x.style.display = x.textContent.toLowerCase().includes(q) ? 'flex' : 'none') }
+        function toast(t) { $('toast').textContent = t; $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 1800) }
+        function copyValue(id) { navigator.clipboard.writeText($(id).value); toast('Copied to clipboard') }
+        function copyTextResult(id) { navigator.clipboard.writeText($(id).textContent); toast('Copied to clipboard') }
+        function getWords(t) { return t.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').replace(/[^\w\s]/g, ' ').toLowerCase().split(/\s+/).filter(Boolean) }
+        function convertCases() { let w = getWords($('caseInput').value), vals = [['camelCase', w.map((x, i) => i ? x[0].toUpperCase() + x.slice(1) : x).join('')], ['snake_case', w.join('_')], ['kebab-case', w.join('-')], ['CONSTANT_CASE', w.join('_').toUpperCase()]]; $('caseResults').innerHTML = vals.map(([n, v], i) => `<div class="case-card"><button onclick="navigator.clipboard.writeText(${JSON.stringify(v)});toast('Copied')">⧉</button><b>${n}</b><div>${esc(v)}</div></div>`).join('') }
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }
+        function jsonTry(fn) { try { let d = JSON.parse($('jsonInput').value); fn(d); $('jsonStatus').textContent = '✓ Valid JSON'; $('jsonStatus').style.color = 'var(--green)' } catch (e) { $('jsonStatus').textContent = '✕ ' + e.message; $('jsonStatus').style.color = 'var(--red)' } }
+        function jsonFormat() { jsonTry(d => $('jsonOutput').value = JSON.stringify(d, null, 2)) } function jsonMinify() { jsonTry(d => $('jsonOutput').value = JSON.stringify(d)) } function jsonValidate() { jsonTry(() => { }) } function jsonEscape() { $('jsonOutput').value = JSON.stringify($('jsonInput').value); $('jsonStatus').textContent = 'Escaped JSON string.' }
+        function testRegex() { try { let flags = $('regexFlags').value; if (!flags.includes('g')) flags += 'g'; let r = new RegExp($('regexPattern').value, flags), m = [...$('regexText').value.matchAll(r)]; $('regexResult').textContent = m.length ? m.map((x, i) => `Match ${i + 1}: "${x[0]}" at index ${x.index}`).join('\n') : 'No matches found.' } catch (e) { $('regexResult').textContent = 'Invalid Regex: ' + e.message } }
+        function unixToDate() { let n = Number($('unixInput').value); if (!n) return; if (n < 1e11) n *= 1000; let d = new Date(n); $('unixResult').textContent = `Local: ${d.toString()}\n\nUTC: ${d.toUTCString()}\n\nISO: ${d.toISOString()}` } function currentUnix() { $('unixInput').value = Math.floor(Date.now() / 1000); unixToDate() } function dateToUnix() { let d = new Date($('dateInput').value); if (isNaN(d)) return; $('dateResult').textContent = `${Math.floor(d.getTime() / 1000)} seconds\n\n${d.getTime()} milliseconds` }
+        function updateColor() { let h = $('colorPicker').value; $('hexInput').value = h; renderColor(h) } function updateHex() { let h = $('hexInput').value; if (/^#[0-9a-f]{6}$/i.test(h)) { $('colorPicker').value = h; renderColor(h) } } function renderColor(h) { $('colorPreview').style.background = h; let r = parseInt(h.slice(1, 3), 16), g = parseInt(h.slice(3, 5), 16), b = parseInt(h.slice(5), 16); $('rgbValue').textContent = `rgb(${r}, ${g}, ${b})`; let [hh, s, l] = rgbHsl(r, g, b); $('hslValue').textContent = `hsl(${hh}, ${s}%, ${l}%)`; $('cssValue').textContent = `--color: ${h}`; let lum = (.299 * r + .587 * g + .114 * b) / 255; $('contrastValue').textContent = lum > .5 ? 'Use dark text' : 'Use light text' }
+        function rgbHsl(r, g, b) { r /= 255; g /= 255; b /= 255; let M = Math.max(r, g, b), m = Math.min(r, g, b), d = M - m, h = 0, s = 0, l = (M + m) / 2; if (d) { s = d / (1 - Math.abs(2 * l - 1)); switch (M) { case r: h = ((g - b) / d) % 6; break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4 }h = Math.round(60 * h); if (h < 0) h += 360 } return [h, Math.round(s * 100), Math.round(l * 100)] }
+        async function digest(alg, s) { let b = await crypto.subtle.digest(alg, new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('') }
+        async function generateHashes() { let s = $('hashInput').value + $('hashSalt').value; let alg = [['SHA-1', 'SHA-1'], ['SHA-256', 'SHA-256'], ['SHA-512', 'SHA-512']], out = ''; for (let [n, a] of alg) out += `<div class="hash"><b>${n}</b><code>${await digest(a, s)}</code></div>`; out += `<div class="hash"><b>MD5</b><code>MD5 requires a dedicated library and is intentionally not implemented with insecure browser polyfills.</code></div>`; $('hashResults').innerHTML = out }
+        function downloadGeneratedCode(type) {
+            const input = $('qrInput').value.trim();
+            if (!input) return toast('Enter text first');
+            let dataUrl = '', filename = '';
+            if (type === 'qr') {
+                const canvas = $('qrOut').querySelector('canvas');
+                if (!canvas) return toast('Generate QR first');
+                dataUrl = canvas.toDataURL('image/png'); filename = 'qrcode.png';
+            } else {
+                const svg = $('barcodeOut');
+                if (!svg.innerHTML.trim()) return toast('Generate Barcode first');
+                const blob = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
+                dataUrl = URL.createObjectURL(blob); filename = 'barcode.svg';
+            }
+            const a = document.createElement('a'); a.href = dataUrl; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+            if (dataUrl.startsWith('blob:')) setTimeout(() => URL.revokeObjectURL(dataUrl), 1000);
+        }
+        function generateQR() {
+            let t = $('qrInput').value.trim();
+            if (!t) return toast('Enter text first');
+            if (typeof QRCode === 'undefined') return toast('QR library failed to load. Check your internet connection.');
+            $('barcodeOut').innerHTML = '';
+            $('barcodeOut').removeAttribute('viewBox');
+            $('barcodeOut').style.display = 'none';
+            const out = $('qrOut');
+            out.innerHTML = '';
+            out.style.display = 'block';
+            try {
+                new QRCode(out, {
+                    text: t,
+                    width: 320,
+                    height: 320,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                toast('Readable QR code generated');
+            } catch (e) { toast('Unable to generate QR') }
+        }
+        function generateBarcode() {
+            let t = $('qrInput').value.trim();
+            if (!t) return toast('Enter text first');
+            if (typeof JsBarcode === 'undefined') return toast('Barcode library failed to load. Check your internet connection.');
+            $('qrOut').innerHTML = '';
+            $('qrOut').style.display = 'none';
+            const svg = $('barcodeOut');
+            svg.style.display = 'block';
+            try {
+                JsBarcode(svg, t, {
+                    format: 'CODE128',
+                    lineColor: '#000000',
+                    background: '#ffffff',
+                    width: 2,
+                    height: 120,
+                    displayValue: true,
+                    fontSize: 16,
+                    margin: 16,
+                    textMargin: 6
+                });
+                toast('Readable CODE128 barcode generated');
+            } catch (e) { toast('Unable to generate barcode') }
+        }
+        function randomString(n) { let a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', v = new Uint32Array(n); crypto.getRandomValues(v); return [...v].map(x => a[x % a.length]).join('') } function uuid7() { let h = Date.now().toString(16).padStart(12, '0'), r = randomString(20).toLowerCase().replace(/[^a-f0-9]/g, 'a'); return `${h.slice(0, 8)}-${h.slice(8)}-7${r.slice(0, 3)}-a${r.slice(3, 6)}-${r.slice(6, 18)}` } function generateID() { let t = $('idType').value, v = t === 'uuid4' ? crypto.randomUUID() : t === 'uuid7' ? uuid7() : t === 'nanoid' ? randomString(21) : t === 'slug' ? 'project-' + randomString(10).toLowerCase() : randomString(32); $('idResult').textContent = v }
+        function encode64() { try { $('base64Output').value = btoa(unescape(encodeURIComponent($('base64Input').value))) } catch (e) { toast('Unable to encode') } } function decode64() { try { $('base64Output').value = decodeURIComponent(escape(atob($('base64Input').value))) } catch (e) { toast('Invalid Base64') } } function file64(el) { let f = el.files[0]; if (!f) return; let r = new FileReader(); r.onload = e => $('base64Output').value = e.target.result; r.readAsDataURL(f) }
+        function parseCSV() { let s = $('csvInput').value.trim(); if (!s) return; let d = s.includes('\t') ? '\t' : ',', rows = s.split(/\r?\n/).map(x => x.split(d)); $('csvResult').innerHTML = '<table>' + rows.map((r, i) => '<tr>' + r.map(c => i ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join('') + '</tr>').join('') + '</table>' }
+        const lorem = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'.split(' ');
+        function generateLorem() { let n = Math.max(1, Math.min(20, Number($('loremCount').value) || 3)), a = []; for (let i = 0; i < n; i++) { let w = Array.from({ length: 70 }, () => lorem[Math.floor(Math.random() * lorem.length)]).join(' '); a.push(w[0].toUpperCase() + w.slice(1) + '.') } $('loremOutput').value = a.join('\n\n') }
+        document.addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); focusSearch() } if ((e.metaKey || e.ctrlKey) && e.shiftKey) { let map = { u: 'case', j: 'json', r: 'regex', t: 'timestamp', c: 'color', h: 'hash', q: 'qr', b: 'base64', g: 'git', v: 'csv', l: 'lorem' }, id = map[e.key.toLowerCase()]; if (id) { e.preventDefault(); showView(id, qs(`[data-tool="${id}"]`)) } } });
+        function toggleTheme() { document.body.classList.toggle('soft-light'); toast('Monochrome workspace mode') }
+        updateColor();
+    </script>
 </body>
+
 </html>

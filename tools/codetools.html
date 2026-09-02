@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Code Tools | Powered by TeamOrbits</title>
+
+  <!-- External libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #08080b;
+      --bg-soft: #0d0d12;
+      --panel: #111116;
+      --panel-hover: #17171f;
+      --border: #252530;
+
+      --text: #f5f5f7;
+      --muted: #90909d;
+
+      --primary: #7c5cff;
+      --primary-light: #a78bfa;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+
+      --sidebar-width: 280px;
+      --radius: 18px;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(124,92,255,.10), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(59,130,246,.06), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =====================================================
+       APP
+    ===================================================== */
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
+
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+
+      background: rgba(12,12,17,.94);
+      backdrop-filter: blur(25px);
+
+      border-right: 1px solid var(--border);
+
+      padding: 20px 14px;
+
+      display: flex;
+      flex-direction: column;
+
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 8px 10px 22px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+
+      border-radius: 14px;
+
+      display: grid;
+      place-items: center;
+
+      background:
+        linear-gradient(135deg, var(--primary), var(--blue));
+
+      font-weight: 900;
+      font-size: 18px;
+
+      box-shadow:
+        0 10px 30px rgba(124,92,255,.35);
+    }
+
+    .brand-info h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -.4px;
+    }
+
+    .brand-info p {
+      margin: 3px 0 0;
+      color: var(--primary-light);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-box span {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+
+      background: var(--panel);
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+
+      color: var(--text);
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .nav-title {
+      margin: 16px 10px 7px;
+
+      color: #656572;
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 1.4px;
+    }
+
+    .nav-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+
+      color: #a2a2ad;
+
+      padding: 10px 12px;
+      margin: 2px 0;
+
+      border-radius: 10px;
+
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      text-align: left;
+
+      transition: .2s ease;
+    }
+
+    .nav-item:hover {
+      background: var(--panel-hover);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: rgba(124,92,255,.14);
+      color: white;
+
+      box-shadow:
+        inset 0 0 0 1px rgba(124,92,255,.15);
+    }
+
+    .nav-icon {
+      width: 24px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+
+      padding: 15px 10px 5px;
+
+      color: #666672;
+      font-size: 11px;
+    }
+
+    .sidebar-footer strong {
+      color: var(--primary-light);
+    }
+
+    /* =====================================================
+       MOBILE TOPBAR
+    ===================================================== */
+
+    .mobile-header {
+      display: none;
+    }
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
+    .main {
+      width: 100%;
+      margin-left: var(--sidebar-width);
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .hero {
+      margin-bottom: 30px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .hero h2 {
+      margin: 0;
+
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -1.5px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 10px 0 0;
+    }
+
+    .powered {
+      color: var(--primary-light) !important;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 100px;
+
+      color: var(--muted);
+      font-size: 12px;
+
+      background: rgba(17,17,22,.7);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    /* =====================================================
+       TOOL
+    ===================================================== */
+
+    .tool {
+      display: none;
+      animation: fade .25s ease;
+    }
+
+    .tool.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      margin-bottom: 20px;
+    }
+
+    .tool-header h3 {
+      margin: 0;
+      font-size: 25px;
+      letter-spacing: -.5px;
+    }
+
+    .tool-header p {
+      margin: 7px 0 0;
+      color: var(--muted);
+    }
+
+    .shortcut {
+      padding: 8px 10px;
+
+      border: 1px solid rgba(124,92,255,.25);
+
+      background: rgba(124,92,255,.08);
+
+      border-radius: 9px;
+
+      color: var(--primary-light);
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
+    .card {
+      padding: 22px;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(18,18,24,.95),
+          rgba(12,12,16,.95)
+        );
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #b2b2bc;
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+
+      background: #0a0a0e;
+
+      border: 1px solid var(--border);
+
+      color: var(--text);
+
+      padding: 13px;
+
+      border-radius: 11px;
+
+      outline: none;
+
+      transition: .2s ease;
+    }
+
+    textarea {
+      min-height: 260px;
+      resize: vertical;
+
+      line-height: 1.55;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary);
+
+      box-shadow:
+        0 0 0 3px rgba(124,92,255,.12);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      margin-top: 16px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+
+      background: var(--panel);
+
+      color: var(--text);
+
+      padding: 10px 15px;
+
+      border-radius: 10px;
+
+      transition: .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: #454552;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+
+      box-shadow:
+        0 8px 22px rgba(124,92,255,.22);
+    }
+
+    .btn.danger {
+      color: #ff8d9b;
+      border-color: rgba(239,68,68,.25);
+    }
+
+    .result {
+      margin-top: 15px;
+
+      padding: 15px;
+
+      min-height: 60px;
+
+      background: #09090d;
+
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+    }
+
+    /* =====================================================
+       CASE CONVERTER
+    ===================================================== */
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 12px;
+
+      margin-top: 18px;
+    }
+
+    .case-box {
+      position: relative;
+
+      padding: 15px;
+
+      background: #0a0a0e;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+    }
+
+    .case-box strong {
+      display: block;
+
+      color: var(--primary-light);
+
+      font-size: 11px;
+
+      margin-bottom: 8px;
+    }
+
+    .case-box button {
+      position: absolute;
+
+      top: 10px;
+      right: 10px;
+
+      background: transparent;
+      border: 0;
+
+      color: var(--muted);
+    }
+
+    .case-value {
+      padding-right: 30px;
+
+      word-break: break-word;
+
+      color: #ddd;
+    }
+
+    /* =====================================================
+       HASH
+    ===================================================== */
+
+    .hash-list {
+      display: grid;
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+    .hash-item {
+      position: relative;
+
+      padding: 14px;
+
+      background: #09090d;
+
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+    }
+
+    .hash-item strong {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--primary-light);
+      font-size: 11px;
+    }
+
+    .hash-item code {
+      display: block;
+
+      color: #d7d7e0;
+
+      word-break: break-all;
+
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       COLOR
+    ===================================================== */
+
+    .color-preview {
+      width: 100%;
+      height: 150px;
+
+      border-radius: 14px;
+
+      border: 1px solid var(--border);
+
+      margin-bottom: 15px;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 10px;
+    }
+
+    .color-item {
+      padding: 12px;
+
+      background: #0a0a0e;
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+    }
+
+    .color-item small {
+      display: block;
+
+      color: var(--muted);
+
+      margin-bottom: 5px;
+    }
+
+    /* =====================================================
+       QR
+    ===================================================== */
+
+    .visual-output {
+      margin-top: 20px;
+
+      min-height: 320px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 25px;
+
+      background: white;
+
+      border-radius: 14px;
+    }
+
+    #qrCode img,
+    #qrCode canvas {
+      max-width: 100%;
+    }
+
+    #barcode {
+      max-width: 100%;
+    }
+
+    /* =====================================================
+       CSV
+    ===================================================== */
+
+    .table-wrap {
+      margin-top: 18px;
+
+      max-height: 500px;
+
+      overflow: auto;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+
+      border-bottom: 1px solid var(--border);
+
+      text-align: left;
+
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+
+      background: #17171e;
+
+      color: var(--primary-light);
+    }
+
+    /* =====================================================
+       GIT
+    ===================================================== */
+
+    .git-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap: 15px;
+    }
+
+    .git-card {
+      padding: 17px;
+
+      background: var(--panel);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+    }
+
+    .git-card h4 {
+      margin: 0 0 12px;
+    }
+
+    .git-command {
+      display: flex;
+      justify-content: space-between;
+
+      padding: 9px 0;
+
+      border-bottom: 1px solid #24242d;
+    }
+
+    .git-command:last-child {
+      border-bottom: 0;
+    }
+
+    .git-command code {
+      color: #8ab4ff;
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    .toast {
+      position: fixed;
+
+      right: 25px;
+      bottom: 25px;
+
+      z-index: 999;
+
+      padding: 12px 17px;
+
+      background: #202028;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      box-shadow: var(--shadow);
+
+      opacity: 0;
+      transform: translateY(20px);
+
+      pointer-events: none;
+
+      transition: .25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 950px) {
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: .25s ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 85px 18px 30px;
+      }
+
+      .mobile-header {
+        position: fixed;
+
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: 65px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 0 18px;
+
+        z-index: 90;
+
+        background: rgba(10,10,14,.92);
+
+        backdrop-filter: blur(20px);
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      .mobile-brand {
+        font-weight: 800;
+      }
+
+      .menu-btn {
+        background: var(--panel);
+
+        border: 1px solid var(--border);
+
+        color: white;
+
+        width: 40px;
+        height: 40px;
+
+        border-radius: 10px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-top {
+        flex-direction: column;
+      }
+
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .main {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .tool-header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .color-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .controls .btn {
+        flex: 1;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="mobile-header">
+  <div class="mobile-brand">Code Tools</div>
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+</div>
+
+<div class="app">
+
+  <!-- ===================================================
+       SIDEBAR
+  ==================================================== -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <div class="brand-logo">&lt;/&gt;</div>
+
+      <div class="brand-info">
+        <h1>Code Tools</h1>
+        <p>Powered by TeamOrbits</p>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <span>⌕</span>
+      <input
+        id="toolSearch"
+        placeholder="Search tools..."
+        oninput="searchTools()"
+      />
+    </div>
+
+    <div class="nav-title">TEXT & DATA</div>
+
+    <button class="nav-item active" data-tool="case" onclick="showTool('case',this)">
+      <span class="nav-icon">Aa</span> Case Converter
+    </button>
+
+    <button class="nav-item" data-tool="json" onclick="showTool('json',this)">
+      <span class="nav-icon">{ }</span> JSON Formatter
+    </button>
+
+    <button class="nav-item" data-tool="regex" onclick="showTool('regex',this)">
+      <span class="nav-icon">.*</span> Regex Tester
+    </button>
+
+    <button class="nav-item" data-tool="base64" onclick="showTool('base64',this)">
+      <span class="nav-icon">64</span> Base64 Encode
+    </button>
+
+    <button class="nav-item" data-tool="csv" onclick="showTool('csv',this)">
+      <span class="nav-icon">▦</span> CSV / TSV Viewer
+    </button>
+
+    <div class="nav-title">GENERATORS</div>
+
+    <button class="nav-item" data-tool="timestamp" onclick="showTool('timestamp',this)">
+      <span class="nav-icon">◷</span> Unix Timestamp
+    </button>
+
+    <button class="nav-item" data-tool="color" onclick="showTool('color',this)">
+      <span class="nav-icon">●</span> Color Picker
+    </button>
+
+    <button class="nav-item" data-tool="hash" onclick="showTool('hash',this)">
+      <span class="nav-icon">#</span> Hash Generator
+    </button>
+
+    <button class="nav-item" data-tool="qr" onclick="showTool('qr',this)">
+      <span class="nav-icon">▣</span> QR & Barcode
+    </button>
+
+    <button class="nav-item" data-tool="uuid" onclick="showTool('uuid',this)">
+      <span class="nav-icon">◇</span> UUID / ID
+    </button>
+
+    <button class="nav-item" data-tool="lorem" onclick="showTool('lorem',this)">
+      <span class="nav-icon">¶</span> Lorem Ipsum
+    </button>
+
+    <div class="nav-title">REFERENCE</div>
+
+    <button class="nav-item" data-tool="git" onclick="showTool('git',this)">
+      <span class="nav-icon">⌘</span> Git Cheat
+    </button>
+
+    <div class="sidebar-footer">
+      © 2026 <strong>Code Tools</strong><br>
+      Powered by TeamOrbits
+    </div>
+
+  </aside>
+
+  <!-- ===================================================
+       MAIN
+  ==================================================== -->
+
+  <main class="main">
+
+    <div class="container">
+
+      <div class="hero">
+
+        <div class="hero-top">
+
+          <div>
+            <h2>Code Tools</h2>
+
+            <p>
+              Fast, private and powerful developer utilities in one place.
+            </p>
+
+            <p class="powered">
+              Powered by TeamOrbits
+            </p>
+          </div>
+
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            All tools ready
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =================================================
+           CASE CONVERTER
+      ================================================== -->
+
+      <section class="tool active" id="case">
+
+        <div class="tool-header">
+          <div>
+            <h3>Case Converter</h3>
+            <p>Convert text instantly into popular programming case formats.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ U</div>
+        </div>
+
+        <div class="card">
+
+          <label>Input Text</label>
+
+          <textarea
+            id="caseInput"
+            placeholder="Enter your text here..."
+            oninput="convertCases()"
+          ></textarea>
+
+          <div class="case-grid">
+
+            <div class="case-box">
+              <strong>camelCase</strong>
+              <button onclick="copyElement('camelCase')">⧉</button>
+              <div class="case-value" id="camelCase"></div>
+            </div>
+
+            <div class="case-box">
+              <strong>snake_case</strong>
+              <button onclick="copyElement('snakeCase')">⧉</button>
+              <div class="case-value" id="snakeCase"></div>
+            </div>
+
+            <div class="case-box">
+              <strong>kebab-case</strong>
+              <button onclick="copyElement('kebabCase')">⧉</button>
+              <div class="case-value" id="kebabCase"></div>
+            </div>
+
+            <div class="case-box">
+              <strong>CONSTANT_CASE</strong>
+              <button onclick="copyElement('constantCase')">⧉</button>
+              <div class="case-value" id="constantCase"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- JSON -->
+
+      <section class="tool" id="json">
+
+        <div class="tool-header">
+          <div>
+            <h3>JSON Formatter</h3>
+            <p>Beautify, minify, validate and escape JSON.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ J</div>
+        </div>
+
+        <div class="card">
+
+          <div class="grid">
+
+            <div>
+              <label>JSON Input</label>
+              <textarea id="jsonInput" placeholder='{"hello":"world"}'></textarea>
+            </div>
+
+            <div>
+              <label>Output</label>
+              <textarea id="jsonOutput" readonly></textarea>
+            </div>
+
+          </div>
+
+          <div class="controls">
+            <button class="btn primary" onclick="formatJSON()">Beautify</button>
+            <button class="btn" onclick="minifyJSON()">Minify</button>
+            <button class="btn" onclick="validateJSON()">Validate</button>
+            <button class="btn" onclick="escapeJSON()">Escape</button>
+            <button class="btn" onclick="copyInput('jsonOutput')">Copy</button>
+          </div>
+
+          <div id="jsonStatus" style="margin-top:12px;color:var(--muted);font-size:12px"></div>
+
+        </div>
+
+      </section>
+
+      <!-- REGEX -->
+
+      <section class="tool" id="regex">
+
+        <div class="tool-header">
+          <div>
+            <h3>Regex Tester</h3>
+            <p>Test and debug regular expressions in real time.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ R</div>
+        </div>
+
+        <div class="card">
+
+          <label>Regular Expression</label>
+          <input id="regexPattern" placeholder="\b\w+\b" />
+
+          <div style="height:14px"></div>
+
+          <label>Flags</label>
+          <input id="regexFlags" value="g" placeholder="gim" />
+
+          <div style="height:14px"></div>
+
+          <label>Test Text</label>
+          <textarea id="regexText" placeholder="Enter text to test..."></textarea>
+
+          <div class="controls">
+            <button class="btn primary" onclick="testRegex()">Test Regex</button>
+          </div>
+
+          <div class="result" id="regexOutput">
+Your regex matches will appear here.
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- TIMESTAMP -->
+
+      <section class="tool" id="timestamp">
+
+        <div class="tool-header">
+          <div>
+            <h3>Unix Timestamp</h3>
+            <p>Convert between Unix timestamps and human-readable dates.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ T</div>
+        </div>
+
+        <div class="card">
+
+          <div class="grid">
+
+            <div>
+
+              <label>Unix Timestamp</label>
+
+              <input
+                type="number"
+                id="unixInput"
+                placeholder="1720000000"
+              />
+
+              <div class="controls">
+                <button class="btn primary" onclick="unixToDate()">Convert</button>
+                <button class="btn" onclick="currentUnix()">Current</button>
+              </div>
+
+              <div class="result" id="unixResult"></div>
+
+            </div>
+
+            <div>
+
+              <label>Date & Time</label>
+
+              <input type="datetime-local" id="dateInput" />
+
+              <div class="controls">
+                <button class="btn primary" onclick="dateToUnix()">Convert</button>
+              </div>
+
+              <div class="result" id="dateResult"></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- COLOR -->
+
+      <section class="tool" id="color">
+
+        <div class="tool-header">
+          <div>
+            <h3>Color Picker</h3>
+            <p>HEX, RGB, HSL, CSS variables and contrast information.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ C</div>
+        </div>
+
+        <div class="card">
+
+          <div class="grid">
+
+            <div>
+
+              <label>Choose Color</label>
+
+              <input
+                type="color"
+                id="colorPicker"
+                value="#7c5cff"
+                style="height:60px"
+                oninput="updateColor()"
+              />
+
+              <div style="height:15px"></div>
+
+              <label>HEX</label>
+
+              <input
+                id="hexInput"
+                value="#7c5cff"
+                oninput="updateHex()"
+              />
+
+            </div>
+
+            <div>
+
+              <div class="color-preview" id="colorPreview"></div>
+
+              <div class="color-grid">
+
+                <div class="color-item">
+                  <small>RGB</small>
+                  <span id="rgbValue"></span>
+                </div>
+
+                <div class="color-item">
+                  <small>HSL</small>
+                  <span id="hslValue"></span>
+                </div>
+
+                <div class="color-item">
+                  <small>CSS</small>
+                  <span id="cssValue"></span>
+                </div>
+
+                <div class="color-item">
+                  <small>Contrast</small>
+                  <span id="contrastValue"></span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- HASH -->
+
+      <section class="tool" id="hash">
+
+        <div class="tool-header">
+          <div>
+            <h3>Hash Generator</h3>
+            <p>Generate MD5, SHA-1, SHA-256 and SHA-512 hashes.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ H</div>
+        </div>
+
+        <div class="card">
+
+          <label>Text</label>
+          <textarea id="hashInput" placeholder="Enter text to hash..."></textarea>
+
+          <div style="height:14px"></div>
+
+          <label>Salt (Optional)</label>
+          <input id="hashSalt" placeholder="Optional salt" />
+
+          <div class="controls">
+            <button class="btn primary" onclick="generateHashes()">
+              Generate Hashes
+            </button>
+          </div>
+
+          <div class="hash-list">
+
+            <div class="hash-item">
+              <strong>MD5</strong>
+              <code id="md5"></code>
+            </div>
+
+            <div class="hash-item">
+              <strong>SHA-1</strong>
+              <code id="sha1"></code>
+            </div>
+
+            <div class="hash-item">
+              <strong>SHA-256</strong>
+              <code id="sha256"></code>
+            </div>
+
+            <div class="hash-item">
+              <strong>SHA-512</strong>
+              <code id="sha512"></code>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- QR -->
+
+      <section class="tool" id="qr">
+
+        <div class="tool-header">
+          <div>
+            <h3>QR & Barcode</h3>
+            <p>Generate QR codes and barcodes from text or links.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ Q</div>
+        </div>
+
+        <div class="card">
+
+          <label>Text or URL</label>
+
+          <textarea
+            id="qrInput"
+            placeholder="https://teamorbits.com"
+          ></textarea>
+
+          <div class="controls">
+            <button class="btn primary" onclick="generateQR()">
+              Generate QR
+            </button>
+
+            <button class="btn" onclick="generateBarcode()">
+              Generate Barcode
+            </button>
+          </div>
+
+          <div class="visual-output">
+            <div id="qrCode"></div>
+            <svg id="barcode"></svg>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- UUID -->
+
+      <section class="tool" id="uuid">
+
+        <div class="tool-header">
+          <div>
+            <h3>UUID / ID Generator</h3>
+            <p>Generate UUIDs, NanoID-style strings, slugs and secure IDs.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ U</div>
+        </div>
+
+        <div class="card">
+
+          <div class="controls">
+
+            <select id="idType">
+              <option value="uuid4">UUID v4</option>
+              <option value="uuid7">UUID v7</option>
+              <option value="nanoid">NanoID Style</option>
+              <option value="slug">Slug</option>
+              <option value="random">Secure Random</option>
+            </select>
+
+            <button class="btn primary" onclick="generateID()">
+              Generate
+            </button>
+
+          </div>
+
+          <div class="result" id="idOutput"></div>
+
+        </div>
+
+      </section>
+
+      <!-- BASE64 -->
+
+      <section class="tool" id="base64">
+
+        <div class="tool-header">
+          <div>
+            <h3>Base64 Encode</h3>
+            <p>Encode or decode text and convert files into Base64 Data URLs.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ B</div>
+        </div>
+
+        <div class="card">
+
+          <div class="grid">
+
+            <div>
+              <label>Input</label>
+              <textarea id="base64Input"></textarea>
+            </div>
+
+            <div>
+              <label>Output</label>
+              <textarea id="base64Output" readonly></textarea>
+            </div>
+
+          </div>
+
+          <div class="controls">
+
+            <button class="btn primary" onclick="encodeBase64()">
+              Encode
+            </button>
+
+            <button class="btn" onclick="decodeBase64()">
+              Decode
+            </button>
+
+            <button class="btn" onclick="copyInput('base64Output')">
+              Copy
+            </button>
+
+          </div>
+
+          <div style="margin-top:15px">
+
+            <label>Encode File / Image</label>
+
+            <input
+              type="file"
+              id="base64File"
+              onchange="encodeFileBase64()"
+            />
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- CSV -->
+
+      <section class="tool" id="csv">
+
+        <div class="tool-header">
+          <div>
+            <h3>CSV / TSV Viewer</h3>
+            <p>Preview CSV or TSV data as an interactive table.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ V</div>
+        </div>
+
+        <div class="card">
+
+          <label>Paste CSV or TSV</label>
+
+          <textarea
+            id="csvInput"
+            placeholder="name,email,role
+John,john@example.com,Developer
+Jane,jane@example.com,Designer"
+          ></textarea>
+
+          <div class="controls">
+            <button class="btn primary" onclick="parseCSV()">
+              Preview Data
+            </button>
+          </div>
+
+          <div class="table-wrap" id="csvOutput"></div>
+
+        </div>
+
+      </section>
+
+      <!-- LOREM -->
+
+      <section class="tool" id="lorem">
+
+        <div class="tool-header">
+          <div>
+            <h3>Lorem Ipsum</h3>
+            <p>Generate placeholder text for designs, layouts and testing.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ L</div>
+        </div>
+
+        <div class="card">
+
+          <label>Paragraph Count</label>
+
+          <input
+            type="number"
+            id="loremCount"
+            min="1"
+            max="20"
+            value="3"
+          />
+
+          <div class="controls">
+
+            <button class="btn primary" onclick="generateLorem()">
+              Generate
+            </button>
+
+            <button class="btn" onclick="copyInput('loremOutput')">
+              Copy
+            </button>
+
+          </div>
+
+          <textarea
+            id="loremOutput"
+            style="margin-top:15px"
+          ></textarea>
+
+        </div>
+
+      </section>
+
+      <!-- GIT -->
+
+      <section class="tool" id="git">
+
+        <div class="tool-header">
+          <div>
+            <h3>Git Cheat Sheet</h3>
+            <p>Useful Git commands for everyday development.</p>
+          </div>
+
+          <div class="shortcut">⌘ ⇧ G</div>
+        </div>
+
+        <div class="git-grid">
+
+          <div class="git-card">
+            <h4>Getting Started</h4>
+            <div class="git-command"><code>git init</code></div>
+            <div class="git-command"><code>git clone URL</code></div>
+            <div class="git-command"><code>git status</code></div>
+            <div class="git-command"><code>git log --oneline</code></div>
+          </div>
+
+          <div class="git-card">
+            <h4>Commit Changes</h4>
+            <div class="git-command"><code>git add .</code></div>
+            <div class="git-command"><code>git commit -m "message"</code></div>
+            <div class="git-command"><code>git push origin main</code></div>
+            <div class="git-command"><code>git pull</code></div>
+          </div>
+
+          <div class="git-card">
+            <h4>Branches</h4>
+            <div class="git-command"><code>git branch</code></div>
+            <div class="git-command"><code>git switch -c feature</code></div>
+            <div class="git-command"><code>git switch main</code></div>
+            <div class="git-command"><code>git merge feature</code></div>
+          </div>
+
+          <div class="git-card">
+            <h4>Undo / Reset</h4>
+            <div class="git-command"><code>git restore file</code></div>
+            <div class="git-command"><code>git reset --soft HEAD~1</code></div>
+            <div class="git-command"><code>git revert COMMIT</code></div>
+            <div class="git-command"><code>git stash</code></div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+  /* =====================================================
+     NAVIGATION
+  ===================================================== */
+
+  function showTool(id, button) {
+
+    document.querySelectorAll(".tool").forEach(tool => {
+      tool.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    if (button) {
+      button.classList.add("active");
+    }
+
+    if (window.innerWidth <= 950) {
+      document.getElementById("sidebar").classList.remove("open");
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+  }
+
+
+  function searchTools() {
+
+    const query =
+      document.getElementById("toolSearch")
+      .value
+      .toLowerCase();
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+
+      item.style.display =
+        item.innerText.toLowerCase().includes(query)
+          ? "flex"
+          : "none";
+
+    });
+  }
+
+
+  /* =====================================================
+     TOAST
+  ===================================================== */
+
+  function toast(message) {
+
+    const element =
+      document.getElementById("toast");
+
+    element.textContent = message;
+
+    element.classList.add("show");
+
+    setTimeout(() => {
+      element.classList.remove("show");
+    }, 2200);
+  }
+
+
+  function copyInput(id) {
+
+    const element =
+      document.getElementById(id);
+
+    navigator.clipboard.writeText(element.value);
+
+    toast("Copied to clipboard");
+  }
+
+
+  function copyElement(id) {
+
+    const element =
+      document.getElementById(id);
+
+    navigator.clipboard.writeText(
+      element.innerText
+    );
+
+    toast("Copied to clipboard");
+  }
+
+
+  /* =====================================================
+     CASE CONVERTER
+  ===================================================== */
+
+  function getWords(text) {
+
+    return text
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/[_-]+/g, " ")
+      .replace(/[^\w\s]/g, " ")
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+  }
+
+
+  function convertCases() {
+
+    const input =
+      document.getElementById("caseInput").value;
+
+    const words =
+      getWords(input);
+
+    document.getElementById("camelCase").textContent =
+      words
+        .map((word, index) =>
+          index === 0
+            ? word
+            : word.charAt(0).toUpperCase() + word.slice(1)
+        )
+        .join("");
+
+    document.getElementById("snakeCase").textContent =
+      words.join("_");
+
+    document.getElementById("kebabCase").textContent =
+      words.join("-");
+
+    document.getElementById("constantCase").textContent =
+      words.join("_").toUpperCase();
+  }
+
+
+  /* =====================================================
+     JSON
+  ===================================================== */
+
+  function formatJSON() {
+
+    try {
+
+      const data =
+        JSON.parse(
+          document.getElementById("jsonInput").value
+        );
+
+      document.getElementById("jsonOutput").value =
+        JSON.stringify(data, null, 2);
+
+      document.getElementById("jsonStatus").textContent =
+        "✓ Valid JSON";
+
+    } catch (error) {
+
+      document.getElementById("jsonStatus").textContent =
+        "✕ " + error.message;
+    }
+  }
+
+
+  function minifyJSON() {
+
+    try {
+
+      const data =
+        JSON.parse(
+          document.getElementById("jsonInput").value
+        );
+
+      document.getElementById("jsonOutput").value =
+        JSON.stringify(data);
+
+      document.getElementById("jsonStatus").textContent =
+        "✓ JSON minified";
+
+    } catch (error) {
+
+      document.getElementById("jsonStatus").textContent =
+        "✕ " + error.message;
+    }
+  }
+
+
+  function validateJSON() {
+
+    try {
+
+      JSON.parse(
+        document.getElementById("jsonInput").value
+      );
+
+      document.getElementById("jsonStatus").textContent =
+        "✓ JSON is valid";
+
+    } catch (error) {
+
+      document.getElementById("jsonStatus").textContent =
+        "✕ Invalid JSON: " + error.message;
+    }
+  }
+
+
+  function escapeJSON() {
+
+    const value =
+      document.getElementById("jsonInput").value;
+
+    document.getElementById("jsonOutput").value =
+      JSON.stringify(value);
+  }
+
+
+  /* =====================================================
+     REGEX
+  ===================================================== */
+
+  function testRegex() {
+
+    const pattern =
+      document.getElementById("regexPattern").value;
+
+    const flags =
+      document.getElementById("regexFlags").value;
+
+    const text =
+      document.getElementById("regexText").value;
+
+    try {
+
+      const regex =
+        new RegExp(
+          pattern,
+          flags.includes("g") ? flags : flags + "g"
+        );
+
+      const matches =
+        [...text.matchAll(regex)];
+
+      document.getElementById("regexOutput").textContent =
+        matches.length
+          ? matches.map((match, index) =>
+              `Match ${index + 1}: "${match[0]}" at index ${match.index}`
+            ).join("\n")
+          : "No matches found.";
+
+    } catch (error) {
+
+      document.getElementById("regexOutput").textContent =
+        "Invalid Regex: " + error.message;
+    }
+  }
+
+
+  /* =====================================================
+     TIMESTAMP
+  ===================================================== */
+
+  function unixToDate() {
+
+    let timestamp =
+      Number(
+        document.getElementById("unixInput").value
+      );
+
+    if (!timestamp) return;
+
+    if (timestamp < 100000000000) {
+      timestamp *= 1000;
+    }
+
+    const date =
+      new Date(timestamp);
+
+    document.getElementById("unixResult").textContent =
+      "Local: " + date.toString() +
+      "\n\nUTC: " + date.toUTCString() +
+      "\n\nISO: " + date.toISOString();
+  }
+
+
+  function currentUnix() {
+
+    document.getElementById("unixInput").value =
+      Math.floor(Date.now() / 1000);
+
+    unixToDate();
+  }
+
+
+  function dateToUnix() {
+
+    const value =
+      document.getElementById("dateInput").value;
+
+    if (!value) return;
+
+    const date =
+      new Date(value);
+
+    document.getElementById("dateResult").textContent =
+      Math.floor(date.getTime() / 1000) +
+      " seconds\n\n" +
+      date.getTime() +
+      " milliseconds";
+  }
+
+
+  /* =====================================================
+     COLOR
+  ===================================================== */
+
+  function updateColor() {
+
+    const hex =
+      document.getElementById("colorPicker").value;
+
+    document.getElementById("hexInput").value =
+      hex;
+
+    renderColor(hex);
+  }
+
+
+  function updateHex() {
+
+    const hex =
+      document.getElementById("hexInput").value;
+
+    if (/^#[0-9A-F]{6}$/i.test(hex)) {
+
+      document.getElementById("colorPicker").value =
+        hex;
+
+      renderColor(hex);
+    }
+  }
+
+
+  function renderColor(hex) {
+
+    document.getElementById("colorPreview")
+      .style.background =
+      hex;
+
+    const r =
+      parseInt(hex.substring(1,3), 16);
+
+    const g =
+      parseInt(hex.substring(3,5), 16);
+
+    const b =
+      parseInt(hex.substring(5,7), 16);
+
+    document.getElementById("rgbValue").textContent =
+      `rgb(${r}, ${g}, ${b})`;
+
+    const hsl =
+      rgbToHsl(r,g,b);
+
+    document.getElementById("hslValue").textContent =
+      `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+
+    document.getElementById("cssValue").textContent =
+      `--color: ${hex}`;
+
+    const luminance =
+      (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    document.getElementById("contrastValue").textContent =
+      luminance > 0.5
+        ? "Use dark text"
+        : "Use light text";
+  }
+
+
+  function rgbToHsl(r,g,b) {
+
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max =
+      Math.max(r,g,b);
+
+    const min =
+      Math.min(r,g,b);
+
+    let h = 0;
+    let s = 0;
+
+    const l =
+      (max + min) / 2;
+
+    if (max !== min) {
+
+      const d =
+        max - min;
+
+      s =
+        l > .5
+          ? d / (2 - max - min)
+          : d / (max + min);
+
+      switch(max) {
+
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+
+        case g:
+          h = (b - r) / d + 2;
+          break;
+
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+
+      h /= 6;
+    }
+
+    return [
+      Math.round(h * 360),
+      Math.round(s * 100),
+      Math.round(l * 100)
+    ];
+  }
+
+
+  /* =====================================================
+     HASH
+  ===================================================== */
+
+  function generateHashes() {
+
+    const text =
+      document.getElementById("hashInput").value +
+      document.getElementById("hashSalt").value;
+
+    document.getElementById("md5").textContent =
+      CryptoJS.MD5(text).toString();
+
+    document.getElementById("sha1").textContent =
+      CryptoJS.SHA1(text).toString();
+
+    document.getElementById("sha256").textContent =
+      CryptoJS.SHA256(text).toString();
+
+    document.getElementById("sha512").textContent =
+      CryptoJS.SHA512(text).toString();
+  }
+
+
+  /* =====================================================
+     QR / BARCODE
+  ===================================================== */
+
+  function generateQR() {
+
+    const text =
+      document.getElementById("qrInput").value.trim();
+
+    if (!text) {
+      toast("Enter text or URL first");
+      return;
+    }
+
+    const container =
+      document.getElementById("qrCode");
+
+    container.innerHTML = "";
+
+    document.getElementById("barcode")
+      .style.display =
+      "none";
+
+    new QRCode(container, {
+      text: text,
+      width: 220,
+      height: 220
+    });
+  }
+
+
+  function generateBarcode() {
+
+    const text =
+      document.getElementById("qrInput").value.trim();
+
+    if (!text) {
+      toast("Enter text first");
+      return;
+    }
+
+    document.getElementById("qrCode").innerHTML =
+      "";
+
+    const barcode =
+      document.getElementById("barcode");
+
+    barcode.style.display =
+      "block";
+
+    JsBarcode(
+      barcode,
+      text,
+      {
+        format: "CODE128",
+        width: 2,
+        height: 100,
+        displayValue: true
+      }
+    );
+  }
+
+
+  /* =====================================================
+     UUID / ID
+  ===================================================== */
+
+  function randomString(length) {
+
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    const values =
+      new Uint32Array(length);
+
+    crypto.getRandomValues(values);
+
+    return Array.from(values)
+      .map(value =>
+        characters[value % characters.length]
+      )
+      .join("");
+  }
+
+
+  function uuidV7() {
+
+    const timestamp =
+      Date.now().toString(16).padStart(12,"0");
+
+    const random =
+      randomString(20)
+        .toLowerCase()
+        .replace(/[^a-f0-9]/g,"a");
+
+    return (
+      timestamp.slice(0,8) +
+      "-" +
+      timestamp.slice(8,12) +
+      "-7" +
+      random.slice(0,3) +
+      "-a" +
+      random.slice(3,6) +
+      "-" +
+      random.slice(6,18)
+    );
+  }
+
+
+  function generateID() {
+
+    const type =
+      document.getElementById("idType").value;
+
+    let result = "";
+
+    if (type === "uuid4") {
+      result = crypto.randomUUID();
+    }
+
+    if (type === "uuid7") {
+      result = uuidV7();
+    }
+
+    if (type === "nanoid") {
+      result = randomString(21);
+    }
+
+    if (type === "slug") {
+      result =
+        "project-" +
+        randomString(10).toLowerCase();
+    }
+
+    if (type === "random") {
+      result =
+        randomString(32);
+    }
+
+    document.getElementById("idOutput").textContent =
+      result;
+  }
+
+
+  /* =====================================================
+     BASE64
+  ===================================================== */
+
+  function encodeBase64() {
+
+    try {
+
+      const input =
+        document.getElementById("base64Input").value;
+
+      document.getElementById("base64Output").value =
+        btoa(
+          unescape(
+            encodeURIComponent(input)
+          )
+        );
+
+    } catch(error) {
+
+      toast("Unable to encode text");
+    }
+  }
+
+
+  function decodeBase64() {
+
+    try {
+
+      const input =
+        document.getElementById("base64Input").value;
+
+      document.getElementById("base64Output").value =
+        decodeURIComponent(
+          escape(
+            atob(input)
+          )
+        );
+
+    } catch(error) {
+
+      toast("Invalid Base64 data");
+    }
+  }
+
+
+  function encodeFileBase64() {
+
+    const file =
+      document.getElementById("base64File").files[0];
+
+    if (!file) return;
+
+    const reader =
+      new FileReader();
+
+    reader.onload =
+      function(event) {
+
+        document.getElementById("base64Output").value =
+          event.target.result;
+      };
+
+    reader.readAsDataURL(file);
+  }
+
+
+  /* =====================================================
+     CSV / TSV
+  ===================================================== */
+
+  function parseCSV() {
+
+    const input =
+      document.getElementById("csvInput")
+      .value
+      .trim();
+
+    if (!input) return;
+
+    const delimiter =
+      input.includes("\t")
+        ? "\t"
+        : ",";
+
+    const rows =
+      input
+        .split(/\r?\n/)
+        .map(row =>
+          row.split(delimiter)
+        );
+
+    let html =
+      "<table>";
+
+    rows.forEach((row,index) => {
+
+      html += "<tr>";
+
+      row.forEach(cell => {
+
+        const safe =
+          escapeHTML(cell);
+
+        html +=
+          index === 0
+            ? `<th>${safe}</th>`
+            : `<td>${safe}</td>`;
+      });
+
+      html += "</tr>";
+    });
+
+    html += "</table>";
+
+    document.getElementById("csvOutput").innerHTML =
+      html;
+  }
+
+
+  function escapeHTML(text) {
+
+    return text
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;");
+  }
+
+
+  /* =====================================================
+     LOREM
+  ===================================================== */
+
+  const loremWords =
+    `lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum`
+    .split(" ");
+
+
+  function generateLorem() {
+
+    const count =
+      Number(
+        document.getElementById("loremCount").value
+      ) || 3;
+
+    const paragraphs = [];
+
+    for (let i = 0; i < count; i++) {
+
+      const words = [];
+
+      for (let j = 0; j < 70; j++) {
+
+        words.push(
+          loremWords[
+            Math.floor(
+              Math.random() *
+              loremWords.length
+            )
+          ]
+        );
+      }
+
+      let paragraph =
+        words.join(" ");
+
+      paragraph =
+        paragraph.charAt(0).toUpperCase() +
+        paragraph.slice(1) +
+        ".";
+
+      paragraphs.push(paragraph);
+    }
+
+    document.getElementById("loremOutput").value =
+      paragraphs.join("\n\n");
+  }
+
+
+  /* =====================================================
+     KEYBOARD SHORTCUTS
+  ===================================================== */
+
+  document.addEventListener("keydown", event => {
+
+    if (
+      !(event.metaKey || event.ctrlKey) ||
+      !event.shiftKey
+    ) return;
+
+    const key =
+      event.key.toLowerCase();
+
+    const shortcuts = {
+      u: "case",
+      j: "json",
+      r: "regex",
+      t: "timestamp",
+      c: "color",
+      h: "hash",
+      q: "qr",
+      b: "base64",
+      g: "git",
+      v: "csv",
+      l: "lorem"
+    };
+
+    if (shortcuts[key]) {
+
+      event.preventDefault();
+
+      const tool =
+        shortcuts[key];
+
+      const button =
+        document.querySelector(
+          `.nav-item[data-tool="${tool}"]`
+        );
+
+      showTool(tool, button);
+    }
+  });
+
+
+  /* =====================================================
+     INITIALIZATION
+  ===================================================== */
+
+  updateColor();
+
+</script>
+
+</body>
+</html>

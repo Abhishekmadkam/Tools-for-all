@@ -1,1921 +1,2865 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Studio Pro</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-    <style>
-        /* ============================================
-           TEAMORBITS DESIGN SYSTEM
-           ============================================ */
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "DM Sans", sans-serif;
-            background: #050505;
-            color: #f5f5f5;
-            overflow-x: hidden;
-            cursor: none;
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        ::selection {
-            background: #ffffff;
-            color: #000000;
-        }
-
-        :root {
-            --bg: #050505;
-            --bg-soft: #090909;
-            --card: #0d0d0d;
-            --card-hover: #111111;
-            --white: #ffffff;
-            --text: #eeeeee;
-            --muted: #8a8a8a;
-            --muted-dark: #555555;
-            --line: rgba(255, 255, 255, 0.1);
-            --line-strong: rgba(255, 255, 255, 0.18);
-            --max: 1240px;
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .container {
-            width: min(var(--max), calc(100% - 48px));
-            margin: auto;
-        }
-
-        /* ============================================
-           CUSTOM CURSOR (TeamOrbits style)
-           ============================================ */
-        .cursor-dot,
-        .cursor-ring {
-            position: fixed;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-        }
-
-        .cursor-dot {
-            width: 7px;
-            height: 7px;
-            background: #fff;
-        }
-
-        .cursor-ring {
-            width: 38px;
-            height: 38px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: width 0.25s var(--ease),
-                height 0.25s var(--ease),
-                background 0.25s ease,
-                border 0.25s ease;
-        }
-
-        body.cursor-hover .cursor-ring {
-            width: 65px;
-            height: 65px;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #fff;
-        }
-
-        @media(max-width:900px) {
-            body {
-                cursor: auto;
-            }
-            .cursor-dot,
-            .cursor-ring {
-                display: none;
-            }
-        }
-
-        /* ============================================
-           NOISE OVERLAY
-           ============================================ */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 999;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.7'/%3E%3C/svg%3E");
-        }
-
-        /* ============================================
-           HEADER
-           ============================================ */
-        .app-header {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 16px 30px;
-            margin-bottom: 28px;
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 14px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .logo-icon {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            color: #fff;
-        }
-
-        .logo-icon span {
-            color: #666;
-        }
-
-        .logo-icon i {
-            color: #fff;
-            margin-right: 6px;
-        }
-
-        .logo-sub {
-            font-size: 12px;
-            color: #777;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border-left: 1px solid var(--line);
-            padding-left: 14px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .header-btn {
-            background: transparent;
-            border: 1px solid var(--line-strong);
-            color: #aaa;
-            padding: 8px 18px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: 0.3s ease;
-            cursor: pointer;
-        }
-
-        .header-btn:hover {
-            background: #fff;
-            color: #000;
-            transform: translateY(-2px);
-        }
-
-        .header-btn i {
-            margin-right: 6px;
-        }
-
-        /* ============================================
-           EDITOR LAYOUT
-           ============================================ */
-        .editor-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr 300px;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .panel {
-            background: rgba(13, 13, 13, 0.92);
-            backdrop-filter: blur(16px);
-            border-radius: 28px;
-            padding: 22px 20px;
-            border: 1px solid var(--line);
-            height: fit-content;
-        }
-
-        /* ============================================
-           TOOLS PANEL
-           ============================================ */
-        .tools-header {
-            font-family: "Space Grotesk", sans-serif;
-            font-weight: 600;
-            font-size: 1.05rem;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ccc;
-        }
-
-        .tools-header i {
-            color: #666;
-        }
-
-        .tools-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .tool-btn {
-            background: transparent;
-            border: none;
-            padding: 11px 14px;
-            border-radius: 16px;
-            text-align: left;
-            font-weight: 500;
-            transition: 0.25s var(--ease);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #999;
-            width: 100%;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
-
-        .tool-btn i {
-            font-size: 1.2rem;
-            width: 26px;
-            color: #555;
-            transition: 0.25s;
-        }
-
-        .tool-btn:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
-            transform: translateX(4px);
-        }
-
-        .tool-btn:hover i {
-            color: #aaa;
-        }
-
-        .tool-btn.active {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            border: 1px solid var(--line-strong);
-        }
-
-        .tool-btn.active i {
-            color: #fff;
-        }
-
-        .apply-btn {
-            margin-top: 18px;
-            background: #fff;
-            color: #000;
-            border: none;
-            border-radius: 100px;
-            padding: 12px;
-            font-weight: 600;
-            width: 100%;
-            transition: 0.3s var(--ease);
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .apply-btn:hover {
-            transform: scale(1.02);
-            background: #ddd;
-        }
-
-        /* ============================================
-           CANVAS PANEL
-           ============================================ */
-        .upload-area {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 22px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px dashed var(--line);
-            transition: 0.3s;
-            min-height: 340px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .upload-area:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .upload-area.dragover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: #fff;
-        }
-
-        .upload-content i {
-            font-size: 4rem;
-            color: #555;
-            margin-bottom: 16px;
-        }
-
-        .upload-content h3 {
-            font-family: "Space Grotesk", sans-serif;
-            font-weight: 600;
-            color: #aaa;
-            font-size: 1.4rem;
-        }
-
-        .upload-content p {
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        .image-container {
-            display: none;
-            width: 100%;
-            position: relative;
-        }
-
-        #mainImage {
-            max-width: 100%;
-            max-height: 500px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            object-fit: contain;
-            transition: filter 0.2s ease;
-        }
-
-        .image-overlay {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #ccc;
-            border: 1px solid var(--line);
-        }
-
-        #drawCanvas {
-            display: none;
-            width: 100%;
-            height: 400px;
-            border-radius: 16px;
-            border: 1px solid var(--line);
-            margin-top: 14px;
-            background: #0a0a0a;
-        }
-
-        /* ============================================
-           PROPERTIES PANEL
-           ============================================ */
-        .prop-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-weight: 600;
-            color: #ccc;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-        }
-
-        .prop-title i {
-            color: #555;
-        }
-
-        .prop-control {
-            margin-bottom: 14px;
-        }
-
-        .prop-control label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #888;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .range-slider {
-            width: 100%;
-            height: 5px;
-            border-radius: 10px;
-            background: #222;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #fff;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-
-        .range-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-        }
-
-        .tool-input,
-        .tool-select,
-        .color-picker {
-            width: 100%;
-            padding: 8px 14px;
-            border-radius: 30px;
-            border: 1px solid #222;
-            background: #0a0a0a;
-            color: #ddd;
-            font-weight: 500;
-        }
-
-        .tool-input:focus,
-        .tool-select:focus {
-            outline: none;
-            border-color: #555;
-        }
-
-        .filter-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0;
-        }
-
-        .filter-badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--line);
-            border-radius: 30px;
-            padding: 6px 16px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: 0.2s;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .filter-badge:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .filter-badge.active-filter {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            border-color: #fff;
-        }
-
-        .btn-secondary-custom {
-            background: rgba(255, 255, 255, 0.05);
-            color: #ccc;
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            padding: 10px;
-            font-weight: 600;
-            width: 100%;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .btn-secondary-custom:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ============================================
-           BOTTOM TOOLBAR
-           ============================================ */
-        .bottom-toolbar {
-            background: rgba(13, 13, 13, 0.92);
-            backdrop-filter: blur(16px);
-            border-radius: 28px;
-            padding: 14px 24px;
-            margin-top: 20px;
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 14px;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .history-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--line);
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #888;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .history-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-
-        .history-btn:disabled {
-            opacity: 0.25;
-            cursor: not-allowed;
-        }
-
-        .image-info {
-            display: flex;
-            gap: 18px;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .image-info span {
-            font-weight: 600;
-            color: #aaa;
-        }
-
-        .download-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 28px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.25s var(--ease);
-            cursor: pointer;
-        }
-
-        .download-btn:hover {
-            transform: scale(1.04);
-            background: #ddd;
-        }
-
-        /* ============================================
-           FOOTER — TeamOrbits signature
-           ============================================ */
-        .footer-brand {
-            text-align: center;
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid var(--line);
-            color: #555;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
-        }
-
-        .footer-brand i {
-            color: #888;
-            margin: 0 4px;
-        }
-
-        .footer-brand strong {
-            color: #aaa;
-            font-weight: 700;
-        }
-
-        /* ============================================
-           TOAST
-           ============================================ */
-        .toast-msg {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background: #0d0d0d;
-            border: 1px solid var(--line-strong);
-            color: #eee;
-            padding: 14px 28px;
-            border-radius: 60px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-            z-index: 99999;
-            font-weight: 500;
-            backdrop-filter: blur(12px);
-        }
-
-        /* ============================================
-           LIVE PREVIEW INDICATOR
-           ============================================ */
-        .live-indicator {
-            display: none;
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            color: #6f6;
-            border: 1px solid rgba(100, 255, 100, 0.2);
-            letter-spacing: 0.06em;
-            font-weight: 600;
-        }
-
-        .live-indicator i {
-            margin-right: 6px;
-            animation: pulse-dot 1.2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.2;
-            }
-        }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-        @media (max-width: 1100px) {
-            .editor-layout {
-                grid-template-columns: 1fr;
-            }
-            .tools-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            }
-        }
-
-        @media (max-width: 600px) {
-            .app-header {
-                padding: 12px 18px;
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .logo {
-                justify-content: center;
-            }
-            .header-actions {
-                justify-content: center;
-            }
-            .bottom-toolbar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .image-info {
-                justify-content: center;
-            }
-            .download-btn {
-                justify-content: center;
-            }
-            .container {
-                width: calc(100% - 24px);
-            }
-        }
-
-        /* Dark mode toggle state */
-        body.dark-mode .panel,
-        body.dark-mode .app-header,
-        body.dark-mode .bottom-toolbar {
-            background: rgba(255, 255, 255, 0.06);
-        }
-        body.dark-mode .upload-area {
-            background: rgba(255, 255, 255, 0.04);
-        }
-        body.dark-mode .filter-badge {
-            background: rgba(255, 255, 255, 0.08);
-        }
-    
-        /* Professional polish */
-        button:focus-visible, input:focus-visible, select:focus-visible {
-            outline: 2px solid #fff;
-            outline-offset: 3px;
-        }
-        .panel { box-shadow: 0 20px 60px rgba(0,0,0,.18); }
-        .upload-area { overflow: hidden; }
-        .image-container { text-align:center; }
-        @media (max-width:1100px) {
-            .panel { width:100%; }
-            .tools-grid { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
-            .tool-btn { justify-content:center; text-align:center; flex-direction:column; min-height:84px; }
-            .tool-btn:hover { transform:translateY(-2px); }
-        }
-        @media (max-width:600px) {
-            body { padding:8px 0; }
-            .panel { border-radius:22px; padding:16px; }
-            .app-header { border-radius:22px; }
-            .logo-sub { display:none; }
-            .tools-grid { grid-template-columns:repeat(2,1fr); }
-            .image-info { flex-wrap:wrap; }
-            .header-btn { flex:1; }
-        }
-
-    
-        /* ADVANCED CREATIVE SUITE */
-        .workspace-status { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 0 14px; padding:10px 14px; border:1px solid var(--line); border-radius:16px; color:#777; font-size:.8rem; }
-        .workspace-status strong { color:#ddd; }
-        .compare-mode { position:relative; overflow:hidden; }
-        .compare-mode::after { content:"ORIGINAL"; position:absolute; left:14px; top:14px; padding:5px 10px; border-radius:20px; background:#000b; border:1px solid var(--line); font-size:.7rem; letter-spacing:.08em; }
-        .histogram { width:100%; height:80px; display:flex; align-items:end; gap:2px; padding:8px; border:1px solid var(--line); border-radius:16px; margin-top:10px; }
-        .histogram span { flex:1; background:linear-gradient(180deg,#fff,#555); border-radius:2px 2px 0 0; opacity:.8; }
-        .preset-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-        .preset-btn { padding:11px 8px; border-radius:14px; border:1px solid var(--line); background:#111; color:#aaa; cursor:pointer; transition:.2s; }
-        .preset-btn:hover { background:#fff; color:#000; }
-        .section-divider { height:1px; background:var(--line); margin:16px 0; }
-        .badge-live { font-size:.68rem; padding:4px 8px; border:1px solid var(--line); border-radius:999px; color:#777; }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Image Tools — Powered by TeamOrbits</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050505;
+  --panel:#0b0b0b;
+  --panel2:#101010;
+  --panel3:#151515;
+  --text:#f5f5f2;
+  --muted:#898989;
+  --dim:#555;
+  --line:rgba(255,255,255,.09);
+  --line2:rgba(255,255,255,.16);
+  --white:#fff;
+  --green:#67d391;
+  --red:#ff7474;
+  --amber:#ffc266;
+  --blue:#8eb9ff;
+  --radius:18px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --side:272px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+  overflow-x:hidden;
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{cursor:pointer}
+
+::selection{
+  background:#fff;
+  color:#000;
+}
+
+/* LOADER */
+
+#loader{
+  position:fixed;
+  inset:0;
+  background:#050505;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity .7s var(--ease),visibility .7s;
+}
+
+#loader.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader-mark{
+  display:grid;
+  gap:18px;
+  text-align:center;
+}
+
+.loader-code{
+  font:700 34px "Space Grotesk";
+  letter-spacing:-2px;
+}
+
+.loader-line{
+  width:160px;
+  height:1px;
+  background:#222;
+  overflow:hidden;
+}
+
+.loader-line:after{
+  content:"";
+  display:block;
+  width:50%;
+  height:100%;
+  background:#fff;
+  animation:load 1.1s var(--ease) infinite;
+}
+
+@keyframes load{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(220%)}
+}
+
+/* CURSOR */
+
+.cursor{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:#fff;
+  position:fixed;
+  z-index:10000;
+  pointer-events:none;
+  mix-blend-mode:difference;
+  transform:translate(-50%,-50%);
+}
+
+/* APP */
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:var(--side);
+  padding:22px 14px;
+  background:#080808;
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  z-index:100;
+  transition:transform .45s var(--ease);
+}
+
+.brand{
+  padding:10px 12px 27px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.brand-icon{
+  width:42px;
+  height:42px;
+  border:1px solid var(--line2);
+  display:grid;
+  place-items:center;
+  font:700 18px "Space Grotesk";
+  background:#0d0d0d;
+}
+
+.brand h1{
+  margin:0;
+  font:700 16px "Space Grotesk";
+  letter-spacing:-.6px;
+}
+
+.brand p{
+  margin:3px 0 0;
+  color:#8c8c8c;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+}
+
+.search{
+  position:relative;
+  margin:0 6px 18px;
+}
+
+.search span{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#777;
+}
+
+.search input{
+  width:100%;
+  background:#0d0d0d;
+  border:1px solid var(--line);
+  padding:12px 38px;
+  color:#fff;
+  outline:0;
+  border-radius:10px;
+}
+
+.search input:focus{
+  border-color:var(--line2);
+}
+
+.search kbd{
+  position:absolute;
+  right:9px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:10px;
+  color:#666;
+  border:1px solid var(--line);
+  padding:2px 5px;
+}
+
+.nav{
+  overflow:auto;
+  padding:0 6px;
+}
+
+.nav-group{
+  margin:12px 0 20px;
+}
+
+.nav-label{
+  font-size:9px;
+  letter-spacing:1.7px;
+  color:#666;
+  font-weight:700;
+  padding:0 9px;
+  margin-bottom:6px;
+}
+
+.nav-item{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#9b9b9b;
+  padding:10px 9px;
+  border-radius:9px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  transition:.25s var(--ease);
+}
+
+.nav-item:hover{
+  color:#fff;
+  background:#111;
+}
+
+.nav-item.active{
+  color:#fff;
+  background:#161616;
+  box-shadow:inset 0 0 0 1px var(--line);
+}
+
+.nav-item i{
+  font-style:normal;
+  width:19px;
+  text-align:center;
+  color:#d0d0d0;
+  font-size:13px;
+}
+
+.side-foot{
+  margin-top:auto;
+  border-top:1px solid var(--line);
+  padding:16px 12px 4px;
+  font-size:10px;
+  color:#666;
+  letter-spacing:.6px;
+}
+
+.ready{
+  color:var(--green);
+  margin-bottom:8px;
+}
+
+/* MAIN */
+
+.main{
+  margin-left:var(--side);
+  width:calc(100% - var(--side));
+  min-height:100vh;
+}
+
+.topbar{
+  height:76px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 42px;
+  position:sticky;
+  top:0;
+  background:rgba(5,5,5,.84);
+  backdrop-filter:blur(18px);
+  z-index:50;
+}
+
+.crumb{
+  font-size:12px;
+  color:#888;
+}
+
+.crumb strong{
+  color:#fff;
+  font-weight:600;
+}
+
+.top-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.icon-btn{
+  border:1px solid var(--line);
+  background:#0b0b0b;
+  color:#bbb;
+  width:38px;
+  height:38px;
+  border-radius:10px;
+}
+
+.top-search{
+  border:1px solid var(--line);
+  background:#0b0b0b;
+  color:#aaa;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.content{
+  max-width:1500px;
+  margin:auto;
+  padding:58px 42px 70px;
+}
+
+/* HERO */
+
+.hero{
+  padding-bottom:48px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  font-size:10px;
+  letter-spacing:2px;
+  color:#777;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.hero h2{
+  font:700 clamp(44px,7vw,90px)/.93 "Space Grotesk";
+  letter-spacing:-5px;
+  margin:16px 0 22px;
+}
+
+.hero h2 span{
+  color:#666;
+}
+
+.hero p{
+  max-width:650px;
+  color:#8f8f8f;
+  font-size:16px;
+  line-height:1.75;
+  margin:0;
+}
+
+.hero-actions{
+  display:flex;
+  gap:10px;
+  margin-top:27px;
+}
+
+/* BUTTONS */
+
+.btn{
+  border:1px solid var(--line2);
+  background:#111;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:10px;
+  transition:.3s var(--ease);
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  background:#1a1a1a;
+}
+
+.btn.primary{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
+
+.btn.primary:hover{
+  background:#e8e8e8;
+}
+
+.btn.ghost{
+  color:#aaa;
+}
+
+/* WORKSPACE */
+
+.workspace{
+  display:none;
+  animation:enter .45s var(--ease);
+}
+
+.workspace.active{
+  display:block;
+}
+
+@keyframes enter{
+  from{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin:44px 0 18px;
+}
+
+.section-head h3{
+  font:600 22px "Space Grotesk";
+  letter-spacing:-1px;
+  margin:0;
+}
+
+.section-head p{
+  margin:0;
+  color:#777;
+  font-size:12px;
+}
+
+/* QUICK GRID */
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.quick-card{
+  border:1px solid var(--line);
+  background:linear-gradient(145deg,#101010,#090909);
+  padding:22px;
+  min-height:210px;
+  position:relative;
+  overflow:hidden;
+  transition:.4s var(--ease);
+  text-align:left;
+  color:#fff;
+}
+
+.quick-card:hover{
+  transform:translateY(-5px);
+  border-color:var(--line2);
+}
+
+.quick-num{
+  font:600 10px monospace;
+  color:#666;
+}
+
+.quick-icon{
+  font:700 30px "Space Grotesk";
+  margin:35px 0 16px;
+}
+
+.quick-card h4{
+  margin:0;
+  font:600 18px "Space Grotesk";
+  letter-spacing:-.5px;
+}
+
+.quick-card p{
+  color:#777;
+  font-size:12px;
+  line-height:1.5;
+  margin:8px 0;
+}
+
+.quick-arrow{
+  position:absolute;
+  right:18px;
+  bottom:17px;
+  color:#777;
+}
+
+/* TOOL HEADER */
+
+.tool-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding-bottom:26px;
+  margin-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+
+.tool-title h2{
+  font:700 clamp(34px,5vw,62px)/.95 "Space Grotesk";
+  letter-spacing:-3px;
+  margin:12px 0 0;
+}
+
+.tool-title p{
+  color:#888;
+  margin:13px 0 0;
+  max-width:550px;
+}
+
+.shortcut{
+  border:1px solid var(--line);
+  color:#777;
+  padding:7px 9px;
+  font:10px monospace;
+  border-radius:7px;
+}
+
+/* PANELS */
+
+.tool-panel{
+  border:1px solid var(--line);
+  background:#090909;
+  padding:20px;
+  border-radius:var(--radius);
+}
+
+.field-label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:#777;
+  margin:0 0 9px;
+}
+
+.input,
+textarea,
+select{
+  background:#050505;
+  border:1px solid var(--line);
+  color:#eee;
+  width:100%;
+  border-radius:10px;
+  padding:13px;
+  outline:0;
+}
+
+.input:focus,
+textarea:focus,
+select:focus{
+  border-color:#555;
+}
+
+textarea{
+  min-height:160px;
+  resize:vertical;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.editor-grid{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:14px;
+}
+
+.controls{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.control{
+  border:1px solid var(--line);
+  background:#070707;
+  padding:14px;
+  border-radius:12px;
+}
+
+.control label{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:#aaa;
+  margin-bottom:10px;
+}
+
+.control input[type=range]{
+  width:100%;
+}
+
+.canvas-area{
+  min-height:620px;
+  background:
+  linear-gradient(45deg,#0e0e0e 25%,transparent 25%),
+  linear-gradient(-45deg,#0e0e0e 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#0e0e0e 75%),
+  linear-gradient(-45deg,transparent 75%,#0e0e0e 75%);
+  background-size:24px 24px;
+  background-position:0 0,0 12px,12px -12px,-12px 0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  padding:25px;
+}
+
+.canvas-area canvas{
+  max-width:100%;
+  max-height:560px;
+  background:transparent;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.drop-zone{
+  min-height:420px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px;
+  transition:.3s;
+}
+
+.drop-zone.drag{
+  border-color:#fff;
+  background:#111;
+}
+
+.drop-zone h3{
+  font:600 22px "Space Grotesk";
+  margin:0 0 10px;
+}
+
+.drop-zone p{
+  color:#777;
+  margin:0 0 20px;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:15px;
+}
+
+.info-card{
+  border:1px solid var(--line);
+  padding:14px;
+  border-radius:10px;
+  background:#070707;
+}
+
+.info-card small{
+  display:block;
+  color:#666;
+  margin-bottom:6px;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.info-card b{
+  font-size:13px;
+}
+
+.mobile-menu{
+  display:none;
+}
+
+.overlay{
+  display:none;
+}
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  background:#fff;
+  color:#000;
+  padding:11px 15px;
+  border-radius:9px;
+  font-size:12px;
+  z-index:10001;
+  opacity:0;
+  transform:translateY(12px);
+  transition:.3s var(--ease);
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+.hidden{
+  display:none!important;
+}
+
+@media(max-width:1100px){
+  .editor-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:980px){
+
+  .cursor{display:none}
+
+  .sidebar{
+    transform:translateX(-105%);
+  }
+
+  .sidebar.open{
+    transform:none;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+  }
+
+  .topbar{
+    padding:0 18px;
+  }
+
+  .content{
+    padding:38px 18px 55px;
+  }
+
+  .mobile-menu{
+    display:inline-grid;
+  }
+
+  .overlay.show{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:90;
+  }
+
+  .quick-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .top-search{
+    display:none;
+  }
+}
+
+@media(max-width:620px){
+
+  .topbar{
+    height:66px;
+  }
+
+  .content{
+    padding-top:30px;
+  }
+
+  .hero h2{
+    font-size:47px;
+    letter-spacing:-3px;
+  }
+
+  .quick-grid,
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .section-head{
+    display:block;
+  }
+
+  .section-head p{
+    margin-top:7px;
+  }
+
+  .hero-actions{
+    flex-wrap:wrap;
+  }
+
+  .tool-panel{
+    padding:13px;
+  }
+
+  .canvas-area{
+    min-height:380px;
+    padding:12px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- ============================================
-    CUSTOM CURSOR
-    ============================================ -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+<div id="loader">
+  <div class="loader-mark">
+    <div class="loader-code">▣ IMAGE TOOLS</div>
+    <div class="loader-line"></div>
+  </div>
+</div>
 
-    <!-- ============================================
-    MAIN APP
-    ============================================ -->
-    <div class="container">
+<div class="cursor" id="cursor"></div>
+<div class="overlay" id="overlay"></div>
+<div class="toast" id="toast"></div>
 
-        <!-- HEADER -->
-        <header class="app-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Image Studio<span>.</span>
-                </div>
-                <div class="logo-sub">Professional Creative Suite</div>
-            </div>
-            <div class="header-actions">
-                <button class="header-btn" onclick="toggleDarkMode()" id="darkBtn">
-                    <i class="fa-regular fa-moon"></i> Dark
-                </button>
-                <button class="header-btn" onclick="resetAll()">
-                    <i class="fa-solid fa-arrow-rotate-left"></i> Reset
-                </button>
-                <button class="header-btn" onclick="toggleBeforeAfter()" id="compareBtn">
-                    <i class="fa-solid fa-code-compare"></i> Compare
-                </button>
-                <button class="header-btn" onclick="exportImage()">
-                    <i class="fa-regular fa-file-image"></i> Export
-                </button>
-            </div>
-        </header>
+<div class="app">
 
-        <!-- EDITOR LAYOUT -->
-        <div class="editor-layout">
+<aside class="sidebar" id="sidebar">
 
-            <!-- LEFT: TOOLS -->
-            <div class="panel">
-                <div class="tools-header">
-                    <i class="fa-solid fa-screwdriver-wrench"></i> Tools
-                </div>
-                <div class="tools-grid">
-                    <button class="tool-btn active" onclick="setActiveTool(this,'crop')"><i class="fa-solid fa-crop"></i> Crop</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'resize')"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Resize</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'filters')"><i class="fa-solid fa-filter"></i> Filters</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'adjust')"><i class="fa-solid fa-sliders"></i> Adjust</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'rotate')"><i class="fa-solid fa-rotate"></i> Rotate</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'text')"><i class="fa-solid fa-font"></i> Text</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'draw')"><i class="fa-solid fa-pen"></i> Draw</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'frame')"><i class="fa-solid fa-border-all"></i> Frame</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'watermark')"><i class="fa-regular fa-copyright"></i> Watermark</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'effects')"><i class="fa-solid fa-wand-magic-sparkles"></i> Effects</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'background')"><i class="fa-solid fa-image"></i> Background</button>
-                    <button class="tool-btn" onclick="setActiveTool(this,'metadata')"><i class="fa-solid fa-circle-info"></i> Image Info</button>
-                </div>
-                <button class="apply-btn" onclick="applyTool()"><i class="fa-regular fa-circle-check"></i> Apply</button>
-            </div>
+  <div class="brand">
+    <div class="brand-icon">▣</div>
+    <div>
+      <h1>Image Tools</h1>
+      <p>Powered by TeamOrbits</p>
+    </div>
+  </div>
 
-            <!-- CENTER: CANVAS -->
-            <div class="panel">
-                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-                    <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)" />
-                    <div class="upload-content" id="uploadPlaceholder">
-                        <i class="fa-regular fa-image"></i>
-                        <h3>Drop Image Here</h3>
-                        <p>or click to browse</p>
-                    </div>
-                    <div class="image-container" id="imageContainer">
-                        <img id="mainImage" class="img-fluid" alt="Preview" />
-                        <div class="image-overlay" id="imageOverlay"></div>
-                        <div class="live-indicator" id="liveIndicator"><i class="fa-solid fa-circle"></i> LIVE PREVIEW</div>
-                    </div>
-                </div>
-                <canvas id="drawCanvas"></canvas>
-            </div>
+  <div class="search">
+    <span>⌕</span>
+    <input id="toolSearch" oninput="filterTools()" placeholder="Search tools">
+    <kbd>⌘K</kbd>
+  </div>
 
-            <!-- RIGHT: PROPERTIES -->
-            <div class="panel" id="propertiesPanel">
-                <div class="prop-title"><i class="fa-regular fa-sliders-up"></i> Properties</div>
-                <div id="toolProperties">
-                    <div class="text-center" style="color:#555; padding:30px 0; font-size:0.95rem;">Select a tool</div>
-                </div>
-            </div>
-        </div>
+  <div class="nav">
 
-        <!-- BOTTOM TOOLBAR -->
-        <div class="bottom-toolbar">
-            <div class="history-actions">
-                <button class="history-btn" onclick="undo()" id="undoBtn" disabled><i class="fa-solid fa-arrow-left"></i></button>
-                <button class="history-btn" onclick="redo()" id="redoBtn" disabled><i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-            <div class="image-info" id="imageInfo"><span>No image loaded</span></div>
-            <button class="download-btn" onclick="downloadImage()"><i class="fa-solid fa-download"></i> Download</button>
-        </div>
+    <div class="nav-group">
+      <div class="nav-label">WORKSPACE</div>
 
-        <!-- FOOTER — powered by TeamOrbits -->
-        <div class="footer-brand">
-            <i class="fa-regular fa-brush"></i> powered by <strong>TeamOrbits</strong> · studio pro edition
-        </div>
+      <button class="nav-item active" data-tool="home" onclick="showView('home',this)">
+        <i>✦</i> Quick Start
+      </button>
 
+      <button class="nav-item" data-tool="editor" onclick="showView('editor',this)">
+        <i>✎</i> Image Editor
+      </button>
     </div>
 
-    <!-- ============================================
-    JAVASCRIPT — FULLY WORKING EDITOR WITH LIVE PREVIEW
-    ============================================ -->
-    <script>
-        // ============================================
-        // CURSOR (TeamOrbits style)
-        // ============================================
-        const cursorDot = document.querySelector(".cursor-dot");
-        const cursorRing = document.querySelector(".cursor-ring");
-        let mouseX = window.innerWidth / 2,
-            mouseY = window.innerHeight / 2;
-        let ringX = mouseX,
-            ringY = mouseY;
+    <div class="nav-group">
+      <div class="nav-label">EDITING</div>
 
-        document.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.left = mouseX + "px";
-            cursorDot.style.top = mouseY + "px";
-        });
+      <button class="nav-item" data-tool="resize" onclick="showView('resize',this)">
+        <i>↔</i> Resize Image
+      </button>
 
-        function animateCursor() {
-            ringX += (mouseX - ringX) * 0.12;
-            ringY += (mouseY - ringY) * 0.12;
-            cursorRing.style.left = ringX + "px";
-            cursorRing.style.top = ringY + "px";
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
+      <button class="nav-item" data-tool="rotate" onclick="showView('rotate',this)">
+        <i>↻</i> Rotate & Flip
+      </button>
 
-        document.querySelectorAll("a, button, .tool-btn, .filter-badge, .history-btn, .download-btn, .apply-btn, .upload-area")
-            .forEach(el => {
-                el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
-                el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
-            });
+      <button class="nav-item" data-tool="filters" onclick="showView('filters',this)">
+        <i>◐</i> Filters
+      </button>
 
-        // ============================================
-        // EDITOR STATE
-        // ============================================
-        const mainImage = document.getElementById('mainImage');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const imageContainer = document.getElementById('imageContainer');
-        const fileInput = document.getElementById('fileInput');
-        const imageInfo = document.getElementById('imageInfo');
-        const imageOverlay = document.getElementById('imageOverlay');
-        const uploadArea = document.getElementById('uploadArea');
-        const toolProps = document.getElementById('toolProperties');
-        const liveIndicator = document.getElementById('liveIndicator');
+      <button class="nav-item" data-tool="draw" onclick="showView('draw',this)">
+        <i>✎</i> Draw & Annotate
+      </button>
+    </div>
 
-        let originalImage = null;
-        let currentImage = null;
-        let currentTool = 'crop';
-        let history = [];
-        let historyIndex = -1;
-        let activeFilter = null;
-        let previewTimeout = null;
+    <div class="nav-group">
+      <div class="nav-label">DESIGN</div>
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        let drawCanvas = null,
-            drawCtx = null;
-        let isDrawing = false,
-            lastX = 0,
-            lastY = 0;
+      <button class="nav-item" data-tool="text" onclick="showView('text',this)">
+        <i>Aa</i> Add Text
+      </button>
 
-        // ============================================
-        // TOOL TEMPLATES (extended)
-        // ============================================
-        const templates = {
-            crop: `
-                <div class="prop-control"><label>Crop X: <span id="cropXVal">10%</span></label><input type="range" class="range-slider" id="cropX" min="0" max="100" value="10" oninput="livePreview('crop')"></div>
-                <div class="prop-control"><label>Crop Y: <span id="cropYVal">10%</span></label><input type="range" class="range-slider" id="cropY" min="0" max="100" value="10" oninput="livePreview('crop')"></div>
-                <div class="prop-control"><label>Width: <span id="cropWidthVal">80%</span></label><input type="range" class="range-slider" id="cropWidth" min="10" max="100" value="80" oninput="livePreview('crop')"></div>
-                <div class="prop-control"><label>Height: <span id="cropHeightVal">80%</span></label><input type="range" class="range-slider" id="cropHeight" min="10" max="100" value="80" oninput="livePreview('crop')"></div>
-            `,
-            resize: `
-                <div class="prop-control"><label>Width (px):</label><input type="number" class="tool-input" id="resizeWidth" value="800" oninput="livePreview('resize')"></div>
-                <div class="prop-control"><label>Height (px):</label><input type="number" class="tool-input" id="resizeHeight" value="600" oninput="livePreview('resize')"></div>
-                <div class="prop-control" style="display:flex; gap:10px; align-items:center;"><input type="checkbox" id="maintainAspect" checked style="width:18px;height:18px;accent-color:#fff;" onchange="livePreview('resize')"> <label style="margin:0;">Maintain aspect</label></div>
-            `,
-            filters: `
-                <div class="filter-badges">
-                    <button class="filter-badge" onclick="applyFilter('grayscale',this)">🌑 Grayscale</button>
-                    <button class="filter-badge" onclick="applyFilter('sepia',this)">🟫 Sepia</button>
-                    <button class="filter-badge" onclick="applyFilter('invert',this)">⚫ Invert</button>
-                    <button class="filter-badge" onclick="applyFilter('blur',this)">🌀 Blur</button>
-                    <button class="filter-badge" onclick="applyFilter('sharpen',this)">✨ Sharpen</button>
-                    <button class="filter-badge" onclick="applyFilter('vintage',this)">📷 Vintage</button>
-                    <button class="filter-badge" onclick="applyFilter('warm',this)">🔥 Warm</button>
-                    <button class="filter-badge" onclick="applyFilter('cool',this)">❄️ Cool</button>
-                </div>
-                <div style="margin-top:12px;color:#666;font-size:0.8rem;">Click a filter to preview instantly</div>
-            `,
-            adjust: `
-                <div class="prop-control"><label>Brightness: <span id="brightVal">100</span></label><input type="range" class="range-slider" id="brightness" min="0" max="200" value="100" oninput="document.getElementById('brightVal').innerText=this.value; livePreview('adjust')"></div>
-                <div class="prop-control"><label>Contrast: <span id="contrastVal">100</span></label><input type="range" class="range-slider" id="contrast" min="0" max="200" value="100" oninput="document.getElementById('contrastVal').innerText=this.value; livePreview('adjust')"></div>
-                <div class="prop-control"><label>Saturation: <span id="satVal">100</span></label><input type="range" class="range-slider" id="saturation" min="0" max="200" value="100" oninput="document.getElementById('satVal').innerText=this.value; livePreview('adjust')"></div>
-                <div class="prop-control"><label>Blur: <span id="blurVal">0</span></label><input type="range" class="range-slider" id="blurAmount" min="0" max="10" value="0" step="0.5" oninput="document.getElementById('blurVal').innerText=this.value; livePreview('adjust')"></div>
-                <div class="prop-control"><label>Exposure: <span id="expVal">0</span></label><input type="range" class="range-slider" id="exposure" min="-50" max="50" value="0" oninput="document.getElementById('expVal').innerText=this.value; livePreview('adjust')"></div>
-            `,
-            rotate: `
-                <div style="display:grid; gap:10px;">
-                    <button class="btn-secondary-custom" onclick="rotateImage(90)">↻ Rotate 90°</button>
-                    <button class="btn-secondary-custom" onclick="rotateImage(180)">↺ Rotate 180°</button>
-                    <button class="btn-secondary-custom" onclick="rotateImage(-90)">↺ Rotate -90°</button>
-                    <button class="btn-secondary-custom" onclick="flipImage('horizontal')">↔ Flip H</button>
-                    <button class="btn-secondary-custom" onclick="flipImage('vertical')">↕ Flip V</button>
-                </div>
-            `,
-            text: `
-                <div class="prop-control"><input class="tool-input" id="textContent" placeholder="Text" value="Your Text" oninput="livePreview('text')"></div>
-                <div class="prop-control"><label>Size:</label><input type="number" class="tool-input" id="textSize" value="48" oninput="livePreview('text')"></div>
-                <div class="prop-control"><label>Color:</label><select class="tool-select" id="textColor" onchange="livePreview('text')"><option value="#ffffff">White</option><option value="#000000" selected>Black</option><option value="#ff0000">Red</option><option value="#0b1a33">Navy</option><option value="#ffd700">Gold</option></select></div>
-                <div class="prop-control"><label>X:</label><input type="number" class="tool-input" id="textX" value="60" oninput="livePreview('text')"></div>
-                <div class="prop-control"><label>Y:</label><input type="number" class="tool-input" id="textY" value="80" oninput="livePreview('text')"></div>
-                <div class="prop-control"><label>Opacity: <span id="textOpVal">100</span></label><input type="range" class="range-slider" id="textOpacity" min="10" max="100" value="100" oninput="document.getElementById('textOpVal').innerText=this.value; livePreview('text')"></div>
-            `,
-            draw: `
-                <div class="prop-control"><label>Color:</label><input type="color" id="drawColor" class="color-picker" value="#ffffff"></div>
-                <div class="prop-control"><label>Size:</label><input type="range" class="range-slider" id="drawSize" min="1" max="30" value="5"></div>
-                <button class="btn-secondary-custom" onclick="clearDrawing()">Clear Canvas</button>
-            `,
-            frame: `
-                <div class="prop-control"><label>Border Size: <span id="borderSizeVal">12</span></label><input type="range" class="range-slider" id="borderSize" min="1" max="60" value="12" oninput="document.getElementById('borderSizeVal').innerText=this.value; livePreview('frame')"></div>
-                <div class="prop-control"><label>Color:</label><input type="color" id="borderColor" class="color-picker" value="#ffffff" oninput="livePreview('frame')"></div>
-                <div class="prop-control"><label>Corner Radius: <span id="radiusVal">0</span></label><input type="range" class="range-slider" id="cornerRadius" min="0" max="50" value="0" oninput="document.getElementById('radiusVal').innerText=this.value; livePreview('frame')"></div>
-            `,
-            effects: `
-                <div class="prop-control"><label>Vignette: <span id="vigVal">0</span></label><input type="range" class="range-slider" id="vignette" min="0" max="100" value="0" oninput="document.getElementById('vigVal').innerText=this.value; livePreview('effects')"></div>
-                <div class="prop-control"><label>Pixelate: <span id="pixVal">0</span></label><input type="range" class="range-slider" id="pixelate" min="0" max="30" value="0" oninput="document.getElementById('pixVal').innerText=this.value; livePreview('effects')"></div>
-                <div class="prop-control"><label>Noise: <span id="noiseVal">0</span></label><input type="range" class="range-slider" id="noise" min="0" max="50" value="0" oninput="document.getElementById('noiseVal').innerText=this.value; livePreview('effects')"></div>
-                <div class="section-divider"></div>
-                <div class="preset-grid">
-                    <button class="preset-btn" onclick="applyPreset('portrait')">Portrait</button>
-                    <button class="preset-btn" onclick="applyPreset('cinematic')">Cinematic</button>
-                    <button class="preset-btn" onclick="applyPreset('mono')">Mono</button>
-                    <button class="preset-btn" onclick="applyPreset('vivid')">Vivid</button>
-                </div>
-            `,
-            background: `
-                <div class="prop-control"><label>Canvas Color</label><input type="color" id="bgColor" class="color-picker" value="#111111"></div>
-                <div class="prop-control"><label>Padding: <span id="padVal">40</span></label><input type="range" class="range-slider" id="bgPadding" min="0" max="300" value="40" oninput="document.getElementById('padVal').innerText=this.value"></div>
-                <button class="btn-secondary-custom" onclick="applyBackgroundCanvas()">Apply Background Canvas</button>
-                <div class="section-divider"></div>
-                <button class="btn-secondary-custom" onclick="makeSquareCanvas()">Make 1:1 Square</button>
-            `,
-            metadata: `
-                <div id="metadataContent" style="color:#888;font-size:.88rem;line-height:1.8">Upload an image to inspect dimensions and workspace details.</div>
-                <div class="section-divider"></div>
-                <div style="font-size:.8rem;color:#666">All editing is processed locally in your browser.</div>
-            `,
-            watermark: `
-                <div class="prop-control"><input class="tool-input" id="wmText" placeholder="Watermark text" value="© Your Brand" oninput="livePreview('watermark')"></div>
-                <div class="prop-control"><label>Size:</label><input type="number" class="tool-input" id="wmSize" value="32" oninput="livePreview('watermark')"></div>
-                <div class="prop-control"><label>Opacity: <span id="wmOpVal">60</span></label><input type="range" class="range-slider" id="wmOpacity" min="10" max="100" value="60" oninput="document.getElementById('wmOpVal').innerText=this.value; livePreview('watermark')"></div>
-                <div class="prop-control"><label>Position:</label><select class="tool-select" id="wmPosition" onchange="livePreview('watermark')"><option value="center">Center</option><option value="bottom-right" selected>Bottom Right</option><option value="bottom-left">Bottom Left</option><option value="top-right">Top Right</option><option value="top-left">Top Left</option></select></div>
-            `
-        };
+      <button class="nav-item" data-tool="watermark" onclick="showView('watermark',this)">
+        <i>©</i> Watermark
+      </button>
 
-        // ============================================
-        // TOAST
-        // ============================================
-        function toast(m) {
-            let t = document.createElement('div');
-            t.className = 'toast-msg';
-            t.innerText = m;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2200);
-        }
+      <button class="nav-item" data-tool="border" onclick="showView('border',this)">
+        <i>□</i> Border & Corners
+      </button>
+    </div>
 
-        // ============================================
-        // DARK MODE
-        // ============================================
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const b = document.getElementById('darkBtn');
-            b.innerHTML = document.body.classList.contains('dark-mode') ?
-                '<i class="fa-regular fa-sun"></i> Light' :
-                '<i class="fa-regular fa-moon"></i> Dark';
-        }
+    <div class="nav-group">
+      <div class="nav-label">EXPORT</div>
 
-        // ============================================
-        // TOOL MANAGEMENT
-        // ============================================
-        function setActiveTool(btn, tool) {
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentTool = tool;
-            toolProps.innerHTML = templates[tool] || '<div class="text-center" style="color:#555;padding:20px 0;">No properties</div>';
-            if (tool === 'draw' && currentImage) initDrawCanvas();
-            else if (drawCanvas) drawCanvas.style.display = 'none';
-            if (tool === 'crop' && currentImage) { updateCropPreview();
-                livePreview('crop'); }
-            if (tool === 'resize' && currentImage) {
-                document.getElementById('resizeWidth').value = currentImage.width;
-                document.getElementById('resizeHeight').value = currentImage.height;
-                livePreview('resize');
-            }
-            if (tool === 'frame' && currentImage) livePreview('frame');
-            if (tool === 'text' && currentImage) livePreview('text');
-            if (tool === 'watermark' && currentImage) livePreview('watermark');
-            if (tool === 'effects' && currentImage) livePreview('effects');
-            if (tool === 'metadata') updateMetadata();
-            // hide live indicator if no image
-            if (!currentImage) liveIndicator.style.display = 'none';
-        }
+      <button class="nav-item" data-tool="convert" onclick="showView('convert',this)">
+        <i>⇄</i> Convert Image
+      </button>
 
-        function applyTool() {
-            if (!currentImage) { toast('Upload an image first'); return; }
-            // For filters, the filter is already applied via live preview
-            if (currentTool === 'filters') {
-                if (activeFilter) {
-                    updateImage(mainImage.src);
-                    toast('Filter applied: ' + activeFilter);
-                } else {
-                    toast('Select a filter first');
-                }
-                return;
-            }
-            switch (currentTool) {
-                case 'crop':
-                    applyCrop();
-                    break;
-                case 'resize':
-                    applyResize();
-                    break;
-                case 'adjust':
-                    applyAdjustments();
-                    break;
-                case 'text':
-                    applyText();
-                    break;
-                case 'draw':
-                    saveDrawing();
-                    break;
-                case 'frame':
-                    applyFrame();
-                    break;
-                case 'watermark':
-                    applyWatermark();
-                    break;
-                case 'effects':
-                    applyEffects();
-                    break;
-                case 'background':
-                    applyBackgroundCanvas();
-                    break;
-                default:
-                    toast('Tool applied');
-                    break;
-            }
-            liveIndicator.style.display = 'none';
-        }
+      <button class="nav-item" data-tool="info" onclick="showView('info',this)">
+        <i>ⓘ</i> Image Info
+      </button>
 
-        // ============================================
-        // LIVE PREVIEW ENGINE
-        // ============================================
-        function livePreview(tool) {
-            if (!currentImage) return;
-            liveIndicator.style.display = 'block';
+      <button class="nav-item" data-tool="base64" onclick="showView('base64',this)">
+        <i>64</i> Base64 Export
+      </button>
+    </div>
 
-            // Debounce preview updates
-            clearTimeout(previewTimeout);
-            previewTimeout = setTimeout(() => {
-                switch (tool) {
-                    case 'crop':
-                        previewCrop();
-                        break;
-                    case 'resize':
-                        previewResize();
-                        break;
-                    case 'adjust':
-                        previewAdjust();
-                        break;
-                    case 'text':
-                        previewText();
-                        break;
-                    case 'frame':
-                        previewFrame();
-                        break;
-                    case 'watermark':
-                        previewWatermark();
-                        break;
-                    case 'effects':
-                        previewEffects();
-                        break;
-                }
-            }, 100);
-        }
+  </div>
 
-        // ---- PREVIEW FUNCTIONS ----
-        function previewCrop() {
-            const x = document.getElementById('cropX').value / 100 * currentImage.width;
-            const y = document.getElementById('cropY').value / 100 * currentImage.height;
-            const w = document.getElementById('cropWidth').value / 100 * currentImage.width;
-            const h = document.getElementById('cropHeight').value / 100 * currentImage.height;
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = w;
-            tempCanvas.height = h;
-            tempCtx.drawImage(currentImage, x, y, w, h, 0, 0, w, h);
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${Math.round(w)}×${Math.round(h)} (preview)`;
-        }
+  <div class="side-foot">
+    <div class="ready">● SYSTEM READY</div>
+    TEAMORBITS PLATFORM<br>
+    © 2026 IMAGE TOOLS
+  </div>
 
-        function previewResize() {
-            const w = parseInt(document.getElementById('resizeWidth').value) || currentImage.width;
-            let h = parseInt(document.getElementById('resizeHeight').value) || currentImage.height;
-            if (document.getElementById('maintainAspect').checked) {
-                h = Math.round(w / (currentImage.width / currentImage.height));
-                document.getElementById('resizeHeight').value = h;
-            }
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = w;
-            tempCanvas.height = h;
-            tempCtx.drawImage(currentImage, 0, 0, w, h);
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${w}×${h} (preview)`;
-        }
+</aside>
 
-        function previewAdjust() {
-            const b = document.getElementById('brightness').value / 100;
-            const c = document.getElementById('contrast').value / 100;
-            const s = document.getElementById('saturation').value / 100;
-            const bl = document.getElementById('blurAmount').value;
-            const exp = document.getElementById('exposure').value / 100;
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = currentImage.width;
-            tempCanvas.height = currentImage.height;
-            tempCtx.filter =
-                `brightness(${b}) contrast(${c}) saturate(${s}) blur(${bl}px) brightness(${1+exp})`;
-            tempCtx.drawImage(currentImage, 0, 0);
-            tempCtx.filter = 'none';
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${currentImage.width}×${currentImage.height} (adjusted)`;
-        }
+<main class="main">
 
-        function previewText() {
-            const text = document.getElementById('textContent').value || 'Text';
-            const size = parseInt(document.getElementById('textSize').value) || 36;
-            const color = document.getElementById('textColor').value;
-            const x = parseInt(document.getElementById('textX').value) || 50;
-            const y = parseInt(document.getElementById('textY').value) || 80;
-            const opacity = parseInt(document.getElementById('textOpacity').value) / 100 || 1;
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = currentImage.width;
-            tempCanvas.height = currentImage.height;
-            tempCtx.drawImage(currentImage, 0, 0);
-            tempCtx.globalAlpha = opacity;
-            tempCtx.font = `${size}px "Space Grotesk", sans-serif`;
-            tempCtx.fillStyle = color;
-            tempCtx.fillText(text, x, y);
-            tempCtx.globalAlpha = 1;
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${currentImage.width}×${currentImage.height} (text)`;
-        }
+<header class="topbar">
 
-        function previewFrame() {
-            const size = parseInt(document.getElementById('borderSize').value) || 10;
-            const color = document.getElementById('borderColor').value || '#ffffff';
-            const radius = parseInt(document.getElementById('cornerRadius').value) || 0;
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            const w = currentImage.width + size * 2;
-            const h = currentImage.height + size * 2;
-            tempCanvas.width = w;
-            tempCanvas.height = h;
-            // Draw rounded rect background
-            tempCtx.fillStyle = color;
-            if (radius > 0) {
-                const r = Math.min(radius, w / 2, h / 2);
-                tempCtx.beginPath();
-                tempCtx.moveTo(r, 0);
-                tempCtx.lineTo(w - r, 0);
-                tempCtx.quadraticCurveTo(w, 0, w, r);
-                tempCtx.lineTo(w, h - r);
-                tempCtx.quadraticCurveTo(w, h, w - r, h);
-                tempCtx.lineTo(r, h);
-                tempCtx.quadraticCurveTo(0, h, 0, h - r);
-                tempCtx.lineTo(0, r);
-                tempCtx.quadraticCurveTo(0, 0, r, 0);
-                tempCtx.closePath();
-                tempCtx.fill();
-            } else {
-                tempCtx.fillRect(0, 0, w, h);
-            }
-            tempCtx.drawImage(currentImage, size, size);
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${w}×${h} (framed)`;
-        }
+<div class="crumb">
+<button class="icon-btn mobile-menu" onclick="toggleMenu()">☰</button>
+<strong id="crumb">Image Tools</strong>
+<span> / Creative Workspace</span>
+</div>
 
-        function previewWatermark() {
-            const text = document.getElementById('wmText').value || '© Watermark';
-            const size = parseInt(document.getElementById('wmSize').value) || 32;
-            const opacity = parseInt(document.getElementById('wmOpacity').value) / 100 || 0.6;
-            const pos = document.getElementById('wmPosition').value;
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = currentImage.width;
-            tempCanvas.height = currentImage.height;
-            tempCtx.drawImage(currentImage, 0, 0);
-            tempCtx.globalAlpha = opacity;
-            tempCtx.font = `${size}px "Space Grotesk", sans-serif`;
-            tempCtx.fillStyle = '#ffffff';
-            tempCtx.textAlign = 'center';
-            tempCtx.textBaseline = 'middle';
-            let cx = tempCanvas.width / 2,
-                cy = tempCanvas.height / 2;
-            const pad = 30;
-            switch (pos) {
-                case 'bottom-right':
-                    cx = tempCanvas.width - pad;
-                    cy = tempCanvas.height - pad;
-                    tempCtx.textAlign = 'right';
-                    tempCtx.textBaseline = 'bottom';
-                    break;
-                case 'bottom-left':
-                    cx = pad;
-                    cy = tempCanvas.height - pad;
-                    tempCtx.textAlign = 'left';
-                    tempCtx.textBaseline = 'bottom';
-                    break;
-                case 'top-right':
-                    cx = tempCanvas.width - pad;
-                    cy = pad;
-                    tempCtx.textAlign = 'right';
-                    tempCtx.textBaseline = 'top';
-                    break;
-                case 'top-left':
-                    cx = pad;
-                    cy = pad;
-                    tempCtx.textAlign = 'left';
-                    tempCtx.textBaseline = 'top';
-                    break;
-                default:
-                    tempCtx.textAlign = 'center';
-                    tempCtx.textBaseline = 'middle';
-            }
-            tempCtx.fillText(text, cx, cy);
-            tempCtx.globalAlpha = 1;
-            mainImage.src = tempCanvas.toDataURL();
-            imageOverlay.textContent = `${currentImage.width}×${currentImage.height} (watermarked)`;
-        }
+<div class="top-actions">
+<button class="top-search" onclick="focusSearch()">⌕ Search tools &nbsp; <b>⌘ K</b></button>
+<button class="icon-btn" onclick="undo()">↶</button>
+<button class="icon-btn" onclick="redo()">↷</button>
+<button class="icon-btn" onclick="showView('home',document.querySelector('[data-tool=home]'))">⌂</button>
+</div>
 
+</header>
 
-        // ============================================
-        // ADVANCED CREATIVE FEATURES
-        // ============================================
-        let compareOriginal = null;
+<div class="content">
 
-        function setStatus(text) {
-            const el = document.getElementById('statusText');
-            if (el) el.textContent = text;
-        }
+<!-- HOME -->
 
-        function updateMetadata() {
-            const box = document.getElementById('metadataContent');
-            if (!box) return;
-            if (!currentImage) {
-                box.textContent = 'Upload an image to inspect dimensions and workspace details.';
-                return;
-            }
-            const mp = (currentImage.width * currentImage.height / 1000000).toFixed(2);
-            box.innerHTML = `<strong style="color:#ddd">Dimensions</strong><br>${currentImage.width} × ${currentImage.height}px<br><br>
-                <strong style="color:#ddd">Resolution</strong><br>${mp} megapixels<br><br>
-                <strong style="color:#ddd">History</strong><br>${historyIndex + 1} / ${history.length} states`;
-        }
+<section class="workspace active" id="home">
 
+<div class="hero">
 
+<div class="eyebrow">Image Tools · Creative Workspace</div>
 
-        function previewEffects() {
-            const vignette = Number(document.getElementById('vignette').value || 0);
-            const pixelate = Number(document.getElementById('pixelate').value || 0);
-            const noise = Number(document.getElementById('noise').value || 0);
-            canvas.width=currentImage.width; canvas.height=currentImage.height;
-            if(pixelate > 1) {
-                const small=document.createElement('canvas');
-                small.width=Math.max(1,Math.floor(canvas.width/pixelate));
-                small.height=Math.max(1,Math.floor(canvas.height/pixelate));
-                const sctx=small.getContext('2d');
-                sctx.drawImage(currentImage,0,0,small.width,small.height);
-                ctx.imageSmoothingEnabled=false;
-                ctx.drawImage(small,0,0,small.width,small.height,0,0,canvas.width,canvas.height);
-                ctx.imageSmoothingEnabled=true;
-            } else ctx.drawImage(currentImage,0,0);
+<h2>
+Edit faster.<br>
+<span>Create. Enhance. Export.</span>
+</h2>
 
-            const img=ctx.getImageData(0,0,canvas.width,canvas.height);
-            const d=img.data, cx=canvas.width/2, cy=canvas.height/2, max=Math.hypot(cx,cy);
-            for(let y=0;y<canvas.height;y++){
-                for(let x=0;x<canvas.width;x++){
-                    const i=(y*canvas.width+x)*4;
-                    if(vignette){
-                        const dist=Math.hypot(x-cx,y-cy)/max;
-                        const factor=1-(dist*dist)*(vignette/100)*0.75;
-                        d[i]*=factor; d[i+1]*=factor; d[i+2]*=factor;
-                    }
-                    if(noise){
-                        const n=(Math.random()-.5)*noise;
-                        d[i]=Math.max(0,Math.min(255,d[i]+n));
-                        d[i+1]=Math.max(0,Math.min(255,d[i+1]+n));
-                        d[i+2]=Math.max(0,Math.min(255,d[i+2]+n));
-                    }
-                }
-            }
-            ctx.putImageData(img,0,0);
-            mainImage.src=canvas.toDataURL();
-            imageOverlay.textContent=`${currentImage.width}×${currentImage.height} (effects preview)`;
-        }
+<p>
+A focused collection of powerful browser-based image editing tools for resizing,
+enhancing, converting, annotating and exporting images without leaving your workspace.
+</p>
 
-        function applyEffects() {
-            previewEffects();
-            updateImage(mainImage.src);
-            toast('Effects applied');
-            setStatus('Effects committed');
-        }
+<div class="hero-actions">
+<button class="btn primary" onclick="showView('editor',document.querySelector('[data-tool=editor]'))">
+Open Image Editor →
+</button>
 
-        function applyPreset(name) {
-            if (!currentImage) return toast('Upload an image first');
-            canvas.width=currentImage.width; canvas.height=currentImage.height;
-            const filters={
-                portrait:'brightness(1.08) contrast(1.05) saturate(1.08)',
-                cinematic:'brightness(.92) contrast(1.22) saturate(.82)',
-                mono:'grayscale(1) contrast(1.15)',
-                vivid:'brightness(1.04) contrast(1.16) saturate(1.45)'
-            };
-            ctx.filter=filters[name]; ctx.drawImage(currentImage,0,0); ctx.filter='none';
-            updateImage(canvas.toDataURL());
-            toast(name.charAt(0).toUpperCase()+name.slice(1)+' preset applied');
-            setStatus(name+' preset applied');
-        }
+<button class="btn ghost" onclick="document.getElementById('quick').scrollIntoView({behavior:'smooth'})">
+Explore tools ↓
+</button>
+</div>
 
-        function applyBackgroundCanvas() {
-            if (!currentImage) return toast('Upload an image first');
-            const pad=Number(document.getElementById('bgPadding')?.value || 0);
-            const color=document.getElementById('bgColor')?.value || '#111111';
-            canvas.width=currentImage.width+pad*2; canvas.height=currentImage.height+pad*2;
-            ctx.fillStyle=color; ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.drawImage(currentImage,pad,pad);
-            updateImage(canvas.toDataURL());
-            toast('Background canvas applied');
-            setStatus('Background canvas created');
-        }
+</div>
 
-        function makeSquareCanvas() {
-            if (!currentImage) return toast('Upload an image first');
-            const size=Math.max(currentImage.width,currentImage.height);
-            const color=document.getElementById('bgColor')?.value || '#111111';
-            canvas.width=size; canvas.height=size;
-            ctx.fillStyle=color; ctx.fillRect(0,0,size,size);
-            ctx.drawImage(currentImage,(size-currentImage.width)/2,(size-currentImage.height)/2);
-            updateImage(canvas.toDataURL());
-            toast('Square canvas created');
-            setStatus('1:1 canvas created');
-        }
+<div id="quick">
 
-        function toggleBeforeAfter() {
-            if (!currentImage || !originalImage) return toast('Upload an image first');
-            const comparing = mainImage.dataset.compare === 'true';
-            if (!comparing) {
-                compareOriginal = mainImage.src;
-                mainImage.src = originalImage.src;
-                mainImage.dataset.compare='true';
-                document.getElementById('imageContainer').classList.add('compare-mode');
-                document.getElementById('compareBtn').innerHTML='<i class="fa-solid fa-eye"></i> Edited';
-                setStatus('Comparing original image');
-            } else {
-                mainImage.src = compareOriginal || currentImage.src;
-                mainImage.dataset.compare='false';
-                document.getElementById('imageContainer').classList.remove('compare-mode');
-                document.getElementById('compareBtn').innerHTML='<i class="fa-solid fa-code-compare"></i> Compare';
-                setStatus('Showing edited image');
-            }
-        }
+<div class="section-head">
+<div>
+<div class="eyebrow">Quick Start</div>
+<h3>Most used tools</h3>
+</div>
+<p>Everything runs locally in your browser.</p>
+</div>
 
-        // ============================================
-        // IMAGE UPLOAD
-        // ============================================
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const img = new Image();
-                img.onload = function() {
-                    originalImage = img;
-                    currentImage = document.createElement('img');
-                    currentImage.src = img.src;
-                    currentImage.onload = function() {
-                        mainImage.src = currentImage.src;
-                        uploadPlaceholder.style.display = 'none';
-                        imageContainer.style.display = 'block';
-                        imageInfo.innerHTML =
-                            `<span>${file.name}</span> <span>${currentImage.width}×${currentImage.height}</span> <span>${(file.size/1024).toFixed(1)} KB</span>`;
-                        imageOverlay.textContent = `${currentImage.width}×${currentImage.height}`;
-                        liveIndicator.style.display = 'none';
-                        addToHistory(currentImage.src);
-                    };
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
+<div class="quick-grid">
 
-        // ============================================
-        // HISTORY
-        // ============================================
-        function addToHistory(src) {
-            history = history.slice(0, historyIndex + 1);
-            history.push(src);
-            historyIndex = history.length - 1;
-            updateHistoryButtons();
-        }
+<button class="quick-card" onclick="showView('editor',document.querySelector('[data-tool=editor]'))">
+<div class="quick-num">01 / EDIT</div>
+<div class="quick-icon">✎</div>
+<h4>Image Editor</h4>
+<p>Upload and edit your image with live controls.</p>
+<div class="quick-arrow">→</div>
+</button>
 
-        function undo() {
-            if (historyIndex > 0) { historyIndex--;
-                loadFromHistory(); }
-        }
+<button class="quick-card" onclick="showView('filters',document.querySelector('[data-tool=filters]'))">
+<div class="quick-num">02 / ENHANCE</div>
+<div class="quick-icon">◐</div>
+<h4>Image Filters</h4>
+<p>Brightness, contrast, saturation, blur and more.</p>
+<div class="quick-arrow">→</div>
+</button>
 
-        function redo() {
-            if (historyIndex < history.length - 1) { historyIndex++;
-                loadFromHistory(); }
-        }
+<button class="quick-card" onclick="showView('convert',document.querySelector('[data-tool=convert]'))">
+<div class="quick-num">03 / EXPORT</div>
+<div class="quick-icon">⇄</div>
+<h4>Convert Image</h4>
+<p>Export PNG, JPEG or WebP with quality control.</p>
+<div class="quick-arrow">→</div>
+</button>
 
-        function loadFromHistory() {
-            const src = history[historyIndex];
-            currentImage.src = src;
-            mainImage.src = src;
-            currentImage.onload = () => {
-                imageOverlay.textContent = `${currentImage.width}×${currentImage.height}`;
-                liveIndicator.style.display = 'none';
-            };
-            updateHistoryButtons();
-        }
+</div>
 
-        function updateHistoryButtons() {
-            document.getElementById('undoBtn').disabled = historyIndex <= 0;
-            document.getElementById('redoBtn').disabled = historyIndex >= history.length - 1;
-        }
+</div>
 
-        // ============================================
-        // UPDATE IMAGE (commit)
-        // ============================================
-        function updateImage(src) {
-            const img = new Image();
-            img.onload = function() {
-                currentImage = img;
-                mainImage.src = src;
-                imageOverlay.textContent = `${img.width}×${img.height}`;
-                liveIndicator.style.display = 'none';
-                addToHistory(src);
-            };
-            img.src = src;
-        }
+</section>
 
-        // ============================================
-        // CROP
-        // ============================================
-        function updateCropPreview() {
-            ['cropX', 'cropY', 'cropWidth', 'cropHeight'].forEach(id => {
-                const el = document.getElementById(id);
-                const label = document.getElementById(id + 'Val');
-                if (el && label) label.innerText = el.value + '%';
-            });
-        }
+<!-- EDITOR -->
 
-        function applyCrop() {
-            const x = document.getElementById('cropX').value / 100 * currentImage.width;
-            const y = document.getElementById('cropY').value / 100 * currentImage.height;
-            const w = document.getElementById('cropWidth').value / 100 * currentImage.width;
-            const h = document.getElementById('cropHeight').value / 100 * currentImage.height;
-            canvas.width = w;
-            canvas.height = h;
-            ctx.drawImage(currentImage, x, y, w, h, 0, 0, w, h);
-            updateImage(canvas.toDataURL());
-            toast('Crop applied');
-        }
+<section class="workspace" id="editor">
 
-        // ============================================
-        // RESIZE
-        // ============================================
-        function applyResize() {
-            const w = parseInt(document.getElementById('resizeWidth').value);
-            const h = parseInt(document.getElementById('resizeHeight').value);
-            canvas.width = w;
-            canvas.height = h;
-            ctx.drawImage(currentImage, 0, 0, w, h);
-            updateImage(canvas.toDataURL());
-            toast('Resize applied');
-        }
+<div class="tool-title">
+<div>
+<div class="eyebrow">01 / Workspace</div>
+<h2>Image<br>Editor.</h2>
+<p>Upload an image and edit it directly inside your browser.</p>
+</div>
+<div class="shortcut">⌘ ⇧ E</div>
+</div>
 
-        // ============================================
-        // FILTERS
-        // ============================================
-        function applyFilter(filter, btn) {
-            if (!currentImage) { toast('Upload first'); return; }
-            activeFilter = filter;
-            // Highlight active
-            document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active-filter'));
-            if (btn) btn.classList.add('active-filter');
+<div class="editor-grid">
 
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-            ctx.drawImage(currentImage, 0, 0);
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imgData.data;
-            for (let i = 0; i < data.length; i += 4) {
-                let r = data[i],
-                    g = data[i + 1],
-                    b = data[i + 2];
-                switch (filter) {
-                    case 'grayscale':
-                        let gr = 0.3 * r + 0.59 * g + 0.11 * b;
-                        data[i] = data[i + 1] = data[i + 2] = gr;
-                        break;
-                    case 'sepia':
-                        data[i] = Math.min(255, r * 0.393 + g * 0.769 + b * 0.189);
-                        data[i + 1] = Math.min(255, r * 0.349 + g * 0.686 + b * 0.168);
-                        data[i + 2] = Math.min(255, r * 0.272 + g * 0.534 + b * 0.131);
-                        break;
-                    case 'invert':
-                        data[i] = 255 - r;
-                        data[i + 1] = 255 - g;
-                        data[i + 2] = 255 - b;
-                        break;
-                    case 'blur':
-                        data[i] = r * 0.7;
-                        data[i + 1] = g * 0.7;
-                        data[i + 2] = b * 0.7;
-                        break;
-                    case 'sharpen':
-                        data[i] = Math.min(255, r * 1.3);
-                        data[i + 1] = Math.min(255, g * 1.3);
-                        data[i + 2] = Math.min(255, b * 1.3);
-                        break;
-                    case 'vintage':
-                        data[i] = Math.min(255, r * 1.2);
-                        data[i + 1] = g * 0.9;
-                        data[i + 2] = b * 0.8;
-                        break;
-                    case 'warm':
-                        data[i] = Math.min(255, r * 1.15);
-                        data[i + 1] = g * 0.95;
-                        data[i + 2] = b * 0.85;
-                        break;
-                    case 'cool':
-                        data[i] = r * 0.9;
-                        data[i + 1] = g * 0.95;
-                        data[i + 2] = Math.min(255, b * 1.15);
-                        break;
-                }
-            }
-            ctx.putImageData(imgData, 0, 0);
-            // Show live preview
-            mainImage.src = canvas.toDataURL();
-            imageOverlay.textContent = `${currentImage.width}×${currentImage.height} (${filter})`;
-            liveIndicator.style.display = 'block';
-            toast('Filter preview: ' + filter + ' — click Apply to commit');
-        }
+<div class="controls">
 
-        // ============================================
-        // ADJUST
-        // ============================================
-        function applyAdjustments() {
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-            const exp = document.getElementById('exposure').value / 100;
-            ctx.filter =
-                `brightness(${document.getElementById('brightness').value/100}) contrast(${document.getElementById('contrast').value/100}) saturate(${document.getElementById('saturation').value/100}) blur(${document.getElementById('blurAmount').value}px) brightness(${1+exp})`;
-            ctx.drawImage(currentImage, 0, 0);
-            ctx.filter = 'none';
-            updateImage(canvas.toDataURL());
-            toast('Adjustments applied');
-        }
+<div class="control">
 
-        // ============================================
-        // ROTATE / FLIP
-        // ============================================
-        function rotateImage(deg) {
-            if (!currentImage) { toast('Upload first'); return; }
-            let w = currentImage.width,
-                h = currentImage.height;
-            if (deg === 90 || deg === -90 || deg === 270 || deg === -270) { canvas.width = h;
-                canvas.height = w; } else { canvas.width = w;
-                canvas.height = h; }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(deg * Math.PI / 180);
-            ctx.drawImage(currentImage, -w / 2, -h / 2);
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            updateImage(canvas.toDataURL());
-            toast('Rotated ' + deg + '°');
-        }
+<div class="field-label">Upload Image</div>
 
-        function flipImage(dir) {
-            if (!currentImage) { toast('Upload first'); return; }
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-            ctx.translate(dir === 'horizontal' ? canvas.width : 0, dir === 'vertical' ? canvas.height : 0);
-            ctx.scale(dir === 'horizontal' ? -1 : 1, dir === 'vertical' ? -1 : 1);
-            ctx.drawImage(currentImage, 0, 0);
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            updateImage(canvas.toDataURL());
-            toast('Flipped ' + dir);
-        }
+<input
+type="file"
+class="input"
+accept="image/*"
+id="fileInput"
+onchange="loadFile(this.files[0])">
 
-        // ============================================
-        // TEXT (apply)
-        // ============================================
-        function applyText() {
-            const text = document.getElementById('textContent').value || 'Text';
-            const size = parseInt(document.getElementById('textSize').value) || 36;
-            const color = document.getElementById('textColor').value;
-            const x = parseInt(document.getElementById('textX').value) || 50;
-            const y = parseInt(document.getElementById('textY').value) || 80;
-            const opacity = parseInt(document.getElementById('textOpacity').value) / 100 || 1;
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-            ctx.drawImage(currentImage, 0, 0);
-            ctx.globalAlpha = opacity;
-            ctx.font = `${size}px "Space Grotesk", sans-serif`;
-            ctx.fillStyle = color;
-            ctx.fillText(text, x, y);
-            ctx.globalAlpha = 1;
-            updateImage(canvas.toDataURL());
-            toast('Text added');
-        }
+</div>
 
-        // ============================================
-        // DRAW
-        // ============================================
-        function initDrawCanvas() {
-            drawCanvas = document.getElementById('drawCanvas');
-            drawCtx = drawCanvas.getContext('2d');
-            drawCanvas.style.display = 'block';
-            drawCanvas.width = drawCanvas.clientWidth || 600;
-            drawCanvas.height = 400;
-            drawCtx.fillStyle = '#0a0a0a';
-            drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
-            if (currentImage) drawCtx.drawImage(currentImage, 0, 0, drawCanvas.width, drawCanvas.height);
-            drawCanvas.onmousedown = function(e) {
-                isDrawing = true;
-                const r = drawCanvas.getBoundingClientRect();
-                lastX = e.clientX - r.left;
-                lastY = e.clientY - r.top;
-            };
-            drawCanvas.onmousemove = function(e) {
-                if (!isDrawing) return;
-                const r = drawCanvas.getBoundingClientRect();
-                const x = e.clientX - r.left,
-                    y = e.clientY - r.top;
-                drawCtx.beginPath();
-                drawCtx.moveTo(lastX, lastY);
-                drawCtx.lineTo(x, y);
-                drawCtx.strokeStyle = document.getElementById('drawColor').value;
-                drawCtx.lineWidth = document.getElementById('drawSize').value;
-                drawCtx.lineCap = 'round';
-                drawCtx.stroke();
-                lastX = x;
-                lastY = y;
-            };
-            drawCanvas.onmouseup = drawCanvas.onmouseout = function() { isDrawing = false; };
-        }
+<div class="control">
 
-        function clearDrawing() {
-            if (!drawCtx) return;
-            drawCtx.fillStyle = '#0a0a0a';
-            drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
-            if (currentImage) drawCtx.drawImage(currentImage, 0, 0, drawCanvas.width, drawCanvas.height);
-        }
+<div class="field-label">Quick Actions</div>
 
-        function saveDrawing() {
-            if (!drawCanvas) { toast('No drawing'); return; }
-            const img = new Image();
-            img.onload = function() {
-                canvas.width = currentImage.width;
-                canvas.height = currentImage.height;
-                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                updateImage(canvas.toDataURL());
-                drawCanvas.style.display = 'none';
-                toast('Drawing saved');
-            };
-            img.src = drawCanvas.toDataURL();
-        }
+<div class="actions">
 
-        // ============================================
-        // FRAME (apply)
-        // ============================================
-        function applyFrame() {
-            const size = parseInt(document.getElementById('borderSize').value) || 10;
-            const color = document.getElementById('borderColor').value || '#ffffff';
-            const radius = parseInt(document.getElementById('cornerRadius').value) || 0;
-            const w = currentImage.width + size * 2;
-            const h = currentImage.height + size * 2;
-            canvas.width = w;
-            canvas.height = h;
-            // Draw rounded rect
-            if (radius > 0) {
-                const r = Math.min(radius, w / 2, h / 2);
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.moveTo(r, 0);
-                ctx.lineTo(w - r, 0);
-                ctx.quadraticCurveTo(w, 0, w, r);
-                ctx.lineTo(w, h - r);
-                ctx.quadraticCurveTo(w, h, w - r, h);
-                ctx.lineTo(r, h);
-                ctx.quadraticCurveTo(0, h, 0, h - r);
-                ctx.lineTo(0, r);
-                ctx.quadraticCurveTo(0, 0, r, 0);
-                ctx.closePath();
-                ctx.fill();
-            } else {
-                ctx.fillStyle = color;
-                ctx.fillRect(0, 0, w, h);
-            }
-            ctx.drawImage(currentImage, size, size);
-            updateImage(canvas.toDataURL());
-            toast('Frame applied');
-        }
+<button class="btn" onclick="resetImage()">Reset</button>
+<button class="btn" onclick="undo()">Undo</button>
+<button class="btn" onclick="redo()">Redo</button>
 
-        // ============================================
-        // WATERMARK (apply)
-        // ============================================
-        function applyWatermark() {
-            const text = document.getElementById('wmText').value || '© Watermark';
-            const size = parseInt(document.getElementById('wmSize').value) || 32;
-            const opacity = parseInt(document.getElementById('wmOpacity').value) / 100 || 0.6;
-            const pos = document.getElementById('wmPosition').value;
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-            ctx.drawImage(currentImage, 0, 0);
-            ctx.globalAlpha = opacity;
-            ctx.font = `${size}px "Space Grotesk", sans-serif`;
-            ctx.fillStyle = '#ffffff';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            let cx = canvas.width / 2,
-                cy = canvas.height / 2;
-            const pad = 30;
-            switch (pos) {
-                case 'bottom-right':
-                    cx = canvas.width - pad;
-                    cy = canvas.height - pad;
-                    ctx.textAlign = 'right';
-                    ctx.textBaseline = 'bottom';
-                    break;
-                case 'bottom-left':
-                    cx = pad;
-                    cy = canvas.height - pad;
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'bottom';
-                    break;
-                case 'top-right':
-                    cx = canvas.width - pad;
-                    cy = pad;
-                    ctx.textAlign = 'right';
-                    ctx.textBaseline = 'top';
-                    break;
-                case 'top-left':
-                    cx = pad;
-                    cy = pad;
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'top';
-                    break;
-                default:
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-            }
-            ctx.fillText(text, cx, cy);
-            ctx.globalAlpha = 1;
-            updateImage(canvas.toDataURL());
-            toast('Watermark applied');
-        }
+</div>
 
-        // ============================================
-        // DOWNLOAD / RESET / EXPORT
-        // ============================================
-        function downloadImage() {
-            if (!currentImage) { toast('No image'); return; }
-            const a = document.createElement('a');
-            a.download = 'image-studio-edit.png';
-            a.href = mainImage.src;
-            a.click();
-            toast('Downloaded');
-        }
+</div>
 
-        function exportImage() {
-            if (!currentImage) { toast('No image'); return; }
-            // Export with current preview
-            const a = document.createElement('a');
-            a.download = 'image-studio-export.png';
-            a.href = mainImage.src;
-            a.click();
-            toast('Exported');
-        }
+<div class="control">
 
-        function resetAll() {
-            if (originalImage) {
-                currentImage = originalImage;
-                mainImage.src = originalImage.src;
-                imageOverlay.textContent = `${originalImage.width}×${originalImage.height}`;
-                history = [originalImage.src];
-                historyIndex = 0;
-                updateHistoryButtons();
-                liveIndicator.style.display = 'none';
-                // Reset filter highlights
-                document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active-filter'));
-                activeFilter = null;
-                toast('Reset to original');
-            } else { toast('No original image'); }
-        }
+<label>
+Brightness
+<span id="brightnessVal">100%</span>
+</label>
 
-        // ============================================
-        // DRAG & DROP
-        // ============================================
-        uploadArea.addEventListener('dragover', e => { e.preventDefault();
-            uploadArea.classList.add('dragover'); });
-        uploadArea.addEventListener('dragleave', e => { e.preventDefault();
-            uploadArea.classList.remove('dragover'); });
-        uploadArea.addEventListener('drop', e => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const fake = { target: { files: [file] } };
-                handleImageUpload(fake);
-            } else toast('Please drop an image');
-        });
+<input
+type="range"
+min="0"
+max="200"
+value="100"
+id="brightness"
+oninput="updateFilter()">
 
+</div>
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-                e.preventDefault();
-                e.shiftKey ? redo() : undo();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-                e.preventDefault();
-                downloadImage();
-            }
-        });
+<div class="control">
 
-        // ============================================
-        // INIT
-        // ============================================
-        toolProps.innerHTML = templates.crop;
-    </script>
+<label>
+Contrast
+<span id="contrastVal">100%</span>
+</label>
+
+<input
+type="range"
+min="0"
+max="200"
+value="100"
+id="contrast"
+oninput="updateFilter()">
+
+</div>
+
+<div class="control">
+
+<label>
+Saturation
+<span id="saturationVal">100%</span>
+</label>
+
+<input
+type="range"
+min="0"
+max="200"
+value="100"
+id="saturation"
+oninput="updateFilter()">
+
+</div>
+
+<div class="control">
+
+<label>
+Blur
+<span id="blurVal">0px</span>
+</label>
+
+<input
+type="range"
+min="0"
+max="20"
+value="0"
+id="blur"
+oninput="updateFilter()">
+
+</div>
+
+<div class="control">
+
+<div class="field-label">Quick Filters</div>
+
+<div class="actions">
+
+<button class="btn" onclick="setPreset('grayscale')">Grayscale</button>
+<button class="btn" onclick="setPreset('sepia')">Sepia</button>
+<button class="btn" onclick="setPreset('invert')">Invert</button>
+
+</div>
+
+</div>
+
+<div class="control">
+
+<div class="field-label">Download</div>
+
+<div class="actions">
+
+<button class="btn primary" onclick="downloadImage('png')">PNG</button>
+<button class="btn" onclick="downloadImage('jpeg')">JPG</button>
+<button class="btn" onclick="downloadImage('webp')">WEBP</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="canvas-area" id="canvasArea">
+
+<div class="drop-zone" id="dropZone">
+
+<div>
+<h3>Drop your image here</h3>
+<p>Upload PNG, JPG, JPEG, WebP or other browser-supported images.</p>
+
+<button class="btn primary" onclick="document.getElementById('fileInput').click()">
+Choose Image
+</button>
+</div>
+
+</div>
+
+<canvas id="canvas" class="hidden"></canvas>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- RESIZE -->
+
+<section class="workspace" id="resize">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">02 / Transform</div>
+<h2>Resize<br>Image.</h2>
+<p>Resize your image by exact pixel dimensions.</p>
+</div>
+<div class="shortcut">⌘ ⇧ R</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Width</div>
+<input class="input" type="number" id="resizeWidth">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Height</div>
+<input class="input" type="number" id="resizeHeight">
+
+<div style="height:12px"></div>
+
+<label style="color:#888;font-size:12px">
+<input type="checkbox" id="lockRatio" checked>
+ Keep aspect ratio
+</label>
+
+<div class="actions">
+
+<button class="btn primary" onclick="resizeImage()">Resize Image</button>
+
+<button class="btn" onclick="presetResize(1080,1080)">1080 × 1080</button>
+<button class="btn" onclick="presetResize(1920,1080)">1920 × 1080</button>
+<button class="btn" onclick="presetResize(1080,1350)">1080 × 1350</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ROTATE -->
+
+<section class="workspace" id="rotate">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">03 / Transform</div>
+<h2>Rotate &<br>Flip.</h2>
+<p>Rotate or mirror your current image.</p>
+</div>
+<div class="shortcut">⌘ ⇧ T</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="actions">
+
+<button class="btn primary" onclick="rotateImage(-90)">↺ Rotate Left</button>
+<button class="btn primary" onclick="rotateImage(90)">↻ Rotate Right</button>
+
+<button class="btn" onclick="flipImage('horizontal')">
+↔ Flip Horizontal
+</button>
+
+<button class="btn" onclick="flipImage('vertical')">
+↕ Flip Vertical
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FILTERS -->
+
+<section class="workspace" id="filters">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">04 / Enhance</div>
+<h2>Image<br>Filters.</h2>
+<p>Apply visual filters to your current image.</p>
+</div>
+<div class="shortcut">⌘ ⇧ F</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="actions">
+
+<button class="btn primary" onclick="setPreset('normal')">Normal</button>
+<button class="btn" onclick="setPreset('grayscale')">Grayscale</button>
+<button class="btn" onclick="setPreset('sepia')">Sepia</button>
+<button class="btn" onclick="setPreset('invert')">Invert</button>
+<button class="btn" onclick="setPreset('vintage')">Vintage</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- DRAW -->
+
+<section class="workspace" id="draw">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">05 / Annotate</div>
+<h2>Draw &<br>Annotate.</h2>
+<p>Draw directly on the current image.</p>
+</div>
+<div class="shortcut">⌘ ⇧ D</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Drawing Color</div>
+
+<input
+class="input"
+style="height:60px;padding:5px"
+type="color"
+id="drawColor"
+value="#ffffff">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Brush Size</div>
+
+<input
+type="range"
+min="1"
+max="50"
+value="5"
+id="brushSize"
+style="width:100%">
+
+<div class="actions">
+
+<button class="btn primary" onclick="enableDrawing()">Enable Drawing</button>
+<button class="btn" onclick="disableDrawing()">Stop Drawing</button>
+<button class="btn" onclick="clearDrawing()">Clear Canvas</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TEXT -->
+
+<section class="workspace" id="text">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">06 / Design</div>
+<h2>Add<br>Text.</h2>
+<p>Add custom text to your image.</p>
+</div>
+<div class="shortcut">⌘ ⇧ A</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Text</div>
+
+<input class="input" id="textInput" placeholder="Enter your text">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Text Size</div>
+
+<input class="input" type="number" id="textSize" value="48">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Text Color</div>
+
+<input
+class="input"
+style="height:60px;padding:5px"
+type="color"
+id="textColor"
+value="#ffffff">
+
+<div class="actions">
+
+<button class="btn primary" onclick="addText()">Add Text</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- WATERMARK -->
+
+<section class="workspace" id="watermark">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">07 / Protect</div>
+<h2>Watermark.</h2>
+<p>Add a watermark to your image.</p>
+</div>
+<div class="shortcut">⌘ ⇧ W</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Watermark Text</div>
+
+<input
+class="input"
+id="watermarkText"
+placeholder="© TeamOrbits">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Opacity</div>
+
+<input
+type="range"
+min="0"
+max="100"
+value="50"
+id="watermarkOpacity"
+style="width:100%">
+
+<div class="actions">
+
+<button class="btn primary" onclick="addWatermark()">
+Apply Watermark
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- BORDER -->
+
+<section class="workspace" id="border">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">08 / Design</div>
+<h2>Border &<br>Corners.</h2>
+<p>Add a border or rounded corners.</p>
+</div>
+<div class="shortcut">⌘ ⇧ B</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Border Size</div>
+
+<input
+type="range"
+min="0"
+max="50"
+value="0"
+id="borderSize"
+style="width:100%">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Border Color</div>
+
+<input
+class="input"
+style="height:60px;padding:5px"
+type="color"
+id="borderColor"
+value="#ffffff">
+
+<div style="height:12px"></div>
+
+<div class="field-label">Corner Radius</div>
+
+<input
+type="range"
+min="0"
+max="200"
+value="0"
+id="cornerRadius"
+style="width:100%">
+
+<div class="actions">
+
+<button class="btn primary" onclick="applyBorder()">
+Apply Design
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CONVERT -->
+
+<section class="workspace" id="convert">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">09 / Export</div>
+<h2>Convert<br>Image.</h2>
+<p>Export your edited image in different formats.</p>
+</div>
+<div class="shortcut">⌘ ⇧ C</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="field-label">Format</div>
+
+<select id="exportFormat">
+<option value="png">PNG</option>
+<option value="jpeg">JPEG</option>
+<option value="webp">WEBP</option>
+</select>
+
+<div style="height:12px"></div>
+
+<div class="field-label">Quality</div>
+
+<input
+type="range"
+min="10"
+max="100"
+value="92"
+id="quality"
+style="width:100%">
+
+<div class="actions">
+
+<button class="btn primary" onclick="downloadSelected()">
+Download Converted Image
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- IMAGE INFO -->
+
+<section class="workspace" id="info">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">10 / Inspect</div>
+<h2>Image<br>Info.</h2>
+<p>Inspect dimensions and basic file information.</p>
+</div>
+<div class="shortcut">⌘ ⇧ I</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="info-grid">
+
+<div class="info-card">
+<small>File Name</small>
+<b id="infoName">No image loaded</b>
+</div>
+
+<div class="info-card">
+<small>File Size</small>
+<b id="infoSize">—</b>
+</div>
+
+<div class="info-card">
+<small>Width</small>
+<b id="infoWidth">—</b>
+</div>
+
+<div class="info-card">
+<small>Height</small>
+<b id="infoHeight">—</b>
+</div>
+
+<div class="info-card">
+<small>File Type</small>
+<b id="infoType">—</b>
+</div>
+
+<div class="info-card">
+<small>Aspect Ratio</small>
+<b id="infoRatio">—</b>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- BASE64 -->
+
+<section class="workspace" id="base64">
+
+<div class="tool-title">
+<div>
+<div class="eyebrow">11 / Data</div>
+<h2>Base64<br>Export.</h2>
+<p>Convert the current image into a Base64 Data URL.</p>
+</div>
+<div class="shortcut">⌘ ⇧ 6</div>
+</div>
+
+<div class="tool-panel">
+
+<div class="actions">
+
+<button class="btn primary" onclick="generateBase64()">
+Generate Base64
+</button>
+
+<button class="btn" onclick="copyBase64()">
+Copy
+</button>
+
+</div>
+
+<textarea
+id="base64Output"
+style="margin-top:15px"
+placeholder="Your Base64 Data URL will appear here..."
+readonly></textarea>
+
+</div>
+
+</section>
+
+</div>
+</main>
+</div>
+
+<script>
+
+const $ = id => document.getElementById(id);
+const qsa = selector => document.querySelectorAll(selector);
+
+/* LOADER */
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>$('loader').classList.add('hide'),650);
+});
+
+/* CURSOR */
+
+const cursor=$('cursor');
+
+if(matchMedia('(pointer:fine)').matches){
+  document.addEventListener('mousemove',e=>{
+    cursor.style.left=e.clientX+'px';
+    cursor.style.top=e.clientY+'px';
+  });
+}
+
+/* NAVIGATION */
+
+function toggleMenu(){
+  $('sidebar').classList.toggle('open');
+  $('overlay').classList.toggle('show');
+}
+
+$('overlay').onclick=toggleMenu;
+
+function showView(id,btn){
+
+  qsa('.workspace').forEach(x=>x.classList.remove('active'));
+
+  $(id).classList.add('active');
+
+  qsa('.nav-item').forEach(x=>x.classList.remove('active'));
+
+  if(btn) btn.classList.add('active');
+
+  $('crumb').textContent=
+    id==='home'
+    ?'Image Tools'
+    :(btn?btn.textContent.trim():'Image Tools');
+
+  if(
+    innerWidth<=980 &&
+    $('sidebar').classList.contains('open')
+  ){
+    toggleMenu();
+  }
+
+  scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+}
+
+function focusSearch(){
+
+  if(
+    innerWidth<=980 &&
+    !$('sidebar').classList.contains('open')
+  ){
+    toggleMenu();
+  }
+
+  setTimeout(
+    ()=>$('toolSearch').focus(),
+    150
+  );
+}
+
+function filterTools(){
+
+  const q=$('toolSearch').value.toLowerCase();
+
+  qsa('.nav-item').forEach(item=>{
+
+    item.style.display=
+      item.textContent.toLowerCase().includes(q)
+      ?'flex'
+      :'none';
+
+  });
+
+}
+
+/* TOAST */
+
+function toast(message){
+
+  const t=$('toast');
+
+  t.textContent=message;
+
+  t.classList.add('show');
+
+  setTimeout(
+    ()=>t.classList.remove('show'),
+    1800
+  );
+}
+
+/* IMAGE STATE */
+
+const canvas=$('canvas');
+const ctx=canvas.getContext('2d');
+
+let image=new Image();
+
+let originalImage=null;
+
+let history=[];
+let historyIndex=-1;
+
+let currentFile=null;
+
+let rotation=0;
+
+let flipX=1;
+let flipY=1;
+
+let drawing=false;
+let isDrawing=false;
+
+/* LOAD IMAGE */
+
+function loadFile(file){
+
+  if(!file) return;
+
+  currentFile=file;
+
+  const reader=new FileReader();
+
+  reader.onload=e=>{
+
+    image=new Image();
+
+    image.onload=()=>{
+
+      originalImage=new Image();
+
+      originalImage.src=image.src;
+
+      canvas.width=image.width;
+      canvas.height=image.height;
+
+      $('dropZone').classList.add('hidden');
+
+      canvas.classList.remove('hidden');
+
+      rotation=0;
+      flipX=1;
+      flipY=1;
+
+      drawImage();
+
+      history=[];
+      historyIndex=-1;
+
+      saveHistory();
+
+      updateInfo();
+
+      $('resizeWidth').value=canvas.width;
+      $('resizeHeight').value=canvas.height;
+
+      toast('Image loaded');
+
+    };
+
+    image.src=e.target.result;
+
+  };
+
+  reader.readAsDataURL(file);
+
+}
+
+/* DRAW IMAGE */
+
+function drawImage(){
+
+  if(!image.src) return;
+
+  canvas.width=image.width;
+  canvas.height=image.height;
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  ctx.save();
+
+  ctx.filter=getFilterString();
+
+  ctx.drawImage(
+    image,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  ctx.restore();
+
+}
+
+/* FILTERS */
+
+function getFilterString(){
+
+  const b=$('brightness').value;
+  const c=$('contrast').value;
+  const s=$('saturation').value;
+  const blur=$('blur').value;
+
+  return `
+    brightness(${b}%)
+    contrast(${c}%)
+    saturate(${s}%)
+    blur(${blur}px)
+  `;
+}
+
+function updateFilter(){
+
+  $('brightnessVal').textContent=
+    $('brightness').value+'%';
+
+  $('contrastVal').textContent=
+    $('contrast').value+'%';
+
+  $('saturationVal').textContent=
+    $('saturation').value+'%';
+
+  $('blurVal').textContent=
+    $('blur').value+'px';
+
+  drawImage();
+}
+
+/* PRESETS */
+
+function setPreset(type){
+
+  if(!image.src){
+    toast('Upload an image first');
+    return;
+  }
+
+  if(type==='normal'){
+
+    $('brightness').value=100;
+    $('contrast').value=100;
+    $('saturation').value=100;
+    $('blur').value=0;
+
+    drawImage();
+
+  }
+
+  if(type==='grayscale'){
+
+    drawImage();
+
+    ctx.filter='grayscale(100%)';
+
+    ctx.drawImage(
+      canvas,
+      0,
+      0
+    );
+
+  }
+
+  if(type==='sepia'){
+
+    drawImage();
+
+    ctx.filter='sepia(100%)';
+
+    ctx.drawImage(
+      canvas,
+      0,
+      0
+    );
+
+  }
+
+  if(type==='invert'){
+
+    drawImage();
+
+    ctx.filter='invert(100%)';
+
+    ctx.drawImage(
+      canvas,
+      0,
+      0
+    );
+
+  }
+
+  if(type==='vintage'){
+
+    $('brightness').value=90;
+    $('contrast').value=120;
+    $('saturation').value=70;
+
+    updateFilter();
+
+  }
+
+  saveHistory();
+
+}
+
+/* HISTORY */
+
+function saveHistory(){
+
+  if(!canvas.width) return;
+
+  history=history.slice(
+    0,
+    historyIndex+1
+  );
+
+  history.push(
+    canvas.toDataURL()
+  );
+
+  historyIndex=
+    history.length-1;
+
+}
+
+function undo(){
+
+  if(historyIndex<=0) return;
+
+  historyIndex--;
+
+  restoreHistory(
+    history[historyIndex]
+  );
+
+}
+
+function redo(){
+
+  if(
+    historyIndex>=history.length-1
+  ) return;
+
+  historyIndex++;
+
+  restoreHistory(
+    history[historyIndex]
+  );
+
+}
+
+function restoreHistory(data){
+
+  const img=new Image();
+
+  img.onload=()=>{
+
+    canvas.width=img.width;
+    canvas.height=img.height;
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      img,
+      0,
+      0
+    );
+
+  };
+
+  img.src=data;
+
+}
+
+/* RESET */
+
+function resetImage(){
+
+  if(!originalImage) return;
+
+  image=new Image();
+
+  image.onload=()=>{
+
+    $('brightness').value=100;
+    $('contrast').value=100;
+    $('saturation').value=100;
+    $('blur').value=0;
+
+    rotation=0;
+    flipX=1;
+    flipY=1;
+
+    updateFilter();
+
+    toast('Image reset');
+
+  };
+
+  image.src=originalImage.src;
+
+}
+
+/* RESIZE */
+
+function resizeImage(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const w=
+    Number(
+      $('resizeWidth').value
+    );
+
+  const h=
+    Number(
+      $('resizeHeight').value
+    );
+
+  if(!w||!h) return;
+
+  const temp=document.createElement('canvas');
+
+  temp.width=w;
+  temp.height=h;
+
+  const tctx=temp.getContext('2d');
+
+  tctx.drawImage(
+    canvas,
+    0,
+    0,
+    w,
+    h
+  );
+
+  image=new Image();
+
+  image.onload=()=>{
+
+    canvas.width=w;
+    canvas.height=h;
+
+    drawImage();
+
+    saveHistory();
+
+    updateInfo();
+
+  };
+
+  image.src=temp.toDataURL();
+
+}
+
+function presetResize(w,h){
+
+  $('resizeWidth').value=w;
+  $('resizeHeight').value=h;
+
+  resizeImage();
+
+}
+
+/* ROTATE */
+
+function rotateImage(degrees){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const temp=document.createElement('canvas');
+
+  const swap=Math.abs(degrees)%180!==0;
+
+  temp.width=
+    swap
+    ?canvas.height
+    :canvas.width;
+
+  temp.height=
+    swap
+    ?canvas.width
+    :canvas.height;
+
+  const t=temp.getContext('2d');
+
+  t.translate(
+    temp.width/2,
+    temp.height/2
+  );
+
+  t.rotate(
+    degrees*Math.PI/180
+  );
+
+  t.drawImage(
+    canvas,
+    -canvas.width/2,
+    -canvas.height/2
+  );
+
+  image=new Image();
+
+  image.onload=()=>{
+
+    canvas.width=temp.width;
+    canvas.height=temp.height;
+
+    ctx.drawImage(
+      image,
+      0,
+      0
+    );
+
+    saveHistory();
+
+    updateInfo();
+
+  };
+
+  image.src=temp.toDataURL();
+
+}
+
+/* FLIP */
+
+function flipImage(direction){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const temp=document.createElement('canvas');
+
+  temp.width=canvas.width;
+  temp.height=canvas.height;
+
+  const t=temp.getContext('2d');
+
+  if(direction==='horizontal'){
+
+    t.translate(
+      canvas.width,
+      0
+    );
+
+    t.scale(
+      -1,
+      1
+    );
+
+  }else{
+
+    t.translate(
+      0,
+      canvas.height
+    );
+
+    t.scale(
+      1,
+      -1
+    );
+
+  }
+
+  t.drawImage(
+    canvas,
+    0,
+    0
+  );
+
+  image=new Image();
+
+  image.onload=()=>{
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      image,
+      0,
+      0
+    );
+
+    saveHistory();
+
+  };
+
+  image.src=temp.toDataURL();
+
+}
+
+/* DRAWING */
+
+function enableDrawing(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  drawing=true;
+
+  toast('Drawing enabled');
+
+}
+
+function disableDrawing(){
+
+  drawing=false;
+  isDrawing=false;
+
+  toast('Drawing disabled');
+
+}
+
+canvas.addEventListener(
+  'mousedown',
+  e=>{
+
+    if(!drawing) return;
+
+    isDrawing=true;
+
+    const rect=
+      canvas.getBoundingClientRect();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      (e.clientX-rect.left)
+      *
+      (canvas.width/rect.width),
+
+      (e.clientY-rect.top)
+      *
+      (canvas.height/rect.height)
+    );
+
+  }
+);
+
+canvas.addEventListener(
+  'mousemove',
+  e=>{
+
+    if(
+      !drawing||
+      !isDrawing
+    ) return;
+
+    const rect=
+      canvas.getBoundingClientRect();
+
+    const x=
+      (e.clientX-rect.left)
+      *
+      (canvas.width/rect.width);
+
+    const y=
+      (e.clientY-rect.top)
+      *
+      (canvas.height/rect.height);
+
+    ctx.lineWidth=
+      $('brushSize').value;
+
+    ctx.strokeStyle=
+      $('drawColor').value;
+
+    ctx.lineCap='round';
+
+    ctx.lineTo(x,y);
+
+    ctx.stroke();
+
+  }
+);
+
+canvas.addEventListener(
+  'mouseup',
+  ()=>{
+
+    if(isDrawing){
+
+      isDrawing=false;
+
+      saveHistory();
+
+    }
+
+  }
+);
+
+canvas.addEventListener(
+  'mouseleave',
+  ()=>{
+
+    isDrawing=false;
+
+  }
+);
+
+function clearDrawing(){
+
+  drawImage();
+
+  saveHistory();
+
+}
+
+/* TEXT */
+
+function addText(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const text=
+    $('textInput').value;
+
+  if(!text){
+    toast('Enter some text');
+    return;
+  }
+
+  ctx.save();
+
+  ctx.fillStyle=
+    $('textColor').value;
+
+  ctx.font=
+    $('textSize').value+
+    'px Space Grotesk';
+
+  ctx.textBaseline='top';
+
+  ctx.fillText(
+    text,
+    canvas.width*.08,
+    canvas.height*.08
+  );
+
+  ctx.restore();
+
+  saveHistory();
+
+  toast('Text added');
+
+}
+
+/* WATERMARK */
+
+function addWatermark(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const text=
+    $('watermarkText').value||
+    '© Watermark';
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    $('watermarkOpacity').value/100;
+
+  ctx.fillStyle='#ffffff';
+
+  ctx.font=
+    Math.max(
+      20,
+      canvas.width/20
+    )+'px DM Sans';
+
+  ctx.textAlign='right';
+
+  ctx.fillText(
+    text,
+    canvas.width-30,
+    canvas.height-30
+  );
+
+  ctx.restore();
+
+  saveHistory();
+
+  toast('Watermark applied');
+
+}
+
+/* BORDER */
+
+function applyBorder(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const size=
+    Number(
+      $('borderSize').value
+    );
+
+  const color=
+    $('borderColor').value;
+
+  const radius=
+    Number(
+      $('cornerRadius').value
+    );
+
+  if(radius>0){
+
+    const temp=document.createElement('canvas');
+
+    temp.width=canvas.width;
+    temp.height=canvas.height;
+
+    const t=temp.getContext('2d');
+
+    t.beginPath();
+
+    roundedRect(
+      t,
+      0,
+      0,
+      temp.width,
+      temp.height,
+      radius
+    );
+
+    t.clip();
+
+    t.drawImage(
+      canvas,
+      0,
+      0
+    );
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      temp,
+      0,
+      0
+    );
+
+  }
+
+  if(size>0){
+
+    ctx.save();
+
+    ctx.strokeStyle=color;
+    ctx.lineWidth=size;
+
+    ctx.strokeRect(
+      size/2,
+      size/2,
+      canvas.width-size,
+      canvas.height-size
+    );
+
+    ctx.restore();
+
+  }
+
+  saveHistory();
+
+}
+
+function roundedRect(
+  c,
+  x,
+  y,
+  w,
+  h,
+  r
+){
+
+  c.moveTo(x+r,y);
+
+  c.lineTo(x+w-r,y);
+
+  c.quadraticCurveTo(
+    x+w,
+    y,
+    x+w,
+    y+r
+  );
+
+  c.lineTo(
+    x+w,
+    y+h-r
+  );
+
+  c.quadraticCurveTo(
+    x+w,
+    y+h,
+    x+w-r,
+    y+h
+  );
+
+  c.lineTo(
+    x+r,
+    y+h
+  );
+
+  c.quadraticCurveTo(
+    x,
+    y+h,
+    x,
+    y+h-r
+  );
+
+  c.lineTo(
+    x,
+    y+r
+  );
+
+  c.quadraticCurveTo(
+    x,
+    y,
+    x+r,
+    y
+  );
+
+}
+
+/* DOWNLOAD */
+
+function downloadImage(format){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  const quality=
+    $('quality')
+    ?$('quality').value/100
+    :.92;
+
+  let mime=
+    'image/png';
+
+  let ext='png';
+
+  if(format==='jpeg'){
+
+    mime='image/jpeg';
+    ext='jpg';
+
+  }
+
+  if(format==='webp'){
+
+    mime='image/webp';
+    ext='webp';
+
+  }
+
+  const link=
+    document.createElement('a');
+
+  link.download=
+    'teamorbits-image.'+
+    ext;
+
+  link.href=
+    canvas.toDataURL(
+      mime,
+      quality
+    );
+
+  link.click();
+
+  toast(
+    'Image downloaded'
+  );
+
+}
+
+function downloadSelected(){
+
+  downloadImage(
+    $('exportFormat').value
+  );
+
+}
+
+/* INFO */
+
+function updateInfo(){
+
+  if(!currentFile) return;
+
+  $('infoName').textContent=
+    currentFile.name;
+
+  $('infoSize').textContent=
+    formatBytes(
+      currentFile.size
+    );
+
+  $('infoWidth').textContent=
+    canvas.width+' px';
+
+  $('infoHeight').textContent=
+    canvas.height+' px';
+
+  $('infoType').textContent=
+    currentFile.type||
+    'Image';
+
+  $('infoRatio').textContent=
+    (
+      canvas.width/
+      canvas.height
+    ).toFixed(2)+':1';
+
+}
+
+function formatBytes(bytes){
+
+  if(!bytes) return '0 Bytes';
+
+  const k=1024;
+
+  const sizes=[
+    'Bytes',
+    'KB',
+    'MB',
+    'GB'
+  ];
+
+  const i=
+    Math.floor(
+      Math.log(bytes)/
+      Math.log(k)
+    );
+
+  return parseFloat(
+    (
+      bytes/
+      Math.pow(k,i)
+    ).toFixed(2)
+  )+
+  ' '+
+  sizes[i];
+
+}
+
+/* BASE64 */
+
+function generateBase64(){
+
+  if(!canvas.width){
+    toast('Upload an image first');
+    return;
+  }
+
+  $('base64Output').value=
+    canvas.toDataURL(
+      'image/png'
+    );
+
+  toast(
+    'Base64 generated'
+  );
+
+}
+
+function copyBase64(){
+
+  const value=
+    $('base64Output').value;
+
+  if(!value){
+    toast('Generate Base64 first');
+    return;
+  }
+
+  navigator.clipboard.writeText(
+    value
+  );
+
+  toast('Copied to clipboard');
+
+}
+
+/* DRAG AND DROP */
+
+const dropZone=$('dropZone');
+
+['dragenter','dragover'].forEach(
+  event=>{
+
+    dropZone.addEventListener(
+      event,
+      e=>{
+
+        e.preventDefault();
+
+        dropZone.classList.add(
+          'drag'
+        );
+
+      }
+    );
+
+  }
+);
+
+['dragleave','drop'].forEach(
+  event=>{
+
+    dropZone.addEventListener(
+      event,
+      e=>{
+
+        e.preventDefault();
+
+        dropZone.classList.remove(
+          'drag'
+        );
+
+      }
+    );
+
+  }
+);
+
+dropZone.addEventListener(
+  'drop',
+  e=>{
+
+    const file=
+      e.dataTransfer.files[0];
+
+    loadFile(file);
+
+  }
+);
+
+/* KEYBOARD */
+
+document.addEventListener(
+  'keydown',
+  e=>{
+
+    if(
+      (e.ctrlKey||e.metaKey)&&
+      e.key.toLowerCase()==='z'
+    ){
+
+      e.preventDefault();
+
+      undo();
+
+    }
+
+    if(
+      (e.ctrlKey||e.metaKey)&&
+      e.key.toLowerCase()==='y'
+    ){
+
+      e.preventDefault();
+
+      redo();
+
+    }
+
+    if(
+      (e.ctrlKey||e.metaKey)&&
+      e.key.toLowerCase()==='k'
+    ){
+
+      e.preventDefault();
+
+      focusSearch();
+
+    }
+
+  }
+);
+
+</script>
 
 </body>
 </html>

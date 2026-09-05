@@ -1,0 +1,22 @@
+zentoolo App / PWA
+==================
+
+This package preserves the existing Tools-for-all website and adds:
+- zentoolo app branding
+- 192x192 and 512x512 app icons
+- Apple touch icon
+- favicon
+- PWA manifest
+- service worker/offline caching
+- install prompt
+- one-click Windows local launcher
+
+PC test:
+1. Extract the project.
+2. Double-click start-app.bat.
+3. Open http://localhost:8000 if it does not open automatically.
+4. Chrome > Application > Manifest / Service Workers.
+
+Production:
+Upload the project contents to your HTTPS web root, keeping manifest.json,
+service-worker.js, pwa.js and images/ alongside the site's existing files.

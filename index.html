@@ -1,4366 +1,491 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <meta
-    name="description"
-    content="Zentoolo — powerful digital tools for building websites, optimizing SEO, working with documents, creating resumes, editing images, building AI agents, coding and growing businesses."
-  />
-
-  <meta
-    name="keywords"
-    content="Zentoolo, website builder, SEO toolkit, PDF tools, resume builder, image editor, AI agent builder, developer tools, business tools"
-  />
-
-  <meta name="author" content="Zentoolo" />
-
-  <title>Zentoolo — Build. Create. Optimize.</title>
-
-  <!-- =====================================================
-       FONTS
-  ====================================================== -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- =====================================================
-       ICONS
-  ====================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zentoolo AI Resume Builder | Create a Professional Resume Online</title>
+  <meta name="description" content="Create a professional resume online with Zentoolo AI Resume Builder. Choose modern resume templates, preview your resume live, check ATS readiness, and download a PDF.">
+  <meta name="keywords" content="Zentoolo AI Resume Builder, free resume builder, online resume maker, ATS resume checker, professional resume templates, resume PDF download, fresher resume builder">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://zentoolo.com/ai-resume-builder/">
+  <meta name="theme-color" content="#f7f8fc">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Zentoolo AI Resume Builder — Your Next Opportunity Starts Here">
+  <meta property="og:description" content="Build a polished resume with professional templates, live preview, an ATS readiness checklist, and PDF export.">
+  <meta property="og:url" content="https://zentoolo.com/ai-resume-builder/">
+  <meta property="og:site_name" content="Zentoolo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zentoolo AI Resume Builder">
+  <meta name="twitter:description" content="Create a professional resume online with live preview and PDF download.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Zentoolo AI Resume Builder",
+    "url":"https://zentoolo.com/ai-resume-builder/",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"Web",
+    "description":"A web-based resume builder with professional templates, live preview, resume content sections, ATS readiness checklist, JSON/TXT import, and PDF export.",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"What is Zentoolo AI Resume Builder?","acceptedAnswer":{"@type":"Answer","text":"Zentoolo Resume Builder is an online tool for creating, editing, previewing, and exporting professional resumes using resume templates and an ATS readiness checklist."}},
+      {"@type":"Question","name":"Can I download my resume as a PDF?","acceptedAnswer":{"@type":"Answer","text":"Yes. The resume builder includes PDF export so you can download a resume for applications, sharing, or printing."}},
+      {"@type":"Question","name":"Who can use Zentoolo Resume Builder?","acceptedAnswer":{"@type":"Answer","text":"Students, freshers, job seekers, working professionals, freelancers, career changers, and career counselors can use the resume builder."}},
+      {"@type":"Question","name":"Does the ATS score guarantee an interview?","acceptedAnswer":{"@type":"Answer","text":"No. The ATS readiness score is a content checklist estimate and does not simulate every applicant tracking system or guarantee shortlisting."}}
+    ]
+  }
+  </script>
   <style>
-
-    /* =====================================================
-       RESET
-    ====================================================== */
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: auto;
-    }
-
-    body {
-      font-family: "DM Sans", sans-serif;
-      background: #050505;
-      color: #f5f5f5;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    body.loading {
-      overflow: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    ::selection {
-      background: #fff;
-      color: #000;
-    }
-
     :root {
-      --bg: #050505;
-      --bg-soft: #090909;
-      --card: #0d0d0d;
-      --card-2: #111111;
-
-      --white: #ffffff;
-      --text: #eeeeee;
-
-      --muted: #858585;
-      --muted-dark: #555555;
-
-      --line: rgba(255,255,255,.1);
-      --line-strong: rgba(255,255,255,.18);
-
-      --max: 1240px;
-
-      --ease: cubic-bezier(.22,1,.36,1);
-    }
-
-
-    /* =====================================================
-       LOADER
-    ====================================================== */
-
-    .loader {
-      position: fixed;
-      inset: 0;
-      z-index: 999999;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #050505;
-
-      transition:
-        opacity .8s var(--ease),
-        visibility .8s var(--ease);
-    }
-
-    .loader.hide {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader-inner {
-      text-align: center;
-    }
-
-    .loader-logo {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: -.06em;
-
-      overflow: hidden;
-    }
-
-    .loader-logo span {
-      color: #555;
-    }
-
-    .loader-line {
-      width: 180px;
-      height: 1px;
-
-      margin: 20px auto 0;
-
-      background: #222;
-
-      overflow: hidden;
-    }
-
-    .loader-progress {
-      width: 0;
-      height: 100%;
-
-      background: #fff;
-
-      animation:
-        loadingBar 1.5s var(--ease) forwards;
-    }
-
-    @keyframes loadingBar {
-      to {
-        width: 100%;
-      }
-    }
-
-
-    /* =====================================================
-       CUSTOM CURSOR
-    ====================================================== */
-
-    .cursor-dot,
-    .cursor-ring {
-      position: fixed;
-
-      pointer-events: none;
-
-      z-index: 999998;
-
-      transform:
-        translate(-50%, -50%);
-
-      border-radius: 50%;
-    }
-
-    .cursor-dot {
-      width: 7px;
-      height: 7px;
-
-      background: #fff;
-    }
-
-    .cursor-ring {
-      width: 38px;
-      height: 38px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.5);
-
-      transition:
-        width .25s var(--ease),
-        height .25s var(--ease),
-        background .25s ease,
-        border .25s ease;
-    }
-
-    body.cursor-hover .cursor-ring {
-      width: 65px;
-      height: 65px;
-
-      background:
-        rgba(255,255,255,.08);
-
-      border-color: #fff;
-    }
-
-    @media(max-width:900px) {
-
-      body {
-        cursor: auto;
-      }
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-
-    }
-
-
-    /* =====================================================
-       NOISE
-    ====================================================== */
-
-    body::before {
-
-      content: "";
-
-      position: fixed;
-
-      inset: 0;
-
-      pointer-events: none;
-
-      z-index: 999;
-
-      opacity: .025;
-
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.7'/%3E%3C/svg%3E");
-    }
-
-
-    /* =====================================================
-       GLOBAL
-    ====================================================== */
-
-    .container {
-      width:
-        min(
-          var(--max),
-          calc(100% - 48px)
-        );
-
-      margin: auto;
-    }
-
-    section {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .section {
-      padding: 140px 0;
-    }
-
-    .eyebrow {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      color: #777;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .18em;
-
-      margin-bottom: 25px;
-    }
-
-    .eyebrow::before {
-
-      content: "";
-
-      width: 27px;
-
-      height: 1px;
-
-      background: #777;
-    }
-
-    .section-title {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size:
-        clamp(
-          45px,
-          6vw,
-          82px
-        );
-
-      line-height: .97;
-
-      letter-spacing: -.06em;
-
-      max-width: 900px;
-    }
-
-    .section-title span {
-      color: #555;
-    }
-
-    .section-description {
-
-      color: #808080;
-
-      max-width: 590px;
-
-      font-size: 17px;
-
-      line-height: 1.8;
-
-      margin-top: 28px;
-    }
-
-
-    /* =====================================================
-       NAVBAR
-    ====================================================== */
-
-    .navbar {
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-      right: 0;
-
-      height: 82px;
-
-      z-index: 9999;
-
-      display: flex;
-
-      align-items: center;
-
-      transition:
-        height .4s ease,
-        background .4s ease,
-        border .4s ease;
-    }
-
-    .navbar.scrolled {
-
-      height: 70px;
-
-      background:
-        rgba(5,5,5,.78);
-
-      backdrop-filter:
-        blur(20px);
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .nav-inner {
-
-      width:
-        min(
-          var(--max),
-          calc(100% - 48px)
-        );
-
-      margin: auto;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-    }
-
-    .logo {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 24px;
-
-      font-weight: 700;
-
-      letter-spacing: -.06em;
-    }
-
-    .logo span {
-      color: #666;
-    }
-
-    .nav-links {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 32px;
-
-      list-style: none;
-    }
-
-    .nav-links a {
-
-      position: relative;
-
-      color: #858585;
-
-      font-size: 14px;
-
-      transition:
-        color .3s ease;
-    }
-
-    .nav-links a:hover {
-      color: #fff;
-    }
-
-    .nav-links a:not(.nav-button)::after {
-
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-
-      bottom: -6px;
-
-      width: 0;
-
-      height: 1px;
-
-      background: #fff;
-
-      transition:
-        width .3s var(--ease);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-button {
-
-      padding:
-        10px 18px;
-
-      border:
-        1px solid var(--line-strong);
-
-      border-radius: 100px;
-
-      color: #fff !important;
-    }
-
-    .mobile-toggle {
-
-      display: none;
-
-      background: transparent;
-
-      border: 0;
-
-      color: #fff;
-
-      font-size: 20px;
-    }
-
-
-    /* =====================================================
-       HERO
-    ====================================================== */
-
-    .hero {
-
-      min-height: 100vh;
-
-      display: flex;
-
-      align-items: center;
-
-      padding-top: 110px;
-
-      background:
-
-        radial-gradient(
-          circle at 78% 32%,
-          rgba(255,255,255,.08),
-          transparent 27%
-        ),
-
-        radial-gradient(
-          circle at 15% 75%,
-          rgba(255,255,255,.04),
-          transparent 30%
-        ),
-
-        #050505;
-    }
-
-    .hero-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        1.2fr
-        .8fr;
-
-      gap: 80px;
-
-      align-items: center;
-    }
-
-    .hero-label {
-
-      color: #777;
-
-      font-size: 12px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .16em;
-
-      margin-bottom: 28px;
-    }
-
-    .hero h1 {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size:
-        clamp(
-          65px,
-          8vw,
-          125px
-        );
-
-      line-height: .85;
-
-      letter-spacing:
-        -.075em;
-
-      font-weight: 600;
-
-      max-width: 950px;
-    }
-
-    .hero h1 .dim {
-      color: #515151;
-    }
-
-    .hero-copy {
-
-      margin-top: 35px;
-
-      max-width: 590px;
-
-      color: #888;
-
-      font-size: 18px;
-
-      line-height: 1.75;
-    }
-
-    .hero-actions {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 14px;
-
-      margin-top: 40px;
-    }
-
-    .btn {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 10px;
-
-      padding:
-        15px 23px;
-
-      border-radius: 100px;
-
-      font-size: 14px;
-
-      font-weight: 600;
-
-      transition:
-        transform .3s var(--ease),
-        background .3s ease,
-        color .3s ease;
-    }
-
-    .btn-primary {
-
-      background: #fff;
-
-      color: #000;
-    }
-
-    .btn-primary:hover {
-      transform:
-        translateY(-4px);
-    }
-
-    .btn-outline {
-
-      border:
-        1px solid
-        var(--line-strong);
-
-      color: #fff;
-    }
-
-    .btn-outline:hover {
-
-      background: #fff;
-
-      color: #000;
-
-      transform:
-        translateY(-4px);
-    }
-
-
-    /* =====================================================
-       HERO VISUAL
-    ====================================================== */
-
-    .hero-visual {
-
-      height: 520px;
-
-      position: relative;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-    }
-
-    .hero-orbit {
-
-      width: 430px;
-
-      height: 430px;
-
-      position: absolute;
-
-      border:
-        1px solid
-        rgba(255,255,255,.1);
-
-      border-radius: 50%;
-
-      animation:
-        spin 20s linear infinite;
-    }
-
-    .hero-orbit::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 8px;
-
-      height: 8px;
-
-      background: #fff;
-
-      border-radius: 50%;
-
-      left: 50%;
-
-      top: 15px;
-    }
-
-    .hero-core {
-
-      width: 330px;
-
-      height: 330px;
-
-      position: absolute;
-
-      border-radius: 50%;
-
-      background:
-
-        radial-gradient(
-          circle at 32% 27%,
-          #fff 0,
-          #d4d4d4 8%,
-          #555 28%,
-          #171717 58%,
-          #050505 76%
-        );
-
-      box-shadow:
-
-        0 0 100px
-        rgba(255,255,255,.08),
-
-        inset
-        -40px
-        -40px
-        80px
-        rgba(0,0,0,.85);
-
-      animation:
-        coreFloat 7s ease-in-out infinite;
-    }
-
-    .hero-core-text {
-
-      position: absolute;
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 52px;
-
-      font-weight: 700;
-
-      letter-spacing: -.08em;
-
-      color: #080808;
-    }
-
-    .hero-product-card {
-
-      position: absolute;
-
-      bottom: 25px;
-
-      left: 0;
-
-      width: 225px;
-
-      padding: 18px;
-
-      background:
-        rgba(12,12,12,.8);
-
-      backdrop-filter:
-        blur(20px);
-
-      border:
-        1px solid var(--line);
-
-      border-radius: 16px;
-    }
-
-    .hero-product-card small {
-
-      color: #555;
-
-      text-transform: uppercase;
-
-      letter-spacing: .15em;
-
-      font-size: 9px;
-    }
-
-    .hero-product-card strong {
-
-      display: block;
-
-      margin-top: 8px;
-
-      font-size: 15px;
-
-      line-height: 1.5;
-    }
-
-    @keyframes spin {
-
-      to {
-        transform:
-          rotate(360deg);
-      }
-
-    }
-
-    @keyframes coreFloat {
-
-      0%,
-      100% {
-        transform:
-          translateY(0);
-      }
-
-      50% {
-        transform:
-          translateY(-20px);
-      }
-
-    }
-
-
-    /* =====================================================
-       MARQUEE
-    ====================================================== */
-
-    .marquee {
-
-      overflow: hidden;
-
-      white-space: nowrap;
-
-      border-top:
-        1px solid var(--line);
-
-      border-bottom:
-        1px solid var(--line);
-
-      padding: 22px 0;
-
-      color: #666;
-    }
-
-    .marquee-track {
-
-      display: inline-flex;
-
-      gap: 50px;
-
-      animation:
-        marquee 30s linear infinite;
-    }
-
-    .marquee-item {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 17px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .08em;
-    }
-
-    .marquee-item span {
-      color: #fff;
-    }
-
-    @keyframes marquee {
-
-      from {
-        transform:
-          translateX(0);
-      }
-
-      to {
-        transform:
-          translateX(-50%);
-      }
-
-    }
-
-
-    /* =====================================================
-       TOOLS INTRO
-    ====================================================== */
-
-    .tools-section {
-      background: #080808;
-    }
-
-    .tools-header {
-
-      display: flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        flex-end;
-
-      gap: 50px;
-
-      margin-bottom: 75px;
-    }
-
-    .tools-note {
-
-      max-width: 350px;
-
-      color: #707070;
-
-      font-size: 14px;
-
-      line-height: 1.8;
-    }
-
-
-    /* =====================================================
-       TOOL GRID
-    ====================================================== */
-
-    .tools-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(12,1fr);
-
-      gap: 18px;
-    }
-
-    .tool-card {
-
-      position: relative;
-
-      min-height: 430px;
-
-      padding: 32px;
-
-      overflow: hidden;
-
-      background:
-        linear-gradient(
-          145deg,
-          #111 0%,
-          #0b0b0b 60%,
-          #080808 100%
-        );
-
-      border:
-        1px solid var(--line);
-
-      border-radius: 25px;
-
-      transition:
-        border .4s ease,
-        transform .5s var(--ease);
-    }
-
-    .tool-card:hover {
-
-      border-color:
-        rgba(255,255,255,.25);
-    }
-
-    .tool-card:nth-child(1) {
-      grid-column:
-        span 7;
-      min-height: 500px;
-    }
-
-    .tool-card:nth-child(2) {
-      grid-column:
-        span 5;
-    }
-
-    .tool-card:nth-child(3) {
-      grid-column:
-        span 5;
-    }
-
-    .tool-card:nth-child(4) {
-      grid-column:
-        span 7;
-    }
-
-    .tool-card:nth-child(5),
-    .tool-card:nth-child(6),
-    .tool-card:nth-child(7),
-    .tool-card:nth-child(8) {
-      grid-column:
-        span 3;
-    }
-
-    .tool-number {
-
-      color: #555;
-
-      font-size: 10px;
-
-      letter-spacing: .16em;
-
-      text-transform: uppercase;
-    }
-
-    .tool-content {
-
-      position: absolute;
-
-      left: 32px;
-
-      right: 32px;
-
-      bottom: 32px;
-
-      z-index: 4;
-    }
-
-    .tool-title {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size:
-        clamp(
-          29px,
-          3.2vw,
-          52px
-        );
-
-      letter-spacing:
-        -.055em;
-
-      margin-bottom: 13px;
-    }
-
-    .tool-description {
-
-      color: #777;
-
-      font-size: 14px;
-
-      line-height: 1.7;
-
-      max-width: 520px;
-    }
-
-    .tool-link {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 9px;
-
-      margin-top: 20px;
-
-      font-size: 12px;
-
-      font-weight: 600;
-
-      color: #fff;
-    }
-
-    .tool-link i {
-
-      transition:
-        transform .3s ease;
-    }
-
-    .tool-card:hover
-    .tool-link i {
-
-      transform:
-        translate(
-          4px,
-          -4px
-        );
-    }
-
-
-    /* =====================================================
-       TOOL VISUALS
-    ====================================================== */
-
-    .tool-visual {
-
-      position: absolute;
-
-      right: 30px;
-
-      top: 35px;
-
-      width: 210px;
-
-      height: 180px;
-
-      opacity: .85;
-    }
-
-
-    /* WEBSITE BUILDER */
-
-    .browser {
-
-      width: 210px;
-
-      height: 145px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.15);
-
-      border-radius: 13px;
-
-      overflow: hidden;
-
-      background: #080808;
-
-      transform:
-        rotate(5deg);
-
-      box-shadow:
-        0 30px 60px
-        rgba(0,0,0,.35);
-    }
-
-    .browser-top {
-
-      height: 25px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 5px;
-
-      padding: 0 9px;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.1);
-    }
-
-    .browser-dot {
-
-      width: 5px;
-
-      height: 5px;
-
-      border-radius: 50%;
-
-      background: #777;
-    }
-
-    .browser-body {
-
-      padding: 15px;
-    }
-
-    .browser-line {
-
-      height: 7px;
-
-      width: 75%;
-
-      margin-bottom: 9px;
-
-      border-radius: 10px;
-
-      background: #777;
-    }
-
-    .browser-line.small {
-      width: 48%;
-      background: #333;
-    }
-
-    .browser-box {
-
-      height: 48px;
-
-      margin-top: 15px;
-
-      border-radius: 8px;
-
-      background:
-        linear-gradient(
-          120deg,
-          #222,
-          #0c0c0c
-        );
-
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-    }
-
-
-    /* SEO */
-
-    .seo-visual {
-
-      display: flex;
-
-      align-items: flex-end;
-
-      justify-content: center;
-
-      gap: 9px;
-
-      height: 180px;
-    }
-
-    .seo-bar {
-
-      width: 25px;
-
-      border-radius:
-        7px 7px 0 0;
-
-      background: #ddd;
-
-      animation:
-        seoBars 2.4s ease-in-out infinite;
-    }
-
-    .seo-bar:nth-child(1) {
-      height: 55px;
-    }
-
-    .seo-bar:nth-child(2) {
-
-      height: 90px;
-
-      animation-delay:
-        .2s;
-    }
-
-    .seo-bar:nth-child(3) {
-
-      height: 125px;
-
-      animation-delay:
-        .4s;
-    }
-
-    .seo-bar:nth-child(4) {
-
-      height: 155px;
-
-      animation-delay:
-        .6s;
-    }
-
-    @keyframes seoBars {
-
-      0%,
-      100% {
-        transform:
-          scaleY(1);
-      }
-
-      50% {
-        transform:
-          scaleY(.72);
-      }
-
-    }
-
-
-    /* PDF */
-
-    .pdf-stack {
-
-      position: relative;
-
-      width: 150px;
-
-      height: 170px;
-
-      margin: auto;
-    }
-
-    .pdf-page {
-
-      position: absolute;
-
-      width: 120px;
-
-      height: 155px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.14);
-
-      background: #111;
-
-      border-radius: 10px;
-    }
-
-    .pdf-page:nth-child(1) {
-      transform:
-        rotate(-10deg);
-
-      left: 0;
-    }
-
-    .pdf-page:nth-child(2) {
-      transform:
-        rotate(7deg);
-
-      left: 25px;
-
-      background: #171717;
-    }
-
-    .pdf-page:nth-child(3) {
-
-      left: 15px;
-
-      top: 7px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 45px;
-
-      color: #ddd;
-
-      background: #0b0b0b;
-    }
-
-
-    /* RESUME */
-
-    .resume-visual {
-
-      width: 140px;
-
-      height: 175px;
-
-      margin: auto;
-
-      padding: 20px;
-
-      background: #eee;
-
-      color: #111;
-
-      transform:
-        rotate(6deg);
-
-      border-radius: 7px;
-
-      box-shadow:
-        0 30px 60px
-        rgba(0,0,0,.3);
-    }
-
-    .resume-avatar {
-
-      width: 30px;
-
-      height: 30px;
-
-      border-radius: 50%;
-
-      background: #222;
-
-      margin-bottom: 15px;
-    }
-
-    .resume-line {
-
-      height: 5px;
-
-      background: #777;
-
-      border-radius: 10px;
-
-      margin-bottom: 8px;
-    }
-
-    .resume-line.short {
-      width: 55%;
-    }
-
-    .resume-line.medium {
-      width: 75%;
-    }
-
-
-    /* IMAGE */
-
-    .image-visual {
-
-      width: 180px;
-
-      height: 150px;
-
-      margin: auto;
-
-      border-radius: 18px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.15);
-
-      background:
-        radial-gradient(
-          circle at 30% 25%,
-          #eee,
-          transparent 20%
-        ),
-
-        linear-gradient(
-          140deg,
-          #333,
-          #0b0b0b
-        );
-
-      transform:
-        rotate(-7deg);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 55px;
-    }
-
-
-    /* AI */
-
-    .ai-visual {
-
-      width: 180px;
-
-      height: 180px;
-
-      margin: auto;
-
-      position: relative;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-    }
-
-    .ai-core {
-
-      width: 75px;
-
-      height: 75px;
-
-      border-radius: 50%;
-
-      background: #fff;
-
-      color: #000;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 30px;
-
-      box-shadow:
-        0 0 60px
-        rgba(255,255,255,.15);
-    }
-
-    .ai-node {
-
-      position: absolute;
-
-      width: 9px;
-
-      height: 9px;
-
-      background: #fff;
-
-      border-radius: 50%;
-    }
-
-    .ai-node:nth-child(2) {
-      top: 20px;
-      left: 50px;
-    }
-
-    .ai-node:nth-child(3) {
-      right: 15px;
-      top: 80px;
-    }
-
-    .ai-node:nth-child(4) {
-      bottom: 20px;
-      left: 45px;
-    }
-
-    .ai-node:nth-child(5) {
-      left: 10px;
-      top: 85px;
-    }
-
-
-    /* CODE */
-
-    .code-visual {
-
-      width: 200px;
-
-      height: 150px;
-
-      margin: auto;
-
-      padding: 20px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.12);
-
-      border-radius: 14px;
-
-      background: #080808;
-
-      font-family: monospace;
-
-      color: #888;
-
-      transform:
-        rotate(4deg);
-
-      font-size: 12px;
-
-      line-height: 1.8;
-    }
-
-    .code-symbol {
-      color: #eee;
-    }
-
-
-    /* BUSINESS */
-
-    .business-visual {
-
-      width: 180px;
-
-      height: 180px;
-
-      margin: auto;
-
-      border:
-        1px solid
-        rgba(255,255,255,.12);
-
-      border-radius: 50%;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 60px;
-
-      animation:
-        businessSpin 14s linear infinite;
-    }
-
-    @keyframes businessSpin {
-
-      to {
-        transform:
-          rotate(360deg);
-      }
-
-    }
-
-
-    /* =====================================================
-       FEATURE STRIP
-    ====================================================== */
-
-    .feature-section {
-      background: #050505;
-    }
-
-    .feature-layout {
-
-      display: grid;
-
-      grid-template-columns:
-        .7fr
-        1.3fr;
-
-      gap: 100px;
-    }
-
-    .feature-sticky {
-
-      position: sticky;
-
-      top: 130px;
-
-      height: fit-content;
-    }
-
-    .feature-sticky h2 {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size:
-        clamp(
-          44px,
-          5vw,
-          72px
-        );
-
-      line-height: .95;
-
-      letter-spacing:
-        -.06em;
-    }
-
-    .feature-sticky h2 span {
-      color: #555;
-    }
-
-    .feature-list {
-
-      border-top:
-        1px solid var(--line);
-    }
-
-    .feature {
-
-      display: grid;
-
-      grid-template-columns:
-        60px
-        1fr;
-
-      gap: 25px;
-
-      padding: 42px 0;
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .feature-number {
-      color: #555;
-    }
-
-    .feature h3 {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 27px;
-
-      margin-bottom: 12px;
-    }
-
-    .feature p {
-
-      color: #777;
-
-      line-height: 1.8;
-
-      max-width: 570px;
-    }
-
-
-    /* =====================================================
-       CTA
-    ====================================================== */
-
-    .cta {
-
-      background: #f2f2f2;
-
-      color: #080808;
-    }
-
-    .cta-title {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size:
-        clamp(
-          55px,
-          9vw,
-          125px
-        );
-
-      line-height: .88;
-
-      letter-spacing:
-        -.075em;
-
-      max-width: 1050px;
-    }
-
-    .cta-title span {
-      color: #aaa;
-    }
-
-    .cta-grid {
-
-      margin-top: 70px;
-
-      display: grid;
-
-      grid-template-columns:
-        1fr
-        1fr;
-
-      gap: 70px;
-    }
-
-    .cta-description {
-
-      color: #666;
-
-      max-width: 500px;
-
-      line-height: 1.8;
-    }
-
-    .cta-links {
-
-      display: flex;
-
-      flex-direction: column;
-    }
-
-    .cta-link {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content:
-        space-between;
-
-      padding: 19px 0;
-
-      border-bottom:
-        1px solid
-        rgba(0,0,0,.15);
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 18px;
-    }
-
-    .cta-link i {
-
-      transition:
-        transform .3s ease;
-    }
-
-    .cta-link:hover i {
-
-      transform:
-        translate(
-          5px,
-          -5px
-        );
-    }
-
-
-    /* =====================================================
-       FOOTER
-    ====================================================== */
-
-    footer {
-
-      background: #050505;
-
-      padding:
-        75px 0
-        35px;
-    }
-
-    .footer-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        1.5fr
-        1fr
-        1fr
-        1fr;
-
-      gap: 50px;
-
-      padding-bottom: 70px;
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .footer-brand h3 {
-
-      font-family:
-        "Space Grotesk",
-        sans-serif;
-
-      font-size: 30px;
-
-      letter-spacing:
-        -.05em;
-    }
-
-    .footer-brand h3 span {
-      color: #666;
-    }
-
-    .footer-brand p {
-
-      color: #666;
-
-      max-width: 330px;
-
-      line-height: 1.7;
-
-      margin-top: 14px;
-    }
-
-    .footer-column h4 {
-
-      color: #555;
-
-      font-size: 10px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .16em;
-
-      margin-bottom: 20px;
-    }
-
-    .footer-column a {
-
-      display: block;
-
-      color: #888;
-
-      font-size: 13px;
-
-      margin-bottom: 13px;
-
-      transition:
-        color .3s ease;
-    }
-
-    .footer-column a:hover {
-      color: #fff;
-    }
-
-    .footer-bottom {
-
-      display: flex;
-
-      justify-content:
-        space-between;
-
-      gap: 20px;
-
-      padding-top: 25px;
-
-      color: #555;
-
-      font-size: 11px;
-    }
-
-
-    /* =====================================================
-       REVEAL ANIMATION
-    ====================================================== */
-
-    .reveal {
-
-      opacity: 0;
-
-      transform:
-        translateY(60px);
-
-      transition:
-        opacity 1s var(--ease),
-        transform 1s var(--ease);
-    }
-
-    .reveal.active {
-
-      opacity: 1;
-
-      transform:
-        translateY(0);
-    }
-
-    .reveal-left {
-
-      opacity: 0;
-
-      transform:
-        translateX(-60px);
-
-      transition:
-        opacity 1s var(--ease),
-        transform 1s var(--ease);
-    }
-
-    .reveal-left.active {
-
-      opacity: 1;
-
-      transform:
-        translateX(0);
-    }
-
-    .reveal-right {
-
-      opacity: 0;
-
-      transform:
-        translateX(60px);
-
-      transition:
-        opacity 1s var(--ease),
-        transform 1s var(--ease);
-    }
-
-    .reveal-right.active {
-
-      opacity: 1;
-
-      transform:
-        translateX(0);
-    }
-
-
-    /* =====================================================
-       RESPONSIVE
-    ====================================================== */
-
-    @media(max-width:1050px) {
-
-      .hero-grid {
-
-        grid-template-columns:
-          1fr;
-      }
-
-      .hero-visual {
-        height: 400px;
-      }
-
-      .tool-card:nth-child(n) {
-
-        grid-column:
-          span 6;
-      }
-
-      .tool-card:nth-child(1),
-      .tool-card:nth-child(4) {
-
-        grid-column:
-          span 12;
-      }
-
-      .feature-layout {
-
-        grid-template-columns:
-          1fr;
-
-        gap: 60px;
-      }
-
-      .feature-sticky {
-
-        position: relative;
-
-        top: auto;
-      }
-
-      .footer-grid {
-
-        grid-template-columns:
-          1fr 1fr;
-      }
-
-    }
-
-
-    @media(max-width:800px) {
-
-      .nav-links {
-
-        position: fixed;
-
-        top: 75px;
-
-        left: 16px;
-
-        right: 16px;
-
-        padding: 25px;
-
-        display: flex;
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 20px;
-
-        background: #0d0d0d;
-
-        border:
-          1px solid var(--line);
-
-        border-radius: 18px;
-
-        opacity: 0;
-
-        pointer-events: none;
-
-        transform:
-          translateY(-10px);
-
-        transition:
-          .3s ease;
-      }
-
-      .nav-links.open {
-
-        opacity: 1;
-
-        pointer-events: auto;
-
-        transform:
-          translateY(0);
-      }
-
-      .mobile-toggle {
-        display: block;
-      }
-
-      .tools-header {
-
-        display: block;
-      }
-
-      .tools-note {
-
-        margin-top: 25px;
-      }
-
-      .tool-card:nth-child(n) {
-
-        grid-column:
-          span 12;
-
-        min-height: 430px;
-      }
-
-      .cta-grid {
-
-        grid-template-columns:
-          1fr;
-
-        gap: 45px;
-      }
-
-    }
-
-
-    @media(max-width:560px) {
-
-      .container,
-      .nav-inner {
-
-        width:
-          calc(100% - 32px);
-      }
-
-      .section {
-        padding: 100px 0;
-      }
-
-      .hero h1 {
-
-        font-size:
-          clamp(
-            55px,
-            16vw,
-            90px
-          );
-      }
-
-      .hero-copy {
-        font-size: 16px;
-      }
-
-      .hero-actions {
-
-        flex-direction: column;
-
-        align-items: stretch;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .hero-visual {
-        height: 320px;
-      }
-
-      .hero-core {
-
-        width: 230px;
-
-        height: 230px;
-      }
-
-      .hero-orbit {
-
-        width: 300px;
-
-        height: 300px;
-      }
-
-      .hero-core-text {
-        font-size: 38px;
-      }
-
-      .hero-product-card {
-        left: 0;
-        bottom: 0;
-      }
-
-      .tool-card {
-
-        padding: 25px;
-
-        min-height: 450px !important;
-      }
-
-      .tool-content {
-
-        left: 25px;
-
-        right: 25px;
-
-        bottom: 25px;
-      }
-
-      .tool-visual {
-
-        transform:
-          scale(.8);
-
-        transform-origin:
-          top right;
-      }
-
-      .feature {
-
-        grid-template-columns:
-          40px
-          1fr;
-      }
-
-      .footer-grid {
-
-        grid-template-columns:
-          1fr;
-      }
-
-      .footer-bottom {
-
-        flex-direction: column;
-      }
-
-    }
-
-
-    /* =====================================================
-       REDUCED MOTION
-    ====================================================== */
-
-    @media(prefers-reduced-motion:reduce) {
-
-      *,
-      *::before,
-      *::after {
-
-        animation-duration:
-          .01ms !important;
-
-        animation-iteration-count:
-          1 !important;
-
-        transition-duration:
-          .01ms !important;
-      }
-
+      --ink:#17152d; --muted:#696b82; --line:#e8e9f2; --paper:#fff; --bg:#f7f8fc;
+      --primary:#6255e7; --primary-dark:#4d40ce; --mint:#dff9ef; --lav:#ece9ff;
+      --peach:#fff0e5; --blue:#e8f3ff; --radius:24px; --shadow:0 18px 55px rgba(39,32,95,.09);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.65}
+    h1,h2,h3,h4{font-family:Manrope,sans-serif;line-height:1.15;letter-spacing:-.035em;margin:0}
+    p{margin:0;color:var(--muted)}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .container{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid #dedbff;background:#f0eeff;border-radius:99px;color:#5144ce;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#7163f3;box-shadow:0 0 0 4px #dcd8ff}
+    .section{padding:100px 0}
+    .section-head{max-width:720px;margin:0 auto 48px;text-align:center}
+    .section-head .eyebrow{margin-bottom:18px}
+    .section-head h2{font-size:clamp(30px,4vw,48px);margin-bottom:16px}
+    .section-head p{font-size:17px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;border-radius:14px;font-weight:800;font-size:14px;border:1px solid transparent;transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{color:white;background:linear-gradient(135deg,#7568f4,#5547d9);box-shadow:0 12px 26px rgba(98,85,231,.25)}
+    .btn-primary:hover{box-shadow:0 16px 30px rgba(98,85,231,.32)}
+    .btn-white{background:#fff;border-color:var(--line);color:var(--ink)}
+    .btn-soft{background:#f0eeff;color:#5547d9}
+    .arrow{font-size:18px;line-height:1}
+    /* Navigation */
+    .nav-shell{position:sticky;top:0;z-index:50;background:rgba(247,248,252,.86);backdrop-filter:blur(18px);border-bottom:1px solid rgba(225,226,239,.8)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:11px;font-family:Manrope,sans-serif;font-weight:800;font-size:21px;letter-spacing:-.06em}
+    .brand-mark{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#8175ff,#5042d3);box-shadow:0 7px 18px #6457e644}
+    .brand-mark svg{width:21px}
+    .brand-wordmark{display:flex;align-items:center;gap:5px}\n    .brand-script{font-family:"Dancing Script",cursive;font-weight:700;font-size:1.28em;letter-spacing:-.025em;color:#302b59;line-height:1}\n    .brand-ai{font-family:Manrope,sans-serif;font-style:normal;font-weight:800;font-size:.72em;letter-spacing:-.035em;color:var(--primary);align-self:center;margin-left:2px;padding:4px 7px;border-radius:7px;background:#efedff}\n    .brand-mark{flex-shrink:0}\n    .brand span em{font-style:normal;color:var(--primary)}
+    .nav-links{display:flex;align-items:center;gap:28px;font-size:13px;font-weight:700;color:#55566e}
+    .nav-links a:hover{color:var(--primary)}
+    .nav-cta{padding:11px 16px;font-size:13px;border-radius:12px}
+    .menu-toggle{display:none;border:1px solid var(--line);background:white;border-radius:12px;width:44px;height:44px;color:var(--ink);font-size:21px}
+    /* Hero */
+    .hero{padding:76px 0 72px;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,#e7e4ff 0%,rgba(231,228,255,0) 68%);top:-230px;right:-170px;pointer-events:none}
+    .hero:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,#dff9ef 0%,rgba(223,249,239,0) 70%);bottom:-250px;left:-140px;pointer-events:none}
+    .hero-grid{display:grid;grid-template-columns:1.03fr .97fr;gap:54px;align-items:center;position:relative;z-index:1}
+    .hero-copy .eyebrow{margin-bottom:24px}
+    .hero h1{font-size:clamp(42px,5.6vw,70px);max-width:650px;margin-bottom:22px}
+    .hero h1 .gradient{background:linear-gradient(100deg,#6457e8,#a35eea 54%,#3e9dba);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy>p{font-size:18px;max-width:560px;line-height:1.75}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 22px}
+    .trust-line{display:flex;align-items:center;gap:10px;color:#77788d;font-size:12px;font-weight:600}
+    .trust-line .check{width:21px;height:21px;border-radius:50%;background:#dff9ef;color:#15805a;display:grid;place-items:center;font-weight:900}
+    .hero-visual{position:relative;min-width:0}
+    .visual-stage{position:relative;background:linear-gradient(140deg,#e9e7ff,#f9f9ff 55%,#e4f7f1);border:1px solid #e4e2fa;border-radius:32px;padding:25px;min-height:490px;box-shadow:var(--shadow);overflow:hidden}
+    .stage-dots{position:absolute;inset:0;background-image:radial-gradient(#b8b4ec 1px,transparent 1px);background-size:18px 18px;opacity:.27;mask-image:linear-gradient(90deg,black,transparent 70%)}
+    .resume-paper{position:relative;z-index:1;width:min(82%,390px);min-height:430px;background:white;border:1px solid #e6e7ef;border-radius:9px;padding:29px 30px;box-shadow:0 20px 40px #37306c22;transform:rotate(-3deg);margin:16px auto}
+    .paper-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e9eaf1;padding-bottom:15px}
+    .paper-name{font:800 23px Manrope,sans-serif;letter-spacing:-.06em;color:#28234e}
+    .paper-role{font-size:10px;font-weight:700;color:#6e63d9;margin-top:4px}
+    .paper-avatar{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#e6e1ff,#c8f3e6);display:grid;place-items:center;color:#6457e8;font-weight:900}
+    .paper-contact{font-size:8px;color:#9a9bad;margin-top:11px}
+    .paper-section{margin-top:17px}
+    .paper-section h4{font-size:9px;letter-spacing:.13em;color:#5e53d5;text-transform:uppercase;border-bottom:1px solid #e7e5fb;padding-bottom:5px;margin-bottom:8px}
+    .paper-line{height:5px;border-radius:5px;background:#ececf3;margin:6px 0}
+    .paper-line.dark{background:#d8d7e6;width:56%}.paper-line.long{width:95%}.paper-line.mid{width:78%}.paper-line.short{width:42%}
+    .paper-bullets{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+    .paper-bullets span{height:15px;width:48px;border-radius:5px;background:#efedff}
+    .float-card{position:absolute;z-index:2;background:white;border:1px solid #ecebf5;border-radius:16px;padding:13px 15px;box-shadow:0 12px 35px #29225b17;animation:float 5s ease-in-out infinite}
+    .float-card.score{right:3px;top:48px;animation-delay:-1.7s}
+    .float-card.download{left:0;bottom:35px;animation-delay:-3s}
+    .float-label{font-size:10px;color:#85859a;font-weight:700}
+    .float-value{font:800 22px Manrope,sans-serif;color:#28234e}
+    .score-meter{width:105px;height:6px;border-radius:10px;background:#eee;overflow:hidden;margin-top:7px}
+    .score-meter span{display:block;width:82%;height:100%;background:linear-gradient(90deg,#6b5ce8,#54c5a0);border-radius:10px}
+    .download-row{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800}
+    .download-icon{width:30px;height:30px;border-radius:9px;background:#e1f8ed;color:#1b9b69;display:grid;place-items:center}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    /* Trust strip */
+    .trust-strip{padding:22px 0;border-block:1px solid var(--line);background:#fff}
+    .trust-inner{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;color:#85869a;font-size:12px;font-weight:700}
+    .trust-inner strong{color:#55566e;font-size:13px}
+    .trust-pill{display:flex;align-items:center;gap:8px}
+    .trust-pill i{font-style:normal;color:#6a5be8;font-size:17px}
+    /* Feature cards */
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;transition:transform .25s,box-shadow .25s,border-color .25s}
+    .feature-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#d9d5ff}
+    .feature-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;margin-bottom:22px;font-size:22px}
+    .feature-icon.lav{background:var(--lav)}.feature-icon.mint{background:var(--mint)}.feature-icon.peach{background:var(--peach)}.feature-icon.blue{background:var(--blue)}
+    .feature-card h3{font-size:19px;margin-bottom:10px}
+    .feature-card p{font-size:14px;line-height:1.75}
+    .feature-tag{display:inline-block;margin-top:17px;font-size:11px;font-weight:800;color:#6355df;background:#f0eeff;padding:6px 9px;border-radius:8px}
+    /* workflow */
+    .workflow{background:#fff}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;counter-reset:step}
+    .step{position:relative;border:1px solid var(--line);border-radius:20px;padding:24px;background:#fff;counter-increment:step}
+    .step-number{width:40px;height:40px;border-radius:13px;background:#efedff;color:#5b4ddd;display:grid;place-items:center;font:800 15px Manrope,sans-serif;margin-bottom:20px}
+    .step h3{font-size:17px;margin-bottom:9px}.step p{font-size:13px}
+    .step:not(:last-child):after{content:"→";position:absolute;right:-18px;top:37px;z-index:2;color:#a5a0e9;font-size:23px}
+    /* Templates */
+    .template-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
+    .template-card{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;transition:transform .2s,box-shadow .2s}
+    .template-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .mini-resume{height:190px;background:#fff;border:1px solid #e9eaf1;border-radius:8px;padding:15px 12px;box-shadow:0 5px 14px #28234e08}
+    .mini-head{height:13px;width:65%;background:#d8d6e9;border-radius:3px;margin-bottom:7px}
+    .mini-sub{height:4px;width:45%;background:#b6b1f4;border-radius:3px;margin-bottom:15px}
+    .mini-title{height:5px;width:40%;background:#aaa5e6;margin:10px 0 6px;border-radius:3px}
+    .mini-line{height:4px;background:#ececf2;border-radius:3px;margin:5px 0}
+    .mini-line:nth-child(odd){width:92%}.mini-line:nth-child(even){width:73%}
+    .mini-skills{display:flex;gap:4px;margin-top:9px}.mini-skills span{height:10px;width:23px;background:#efedff;border-radius:2px}
+    .mini-resume.elegant{border-top:7px solid #29344f}.mini-resume.creative .mini-title{background:#24213b;height:9px;width:100%}
+    .mini-resume.executive .mini-head{width:90%;height:17px;background:#25253c}.mini-resume.classic{font-family:Georgia,serif}
+    .template-name{font-size:13px;font-weight:800;margin:12px 2px 2px}.template-sub{font-size:11px;color:#8b8ca0;margin:0 2px}
+    /* Audience */
+    .audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .audience-card{padding:24px;border-radius:20px;border:1px solid var(--line);background:#fff;display:flex;gap:16px;align-items:flex-start}
+    .audience-emoji{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#f0eeff}
+    .audience-card h3{font-size:16px;margin:3px 0 8px}.audience-card p{font-size:13px}
+    /* ATS */
+    .ats-panel{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center;background:linear-gradient(130deg,#262148,#3e3479);border-radius:30px;padding:52px;color:white;overflow:hidden;position:relative}
+    .ats-panel:after{content:"";position:absolute;width:350px;height:350px;border-radius:50%;right:-100px;top:-170px;background:#8d7eff22}
+    .ats-panel .eyebrow{background:#ffffff14;border-color:#ffffff24;color:#d6d1ff}
+    .ats-panel h2{font-size:clamp(30px,4vw,43px);margin:18px 0}
+    .ats-panel p{color:#d0cde4;font-size:15px}
+    .ats-note{font-size:11px!important;margin-top:15px;color:#aaa5c9!important}
+    .checklist{position:relative;z-index:1;background:#fff;color:var(--ink);border-radius:20px;padding:24px;box-shadow:0 18px 45px #100b2e35}
+    .checklist-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .checklist-top strong{font:800 14px Manrope}
+    .score-badge{background:#e2f9ee;color:#16875c;font-size:12px;font-weight:800;padding:7px 10px;border-radius:9px}
+    .check-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f5;font-size:13px;font-weight:600}
+    .check-row:last-child{border:0}.checkmark{width:22px;height:22px;border-radius:7px;background:#e3f8ef;color:#159363;display:grid;place-items:center;font-size:12px;font-weight:900}
+    /* CTA */
+    .cta-section{padding:75px 0}
+    .cta-card{border-radius:30px;padding:60px 35px;text-align:center;background:linear-gradient(130deg,#e9e6ff,#f5f3ff 48%,#e1f9ef);border:1px solid #e4e1fb;position:relative;overflow:hidden}
+    .cta-card h2{font-size:clamp(32px,4vw,50px);max-width:700px;margin:18px auto}
+    .cta-card p{max-width:620px;margin:0 auto;font-size:16px}
+    .cta-card .btn{margin-top:26px}
+    /* FAQ */
+    .faq-list{max-width:820px;margin:auto;display:grid;gap:12px}
+    details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px 22px}
+    summary{font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:"+";color:var(--primary);font-size:23px;font-weight:500}
+    details[open] summary:after{content:"−"}
+    details p{font-size:14px;padding-top:14px;line-height:1.8}
+    /* footer */
+    footer{background:#1d1a35;color:#fff;padding:55px 0 25px}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;padding-bottom:40px}
+    footer .brand{color:#fff;margin-bottom:15px}footer p{color:#aaa8c0;font-size:13px;max-width:360px}
+    .footer-title{font:800 13px Manrope;margin-bottom:15px;color:#fff}
+    .footer-links{display:grid;gap:10px;color:#b9b7ce;font-size:13px}
+    .footer-links a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid #ffffff1b;padding-top:20px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#aaa8c0;font-size:12px}
+    /* scroll reveal */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+    @media(max-width:1000px){
+      .hero-grid{gap:30px}.visual-stage{min-height:430px;padding:18px}.resume-paper{min-height:390px}
+      .feature-grid{grid-template-columns:repeat(2,1fr)}.template-grid{grid-template-columns:repeat(3,1fr)}
+      .steps{grid-template-columns:repeat(2,1fr)}.step:nth-child(2):after{display:none}
+      .audience-grid{grid-template-columns:repeat(2,1fr)}.ats-panel{gap:28px;padding:38px}
+    }
+    @media(max-width:760px){
+      .container{width:min(100% - 28px,600px)}.section{padding:70px 0}
+      .nav{height:68px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:68px;left:0;right:0;padding:18px 20px 22px;background:#fbfbff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:16px}
+      .nav-links.open{display:flex}.nav-links .nav-cta{width:100%}
+      .hero{padding:52px 0 45px}.hero-grid{grid-template-columns:1fr;gap:35px}.hero h1{font-size:clamp(39px,10vw,55px)}
+      .hero-copy>p{font-size:16px}.hero-actions .btn{flex:1}
+      .visual-stage{min-height:420px;border-radius:24px}.resume-paper{width:78%;padding:24px;min-height:365px}
+      .float-card.score{right:0;top:30px}.float-card.download{left:0;bottom:25px}
+      .trust-inner{gap:15px}.trust-inner>strong{width:100%;text-align:center}
+      .section-head{margin-bottom:32px}.section-head p{font-size:15px}
+      .feature-grid{grid-template-columns:1fr}.feature-card{padding:23px}
+      .steps{grid-template-columns:1fr}.step:after{display:none!important}
+      .template-grid{grid-template-columns:repeat(2,1fr);gap:10px}.mini-resume{height:160px}
+      .audience-grid{grid-template-columns:1fr}
+      .ats-panel{grid-template-columns:1fr;padding:28px 20px;border-radius:24px}.checklist{padding:20px}
+      .cta-card{padding:42px 20px;border-radius:24px}
+      .footer-grid{grid-template-columns:1fr;gap:28px}.footer-bottom{flex-direction:column}
+    }
+    @media(max-width:380px){.hero-actions{flex-direction:column}.template-grid{grid-template-columns:1fr 1fr}.resume-paper{width:84%;padding:20px}.paper-name{font-size:19px}}
+
+    /* TEAMORBITS-INSPIRED MODERN MINIMAL THEME */
+    :root{
+      --ink:#101114;--muted:#68707d;--line:#e5e7eb;--paper:#fff;--bg:#fff;
+      --primary:#5b5ce2;--primary-dark:#4546c8;--mint:#e6f8f1;--lav:#eeedff;
+      --peach:#fff0e5;--blue:#edf4ff;--radius:24px;--shadow:0 20px 60px rgba(16,17,20,.08);
+    }
+    body{background:#fff;color:#101114;line-height:1.6}
+    .nav-shell{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(16,17,20,.07)}
+    .nav{height:72px}
+    .brand{font-family:Manrope,sans-serif;letter-spacing:-.04em;font-size:21px;gap:9px}
+    .brand-mark{background:#101114;color:#fff;border-radius:10px;box-shadow:none}
+    .brand-script{color:#101114;font-size:1.22em}
+    .brand-ai{background:#eeedff;color:#5b5ce2;border-radius:6px}
+    .nav-links{gap:25px;color:#555d68}
+    .nav-links a{transition:color .2s}
+    .nav-cta{border-radius:12px;padding:11px 16px}
+    .hero{min-height:calc(100vh - 72px);padding:108px 0 90px;background:
+      radial-gradient(circle at 75% 28%,rgba(91,92,226,.10),transparent 29%),
+      radial-gradient(circle at 12% 22%,rgba(124,58,237,.055),transparent 25%),#fff}
+    .hero:before,.hero:after{display:none}
+    .hero-grid{grid-template-columns:1.03fr .97fr;gap:64px}
+    .hero-copy .eyebrow{background:#fff;border-color:#e5e7eb;color:#555d68;border-radius:100px}
+    .hero-copy .eyebrow .dot{background:#5b5ce2;box-shadow:none}
+    .hero h1{font-size:clamp(54px,7vw,88px);line-height:.96;letter-spacing:-.065em;max-width:740px;color:#101114}
+    .hero h1 .gradient{background:none;color:transparent;-webkit-text-stroke:1.5px #101114}
+    .hero-copy>p{font-size:18px;color:#68707d;max-width:630px}
+    .hero-actions{margin-top:32px}
+    .btn{border-radius:13px;border-color:#101114;box-shadow:none}
+    .btn-primary{background:#111114;color:#fff;box-shadow:none}
+    .btn-primary:hover{background:#2a2a31;box-shadow:0 10px 25px rgba(0,0,0,.08)}
+    .btn-white{background:#fff;border-color:#e5e7eb;color:#101114}
+    .btn-soft{background:#f0eeff;color:#5144ce;border-color:#e1ddff}
+    .trust-line{color:#9097a2}
+    .trust-line .check{background:#e6f8f1;color:#13875f}
+    .visual-stage{background:
+      radial-gradient(circle at 72% 24%,rgba(91,92,226,.17),transparent 28%),
+      radial-gradient(circle at 25% 78%,rgba(124,58,237,.08),transparent 30%),#f7f8fa;
+      border-color:#e5e7eb;border-radius:30px;box-shadow:0 25px 65px rgba(16,17,20,.08)}
+    .stage-dots{opacity:.17}
+    .resume-paper{box-shadow:0 25px 55px rgba(16,17,20,.13);border-radius:8px}
+    .floating-card,.float-card{border-color:rgba(16,17,20,.09);box-shadow:0 18px 45px rgba(16,17,20,.09);backdrop-filter:blur(15px)}
+    .section{padding:120px 0;background:#fff}
+    .section:nth-of-type(even){background:#f7f8fa}
+    .section-head{max-width:850px;margin-bottom:58px;text-align:left}
+    .section-head .eyebrow{background:#fff;border-color:#e5e7eb;color:#777e89}
+    .section-head h2{font-size:clamp(38px,5vw,65px);line-height:1;letter-spacing:-.055em;color:#101114}
+    .section-head p{font-size:16px;max-width:520px}
+    .feature-card,.template-card,.audience-card,.faq-item,.checklist,.step-card{
+      border:1px solid #e5e7eb!important;border-radius:22px!important;background:#fff!important;
+      box-shadow:none!important;transition:transform .25s,box-shadow .25s,border-color .25s}
+    .feature-card:hover,.template-card:hover,.audience-card:hover{
+      transform:translateY(-5px);box-shadow:0 20px 50px rgba(16,17,20,.07)!important;border-color:#d4d6dc!important}
+    .feature-card h3,.template-card h3,.audience-card h3{font-family:Manrope,sans-serif;letter-spacing:-.04em;color:#101114}
+    .feature-icon{border-radius:12px!important;background:#f0eeff!important;color:#5b5ce2!important}
+    .step-number{background:#111114!important;color:#fff!important;border-radius:10px!important}
+    .template-grid{gap:16px}
+    .template-preview{background:#f1f3f5!important;border-radius:16px!important}
+    .ats-section,.checklist-section{background:#f7f8fa!important}
+    .ats-panel{background:#111114!important;color:#fff!important;border-radius:28px!important}
+    .ats-panel p,.ats-panel li{color:#c8cad3!important}
+    .cta-card{background:#111114!important;color:#fff!important;border-radius:30px!important;box-shadow:none!important}
+    .cta-card h2{color:#fff!important}
+    .cta-card p{color:#a9adb7!important}
+    .footer{background:#fff!important;border-top:1px solid #e5e7eb!important}
+    .footer a:hover{color:#5b5ce2}
+    .faq-item{padding:23px 25px}
+    .faq-question{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.025em}
+    .reveal{transform:translateY(22px)}
+    @media(max-width:900px){
+      .hero{min-height:unset;padding:100px 0 75px}
+      .hero-grid{grid-template-columns:1fr;gap:48px}
+      .hero h1{font-size:clamp(50px,9vw,76px)}
+      .section-head{margin-bottom:40px}
+    }
+    @media(max-width:600px){
+      .nav{height:64px}
+      .hero{padding:75px 0 60px}
+      .hero h1{font-size:52px;line-height:.98}
+      .hero-copy>p{font-size:16px}
+      .section{padding:82px 0}
+      .section-head h2{font-size:clamp(36px,10vw,48px)}
+      .visual-stage{padding:15px;min-height:410px;border-radius:23px}
+      .brand-script{font-size:1.16em}
     }
-
   </style>
-
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#111827">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
-
 </head>
-
-
-<body class="loading">
-
-
-  <!-- =====================================================
-       LOADER
-  ====================================================== -->
-
-  <div
-    class="loader"
-    id="loader"
-  >
-
-    <div class="loader-inner">
-
-      <div class="loader-logo">
-        Zentoolo<span>.</span>
-      </div>
-
-      <div class="loader-line">
-
-        <div
-          class="loader-progress"
-        ></div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       CURSOR
-  ====================================================== -->
-
-  <div class="cursor-dot"></div>
-
-  <div class="cursor-ring"></div>
-
-
-  <!-- =====================================================
-       NAVIGATION
-  ====================================================== -->
-
-  <header
-    class="navbar"
-    id="navbar"
-  >
-
-    <div class="nav-inner">
-
-
-      <a
-        href="#home"
-        class="logo magnetic"
-      >
-        Zentoolo<span>.</span>
+<body>
+  <header class="nav-shell">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Zentoolo home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14L5 19h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand-wordmark"><span class="brand-script">Zentoolo</span><em class="brand-ai">AI</em></span>
       </a>
-
-
-      <button
-        class="mobile-toggle"
-        id="mobileToggle"
-        aria-label="Open navigation"
-      >
-
-        <i
-          class="fa-solid fa-bars"
-        ></i>
-
-      </button>
-
-
-      <ul
-        class="nav-links"
-        id="navLinks"
-      >
-
-        <li>
-          <a href="#home">
-            Home
-          </a>
-        </li>
-
-        <li>
-          <a href="#tools">
-            Tools
-          </a>
-        </li>
-
-        <li>
-          <a href="#why">
-            Why Zentoolo
-          </a>
-        </li>
-
-        <li>
-          <a href="#about">
-            About
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="#tools"
-            class="nav-button"
-          >
-            Explore Tools ↗
-          </a>
-        </li>
-
-      </ul>
-
-    </div>
-
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#features">Features</a><a href="#templates">Templates</a><a href="#how-it-works">How it works</a><a href="#who-its-for">Who it's for</a><a href="#faq">FAQ</a>
+        <a class="btn btn-primary nav-cta" href="resume-builder.html">Create Resume <span class="arrow">↗</span></a>
+      </div>
+    </nav>
   </header>
 
-
-  <!-- =====================================================
-       MAIN
-  ====================================================== -->
-
   <main>
-
-
-    <!-- ===================================================
-         HERO
-    ==================================================== -->
-
-    <section
-      class="hero"
-      id="home"
-    >
-
-      <div class="container">
-
-        <div class="hero-grid">
-
-
-          <div
-            class="hero-content reveal-left"
-          >
-
-            <div class="hero-label">
-              Digital tools · Built for the web
-            </div>
-
-
-            <h1>
-
-              Build.
-
-              <span class="dim">
-                Create.
-              </span>
-
-              Optimize.
-
-            </h1>
-
-
-            <p class="hero-copy">
-
-              Zentoolo brings powerful digital
-              tools into one modern workspace —
-              helping you build websites, optimize
-              SEO, work with files, create resumes,
-              edit images, build AI agents and
-              grow your digital business.
-
-            </p>
-
-
-            <div class="hero-actions">
-
-
-              <a
-                href="#tools"
-                class="btn btn-primary magnetic"
-              >
-
-                Explore tools
-
-                <i
-                  class="fa-solid fa-arrow-down"
-                ></i>
-
-              </a>
-
-
-              <a
-                href="#website-builder"
-                class="btn btn-outline magnetic"
-              >
-
-                Build a website
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-
-            </div>
-
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span> Your career, beautifully presented</span>
+          <h1>Build a resume that opens <span class="gradient">new doors.</span></h1>
+          <p>Create a polished, professional resume in minutes. Choose a template, add your experience, preview every detail, and download your resume as a PDF—all in one simple workspace.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="resume-builder.html">Start Creating Your Resume <span class="arrow">→</span></a>
+            <a class="btn btn-white" href="#templates">Explore Templates <span class="arrow">↓</span></a>
           </div>
-
-
-          <!-- HERO VISUAL -->
-
-          <div
-            class="hero-visual reveal-right"
-          >
-
-            <div class="hero-orbit"></div>
-
-            <div class="hero-core"></div>
-
-            <div class="hero-core-text">
-              Z
-            </div>
-
-
-            <div
-              class="hero-product-card"
-            >
-
-              <small>
-                Zentoolo ecosystem
-              </small>
-
-              <strong>
-                One place for your digital work.
-              </strong>
-
-            </div>
-
-          </div>
-
-
+          <div class="trust-line"><span class="check">✓</span> Easy to use <span>·</span> Professional layouts <span>·</span> PDF export</div>
         </div>
-
+        <div class="hero-visual" aria-label="Illustration of a professional resume preview">
+          <div class="visual-stage">
+            <div class="stage-dots"></div>
+            <div class="resume-paper">
+              <div class="paper-top"><div><div class="paper-name">Alex Morgan</div><div class="paper-role">PRODUCT DESIGNER</div></div><div class="paper-avatar">AM</div></div>
+              <div class="paper-contact">alex.morgan@email.com &nbsp;·&nbsp; Pune, India &nbsp;·&nbsp; +91 90000 00000</div>
+              <div class="paper-section"><h4>Profile</h4><div class="paper-line long"></div><div class="paper-line mid"></div><div class="paper-line long"></div></div>
+              <div class="paper-section"><h4>Experience</h4><div class="paper-line dark"></div><div class="paper-line long"></div><div class="paper-line mid"></div><div class="paper-line long"></div></div>
+              <div class="paper-section"><h4>Education</h4><div class="paper-line dark"></div><div class="paper-line mid"></div></div>
+              <div class="paper-section"><h4>Skills</h4><div class="paper-bullets"><span></span><span></span><span></span><span></span><span></span></div></div>
+            </div>
+            <div class="float-card score"><div class="float-label">Resume readiness</div><div class="float-value">82<span style="font-size:12px;color:#999">/100</span></div><div class="score-meter"><span></span></div></div>
+            <div class="float-card download"><div class="download-row"><span class="download-icon">↓</span><span>Resume PDF<br><span style="font-size:9px;color:#999;font-weight:500">Ready to export</span></span></div></div>
+          </div>
+        </div>
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         MARQUEE
-    ==================================================== -->
-
-    <div class="marquee">
-
-      <div class="marquee-track">
-
-        <div class="marquee-item">
-          Website Builder
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          SEO Toolkit
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          PDF Studio
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          Resume Builder
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          Image Studio
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          AI Agent Builder
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          Code Tools
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          Business Tools
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          Website Builder
-          <span>✦</span>
-        </div>
-
-        <div class="marquee-item">
-          SEO Toolkit
-          <span>✦</span>
-        </div>
-
+    <section class="trust-strip" aria-label="Product highlights">
+      <div class="container trust-inner">
+        <strong>A smarter way to present your career</strong>
+        <span class="trust-pill"><i>✦</i> Live resume preview</span><span class="trust-pill"><i>▤</i> 10 resume layouts</span><span class="trust-pill"><i>✓</i> ATS content checklist</span><span class="trust-pill"><i>↓</i> PDF export</span>
       </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         TOOLS
-    ==================================================== -->
-
-    <section
-      class="section tools-section"
-      id="tools"
-    >
-
-      <div class="container">
-
-
-        <div
-          class="tools-header reveal"
-        >
-
-          <div>
-
-            <div class="eyebrow">
-              The Zentoolo toolkit
-            </div>
-
-
-            <h2 class="section-title">
-
-              Everything you need
-
-              <span>
-                to build online.
-              </span>
-
-            </h2>
-
-          </div>
-
-
-          <p class="tools-note">
-
-            Eight powerful tool categories
-            designed for developers, creators,
-            businesses and modern digital
-            workflows.
-
-          </p>
-
-        </div>
-
-
-        <div class="tools-grid">
-
-
-          <!-- =================================================
-               01 WEBSITE BUILDER
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-            id="website-builder"
-          >
-
-            <div class="tool-number">
-              01 / WEBSITE BUILDER
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="browser">
-
-                <div class="browser-top">
-
-                  <div class="browser-dot"></div>
-
-                  <div class="browser-dot"></div>
-
-                  <div class="browser-dot"></div>
-
-                </div>
-
-
-                <div class="browser-body">
-
-                  <div class="browser-line"></div>
-
-                  <div class="browser-line small"></div>
-
-                  <div class="browser-box"></div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                Website Builder
-              </h3>
-
-
-              <p class="tool-description">
-
-                Build responsive websites with
-                a faster visual workflow. Create,
-                customize and launch without
-                starting from zero.
-
-              </p>
-
-
-              <a
-                href="https://getopenmind.in/wb_builder.html"
-                class="tool-link magnetic"
-              >
-
-                Launch Website Builder
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               02 SEO TOOLKIT
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              02 / SEO
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="seo-visual">
-
-                <div class="seo-bar"></div>
-
-                <div class="seo-bar"></div>
-
-                <div class="seo-bar"></div>
-
-                <div class="seo-bar"></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                SEO Toolkit
-              </h3>
-
-
-              <p class="tool-description">
-
-                Analyze, optimize and improve
-                your website's search visibility
-                with practical SEO tools.
-
-              </p>
-
-
-              <a
-                href="https://seotoolkit.codevibe.site"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="tool-link magnetic"
-              >
-
-                Open SEO Toolkit
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               03 PDF STUDIO
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              03 / DOCUMENTS
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="pdf-stack">
-
-                <div class="pdf-page"></div>
-
-                <div class="pdf-page"></div>
-
-                <div class="pdf-page">
-
-                  <i
-                    class="fa-regular fa-file-pdf"
-                  ></i>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                PDF Studio
-              </h3>
-
-
-              <p class="tool-description">
-
-                Work with PDF files quickly.
-                Convert, merge, split, compress
-                and manage documents from one
-                simple workspace.
-
-              </p>
-
-
-              <a
-                href="tools/pdf-tools.html"
-                class="tool-link magnetic"
-              >
-
-                Open PDF Studio
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               04 RESUME BUILDER
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              04 / CAREER
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="resume-visual">
-
-                <div class="resume-avatar"></div>
-
-                <div class="resume-line"></div>
-
-                <div class="resume-line medium"></div>
-
-                <div class="resume-line short"></div>
-
-                <br />
-
-                <div class="resume-line medium"></div>
-
-                <div class="resume-line"></div>
-
-                <div class="resume-line short"></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                Resume Builder
-              </h3>
-
-
-              <p class="tool-description">
-
-                Create a clean, professional and
-                ATS-friendly resume designed to
-                present your experience clearly.
-
-              </p>
-
-
-              <a
-                href="tools/resume-tools.html"
-                class="tool-link magnetic"
-              >
-
-                Build your resume
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               05 IMAGE STUDIO
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              05 / CREATIVE
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="image-visual">
-
-                <i
-                  class="fa-regular fa-image"
-                ></i>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                Image Studio
-              </h3>
-
-
-              <p class="tool-description">
-
-                Resize, crop, compress and
-                optimize images for websites,
-                social media and digital projects.
-
-              </p>
-
-
-              <a
-                href="tools/image-tools.html"
-                class="tool-link magnetic"
-              >
-
-                Open Image Studio
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               06 AI AGENT BUILDER
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              06 / ARTIFICIAL INTELLIGENCE
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="ai-visual">
-
-                <div class="ai-core">
-                  <i
-                    class="fa-solid fa-wand-magic-sparkles"
-                  ></i>
-                </div>
-
-                <div class="ai-node"></div>
-
-                <div class="ai-node"></div>
-
-                <div class="ai-node"></div>
-
-                <div class="ai-node"></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                AI Agent Builder
-              </h3>
-
-
-              <p class="tool-description">
-
-                Create custom AI agents and
-                intelligent workflows for
-                digital tasks and automation.
-
-              </p>
-
-
-              <a
-                href="https://getopenmind.in/AgentGenerator.html"
-                class="tool-link magnetic"
-              >
-
-                Build an AI agent
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               07 CODE TOOLS
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              07 / DEVELOPERS
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="code-visual">
-
-                <div>
-                  <span class="code-symbol">
-                    &lt;
-                  </span>
-
-                  component
-                  <span class="code-symbol">
-                    &gt;
-                  </span>
-                </div>
-
-                <div>
-                  &nbsp;&nbsp;build();
-                </div>
-
-                <div>
-                  &nbsp;&nbsp;optimize();
-                </div>
-
-                <div>
-                  &nbsp;&nbsp;deploy();
-                </div>
-
-                <div>
-                  <span class="code-symbol">
-                    &lt;/
-                  </span>
-
-                  component
-                  <span class="code-symbol">
-                    &gt;
-                  </span>
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                Code Tools
-              </h3>
-
-
-              <p class="tool-description">
-
-                Developer utilities for formatting,
-                converting, validating, encoding
-                and working with everyday code.
-
-              </p>
-
-
-              <a
-                href="tools/codetools.html"
-                class="tool-link magnetic"
-              >
-
-                Open Code Tools
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- =================================================
-               08 BUSINESS TOOLS
-          ================================================== -->
-
-          <article
-            class="tool-card reveal"
-          >
-
-            <div class="tool-number">
-              08 / BUSINESS
-            </div>
-
-
-            <div class="tool-visual">
-
-              <div class="business-visual">
-
-                <i
-                  class="fa-solid fa-chart-line"
-                ></i>
-
-              </div>
-
-            </div>
-
-
-            <div class="tool-content">
-
-              <h3 class="tool-title">
-                Business Tools
-              </h3>
-
-
-              <p class="tool-description">
-
-                Practical tools for online
-                businesses including QR codes,
-                invoices, calculators and
-                productivity utilities.
-
-              </p>
-
-
-              <a
-                href="tools/business-tools.html"
-                class="tool-link magnetic"
-              >
-
-                Explore Business Tools
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
     </section>
 
-
-    <!-- ===================================================
-         WHY ZENTOLOO
-    ==================================================== -->
-
-    <section
-      class="section feature-section"
-      id="why"
-    >
-
+    <section class="section" id="features">
       <div class="container">
-
-        <div class="feature-layout">
-
-
-          <div
-            class="feature-sticky reveal-left"
-          >
-
-            <div class="eyebrow">
-              Why Zentoolo
-            </div>
-
-
-            <h2>
-
-              Less friction.
-
-              <br />
-
-              More
-
-              <span>
-                creation.
-              </span>
-
-            </h2>
-
-          </div>
-
-
-          <div class="feature-list">
-
-
-            <div class="feature reveal">
-
-              <div class="feature-number">
-                01
-              </div>
-
-              <div>
-
-                <h3>
-                  One digital workspace.
-                </h3>
-
-                <p>
-
-                  Stop jumping between dozens of
-                  small websites for everyday digital
-                  tasks. Zentoolo brings essential
-                  tools into one growing ecosystem.
-
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div class="feature reveal">
-
-              <div class="feature-number">
-                02
-              </div>
-
-              <div>
-
-                <h3>
-                  Built for modern workflows.
-                </h3>
-
-                <p>
-
-                  Whether you're launching a website,
-                  preparing a document, optimizing
-                  SEO or building software, Zentoolo
-                  focuses on practical workflows.
-
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div class="feature reveal">
-
-              <div class="feature-number">
-                03
-              </div>
-
-              <div>
-
-                <h3>
-                  Fast and simple.
-                </h3>
-
-                <p>
-
-                  Powerful doesn't have to mean
-                  complicated. Every tool is designed
-                  around clarity, speed and a focused
-                  user experience.
-
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div class="feature reveal">
-
-              <div class="feature-number">
-                04
-              </div>
-
-              <div>
-
-                <h3>
-                  Always expanding.
-                </h3>
-
-                <p>
-
-                  Zentoolo is designed as an evolving
-                  platform. New tools, workflows and
-                  digital capabilities can continuously
-                  become part of the ecosystem.
-
-                </p>
-
-              </div>
-
-            </div>
-
-
-          </div>
-
+        <div class="section-head reveal"><span class="eyebrow"><span class="dot"></span> Built for your next step</span><h2>Everything you need to create a standout resume</h2><p>Turn your career details into a clear, organized, professional document—without starting from a blank page.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card reveal"><div class="feature-icon lav">✍️</div><h3>Simple Resume Editor</h3><p>Add your personal details, summary, work experience, education, skills, projects, and more through an easy editing interface.</p><span class="feature-tag">Easy editing</span></article>
+          <article class="feature-card reveal"><div class="feature-icon mint">▣</div><h3>Live Preview</h3><p>See your resume take shape as you edit. Review content and layout before exporting your final document.</p><span class="feature-tag">Instant feedback</span></article>
+          <article class="feature-card reveal"><div class="feature-icon peach">🎨</div><h3>Professional Templates</h3><p>Choose from 10 layouts including Modern, Minimal, Elegant, Executive, Classic, Creative, and more.</p><span class="feature-tag">10 styles</span></article>
+          <article class="feature-card reveal"><div class="feature-icon blue">✓</div><h3>ATS Readiness Checklist</h3><p>Review key resume content with a 100-point checklist and get guidance on important information you may have missed.</p><span class="feature-tag">Content guidance</span></article>
+          <article class="feature-card reveal"><div class="feature-icon lav">⇧</div><h3>Import Existing Resume Data</h3><p>Bring supported structured resume data into the editor using JSON or labeled TXT files, then review the imported details.</p><span class="feature-tag">JSON / TXT</span></article>
+          <article class="feature-card reveal"><div class="feature-icon mint">⇩</div><h3>Download as PDF</h3><p>Export your resume in PDF format for job applications, email sharing, and printing.</p><span class="feature-tag">PDF export</span></article>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         ABOUT
-    ==================================================== -->
-
-    <section
-      class="section tools-section"
-      id="about"
-    >
-
+    <section class="section workflow" id="how-it-works">
       <div class="container">
-
-        <div class="reveal">
-
-          <div class="eyebrow">
-            About Zentoolo
-          </div>
-
-
-          <h2 class="section-title">
-
-            A toolkit for the
-
-            <span>
-              digital generation.
-            </span>
-
-          </h2>
-
-
-          <p class="section-description">
-
-            Zentoolo is built around one simple
-            idea: digital work should be easier.
-            Instead of building dozens of separate
-            utilities, we are creating a connected
-            ecosystem of useful tools for people
-            who build, create and work online.
-
-          </p>
-
+        <div class="section-head reveal"><span class="eyebrow"><span class="dot"></span> A simple process</span><h2>Your resume, in four easy steps</h2><p>Spend less time formatting and more time preparing for your next opportunity.</p></div>
+        <div class="steps">
+          <article class="step reveal"><div class="step-number">01</div><h3>Add your details</h3><p>Enter your contact information, career summary, education, experience, skills, and projects.</p></article>
+          <article class="step reveal"><div class="step-number">02</div><h3>Choose your design</h3><p>Select a resume layout that matches your role, industry, and personal style.</p></article>
+          <article class="step reveal"><div class="step-number">03</div><h3>Review & improve</h3><p>Preview your resume and use the readiness checklist to spot missing content.</p></article>
+          <article class="step reveal"><div class="step-number">04</div><h3>Download & apply</h3><p>Export your resume as a PDF and use it for applications and professional sharing.</p></article>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         CTA
-    ==================================================== -->
-
-    <section
-      class="section cta"
-      id="contact"
-    >
-
+    <section class="section" id="templates">
       <div class="container">
-
-
-        <div class="reveal">
-
-          <div class="eyebrow">
-            Start building
-          </div>
-
-
-          <h2 class="cta-title">
-
-            Your next project
-
-            <span>
-              starts here.
-            </span>
-
-          </h2>
-
+        <div class="section-head reveal"><span class="eyebrow"><span class="dot"></span> Find your style</span><h2>Resume templates for every career path</h2><p>From clean and minimal to confident and creative—choose a layout that helps your experience shine.</p></div>
+        <div class="template-grid">
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-skills"><span></span><span></span><span></span></div></div><div class="template-name">Modern</div><div class="template-sub">Clean & professional</div></article>
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head" style="width:50%"></div><div class="mini-sub" style="width:30%"></div><div class="mini-title" style="background:#999"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title" style="background:#999"></div><div class="mini-line"></div></div><div class="template-name">Minimal</div><div class="template-sub">Simple & focused</div></article>
+          <article class="template-card reveal"><div class="mini-resume elegant"><div class="mini-head"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div></div><div class="template-name">Elegant</div><div class="template-sub">Refined & timeless</div></article>
+          <article class="template-card reveal"><div class="mini-resume creative"><div class="mini-head"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div></div><div class="template-name">Creative</div><div class="template-sub">Expressive & bold</div></article>
+          <article class="template-card reveal"><div class="mini-resume executive"><div class="mini-head"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div></div><div class="template-name">Executive</div><div class="template-sub">Leadership focused</div></article>
+          <article class="template-card reveal"><div class="mini-resume classic"><div class="mini-head"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div></div><div class="template-name">Classic</div><div class="template-sub">Traditional & clear</div></article>
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head" style="background:#222"></div><div class="mini-sub"></div><div class="mini-title" style="background:#222"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title" style="background:#222"></div><div class="mini-line"></div></div><div class="template-name">Bold</div><div class="template-sub">Strong visual impact</div></article>
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head" style="background:#666"></div><div class="mini-sub" style="background:#aaa"></div><div class="mini-title" style="background:#666"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title" style="background:#666"></div><div class="mini-line"></div></div><div class="template-name">Slate</div><div class="template-sub">Neutral & polished</div></article>
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head" style="height:10px"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div></div><div class="template-name">Compact</div><div class="template-sub">Space efficient</div></article>
+          <article class="template-card reveal"><div class="mini-resume"><div class="mini-head" style="height:18px;width:80%"></div><div class="mini-sub"></div><div class="mini-title"></div><div class="mini-line"></div><div class="mini-line"></div><div class="mini-title"></div><div class="mini-line"></div></div><div class="template-name">Portfolio</div><div class="template-sub">Showcase your work</div></article>
         </div>
-
-
-        <div class="cta-grid">
-
-
-          <div class="reveal-left">
-
-            <p class="cta-description">
-
-              Explore the Zentoolo ecosystem,
-              launch a tool and make your digital
-              workflow simpler.
-
-            </p>
-
-
-            <div
-              style="margin-top:30px;"
-            >
-
-              <a
-                href="#tools"
-                class="btn btn-primary magnetic"
-              >
-
-                Explore Zentoolo
-
-                <i
-                  class="fa-solid fa-arrow-up-right"
-                ></i>
-
-              </a>
-
-            </div>
-
-          </div>
-
-
-          <div
-            class="cta-links reveal-right"
-          >
-
-            <a
-              href="#website-builder"
-              class="cta-link magnetic"
-            >
-
-              <span>
-                Website Builder
-              </span>
-
-              <i
-                class="fa-solid fa-arrow-up-right"
-              ></i>
-
-            </a>
-
-
-            <a
-              href="https://seotoolkit.codevibe.site"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="cta-link magnetic"
-            >
-
-              <span>
-                SEO Toolkit
-              </span>
-
-              <i
-                class="fa-solid fa-arrow-up-right"
-              ></i>
-
-            </a>
-
-
-            <a
-              href="#tools"
-              class="cta-link magnetic"
-            >
-
-              <span>
-                Explore all tools
-              </span>
-
-              <i
-                class="fa-solid fa-arrow-up-right"
-              ></i>
-
-            </a>
-
-          </div>
-
-        </div>
-
       </div>
-
     </section>
 
+    <section class="section" id="who-its-for">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow"><span class="dot"></span> Made for your journey</span><h2>Who can use Zentoolo Resume Builder?</h2><p>Whether you're starting out or taking the next step, build a resume that tells your story.</p></div>
+        <div class="audience-grid">
+          <article class="audience-card reveal"><div class="audience-emoji">🎓</div><div><h3>College Students</h3><p>Showcase academics, internships, college projects, and skills for placements.</p></div></article>
+          <article class="audience-card reveal"><div class="audience-emoji">🚀</div><div><h3>Freshers</h3><p>Create your first resume and highlight your strengths, certifications, and projects.</p></div></article>
+          <article class="audience-card reveal"><div class="audience-emoji">💼</div><div><h3>Working Professionals</h3><p>Organize your experience, career achievements, and expertise for your next role.</p></div></article>
+          <article class="audience-card reveal"><div class="audience-emoji">🧑‍💻</div><div><h3>Freelancers</h3><p>Present client work, portfolio projects, and specialized skills professionally.</p></div></article>
+          <article class="audience-card reveal"><div class="audience-emoji">🔄</div><div><h3>Career Changers</h3><p>Emphasize transferable skills, relevant projects, and new qualifications.</p></div></article>
+          <article class="audience-card reveal"><div class="audience-emoji">🧭</div><div><h3>Career Counselors</h3><p>Help candidates structure their resume information and review completeness.</p></div></article>
+        </div>
+      </div>
+    </section>
 
+    <section class="section">
+      <div class="container">
+        <div class="ats-panel reveal">
+          <div><span class="eyebrow"><span class="dot"></span> Resume content review</span><h2>Know what your resume may be missing.</h2><p>Use the ATS readiness checklist to review important resume content—such as contact details, summary, experience, education, and skills—and get practical improvement suggestions.</p><p class="ats-note">The score is a content checklist estimate, not a guarantee of ATS parsing, ranking, or job shortlisting.</p><a class="btn btn-white" href="resume-builder.html" style="margin-top:24px">Check My Resume <span class="arrow">→</span></a></div>
+          <div class="checklist"><div class="checklist-top"><strong>Resume readiness checklist</strong><span class="score-badge">82 / 100</span></div><div class="check-row"><span class="checkmark">✓</span> Professional contact information</div><div class="check-row"><span class="checkmark">✓</span> Focused professional summary</div><div class="check-row"><span class="checkmark">✓</span> Work experience details</div><div class="check-row"><span class="checkmark">✓</span> Education and qualifications</div><div class="check-row"><span class="checkmark">✓</span> Relevant skills</div><div class="check-row"><span class="checkmark" style="background:#fff0e5;color:#c67a3a">!</span> Tailor keywords to your target role</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container"><div class="cta-card reveal"><span class="eyebrow"><span class="dot"></span> Take the next step</span><h2>Your next opportunity starts with a great resume.</h2><p>Bring your experience, skills, and ambitions together in a resume that feels professional and ready to share.</p><a class="btn btn-primary" href="resume-builder.html">Create Your Resume Now <span class="arrow">→</span></a></div></div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow"><span class="dot"></span> Helpful answers</span><h2>Frequently asked questions</h2><p>Quick answers to help you get started with Zentoolo AI Resume Builder.</p></div>
+        <div class="faq-list">
+          <details class="reveal"><summary>What is Zentoolo AI Resume Builder?</summary><p>Zentoolo Resume Builder is an online resume creation tool that helps you enter career information, select a professional template, preview your resume, review content readiness, and export a PDF.</p></details>
+          <details class="reveal"><summary>Can I download my resume as a PDF?</summary><p>Yes. Use the resume builder's PDF export option to download your resume for job applications, sharing, or printing.</p></details>
+          <details class="reveal"><summary>Who can use this resume builder?</summary><p>Students, freshers, job seekers, working professionals, freelancers, career changers, and career counselors can use it to organize resume information.</p></details>
+          <details class="reveal"><summary>Does the ATS readiness score guarantee an interview?</summary><p>No. The score is a rule-based content checklist. Applicant tracking systems differ, and the checklist cannot guarantee parsing, ranking, interview invitations, or job offers.</p></details>
+          <details class="reveal"><summary>Can I import my existing resume details?</summary><p>The current builder supports structured JSON and certain labeled TXT files. Imported information should be reviewed for accuracy before exporting.</p></details>
+          <details class="reveal"><summary>Does the builder generate resume content using AI?</summary><p>The current version includes editing, templates, importing, live preview, and a readiness checklist. AI-generated summaries, job description matching, and AI rewriting require additional integration and are not currently included.</p></details>
+        </div>
+      </div>
+    </section>
   </main>
 
-
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
-
   <footer>
-
     <div class="container">
-
-
       <div class="footer-grid">
-
-
-        <div class="footer-brand">
-
-          <h3>
-            Zentoolo<span>.</span>
-          </h3>
-
-
-          <p>
-
-            Build, create and optimize with
-            powerful digital tools designed
-            for the modern web.
-
-          </p>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h4>
-            Tools
-          </h4>
-
-
-          <a href="#website-builder">
-            Website Builder
-          </a>
-
-
-          <a
-            href="https://seotoolkit.codevibe.site"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            SEO Toolkit ↗
-          </a>
-
-
-          <a href="#tools">
-            PDF Studio
-          </a>
-
-
-          <a href="#tools">
-            Resume Builder
-          </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h4>
-            More
-          </h4>
-
-
-          <a href="#tools">
-            Image Studio
-          </a>
-
-
-          <a href="#tools">
-            AI Agent Builder
-          </a>
-
-
-          <a href="#tools">
-            Code Tools
-          </a>
-
-
-          <a href="#tools">
-            Business Tools
-          </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h4>
-            Zentoolo
-          </h4>
-
-
-          <a href="#about">
-            About
-          </a>
-
-
-          <a href="#why">
-            Why Zentoolo
-          </a>
-
-
-          <a href="#contact">
-            Contact
-          </a>
-
-
-          <a href="#tools">
-            Explore Tools
-          </a>
-
-        </div>
-
-
+        <div><a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">Z</span><span class="brand-wordmark"><span class="brand-script">Zentoolo</span><em class="brand-ai">AI</em></span></a><p>Make your career story clear, confident, and professional. Create a resume for your next opportunity with Zentoolo.</p></div>
+        <div><div class="footer-title">Explore</div><div class="footer-links"><a href="#features">Resume Builder Features</a><a href="#templates">Resume Templates</a><a href="#how-it-works">How It Works</a><a href="#who-its-for">Who It's For</a></div></div>
+        <div><div class="footer-title">Get Started</div><div class="footer-links"><a href="resume-builder.html">Create a Resume</a><a href="#faq">Frequently Asked Questions</a><a href="#home">Back to Top ↑</a></div></div>
       </div>
-
-
-      <div class="footer-bottom">
-
-        <div id="copyright">
-          © 2026 Zentoolo. All rights reserved.
-        </div>
-
-
-        <div>
-          Built for the digital world.
-        </div>
-
-      </div>
-
-
+      <div class="footer-bottom"><span>© <span id="year"></span> Zentoolo. All rights reserved.</span><span>Designed to help you present your best professional self.</span></div>
     </div>
-
   </footer>
 
-
-  <!-- =====================================================
-       JAVASCRIPT
-  ====================================================== -->
-
   <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.textContent = open ? '×' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* =====================================================
-       LOADER
-    ====================================================== */
-
-    window.addEventListener(
-      "load",
-      () => {
-
-        setTimeout(
-          () => {
-
-            const loader =
-              document.getElementById(
-                "loader"
-              );
-
-            loader.classList.add(
-              "hide"
-            );
-
-            document.body.classList.remove(
-              "loading"
-            );
-
-          },
-          1500
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       CURSOR
-    ====================================================== */
-
-    const cursorDot =
-      document.querySelector(
-        ".cursor-dot"
-      );
-
-    const cursorRing =
-      document.querySelector(
-        ".cursor-ring"
-      );
-
-
-    let mouseX =
-      window.innerWidth / 2;
-
-    let mouseY =
-      window.innerHeight / 2;
-
-    let ringX = mouseX;
-    let ringY = mouseY;
-
-
-    document.addEventListener(
-      "mousemove",
-      (event) => {
-
-        mouseX =
-          event.clientX;
-
-        mouseY =
-          event.clientY;
-
-
-        cursorDot.style.left =
-          mouseX + "px";
-
-        cursorDot.style.top =
-          mouseY + "px";
-
-      }
-    );
-
-
-    function animateCursor() {
-
-      ringX +=
-        (mouseX - ringX) * .12;
-
-      ringY +=
-        (mouseY - ringY) * .12;
-
-
-      cursorRing.style.left =
-        ringX + "px";
-
-      cursorRing.style.top =
-        ringY + "px";
-
-
-      requestAnimationFrame(
-        animateCursor
-      );
-
-    }
-
-    animateCursor();
-
-
-    /* =====================================================
-       CURSOR HOVER
-    ====================================================== */
-
-    document
-      .querySelectorAll(
-        "a, button, .tool-card"
-      )
-      .forEach(
-        (element) => {
-
-          element.addEventListener(
-            "mouseenter",
-            () => {
-
-              document.body.classList.add(
-                "cursor-hover"
-              );
-
-            }
-          );
-
-
-          element.addEventListener(
-            "mouseleave",
-            () => {
-
-              document.body.classList.remove(
-                "cursor-hover"
-              );
-
-            }
-          );
-
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
-      );
-
-
-    /* =====================================================
-       NAVBAR
-    ====================================================== */
-
-    const navbar =
-      document.getElementById(
-        "navbar"
-      );
-
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        if (
-          window.scrollY > 50
-        ) {
-
-          navbar.classList.add(
-            "scrolled"
-          );
-
-        } else {
-
-          navbar.classList.remove(
-            "scrolled"
-          );
-
-        }
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    /* =====================================================
-       MOBILE MENU
-    ====================================================== */
-
-    const mobileToggle =
-      document.getElementById(
-        "mobileToggle"
-      );
-
-    const navLinks =
-      document.getElementById(
-        "navLinks"
-      );
-
-
-    mobileToggle.addEventListener(
-      "click",
-      () => {
-
-        navLinks.classList.toggle(
-          "open"
-        );
-
-
-        const icon =
-          mobileToggle.querySelector(
-            "i"
-          );
-
-
-        if (
-          navLinks.classList.contains(
-            "open"
-          )
-        ) {
-
-          icon.classList.remove(
-            "fa-bars"
-          );
-
-          icon.classList.add(
-            "fa-xmark"
-          );
-
-        } else {
-
-          icon.classList.remove(
-            "fa-xmark"
-          );
-
-          icon.classList.add(
-            "fa-bars"
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       CLOSE MOBILE NAV
-    ====================================================== */
-
-    document
-      .querySelectorAll(
-        ".nav-links a"
-      )
-      .forEach(
-        (link) => {
-
-          link.addEventListener(
-            "click",
-            () => {
-
-              navLinks.classList.remove(
-                "open"
-              );
-
-
-              const icon =
-                mobileToggle.querySelector(
-                  "i"
-                );
-
-
-              icon.classList.remove(
-                "fa-xmark"
-              );
-
-              icon.classList.add(
-                "fa-bars"
-              );
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =====================================================
-       SMOOTH ANCHOR SCROLL
-    ====================================================== */
-
-    document
-      .querySelectorAll(
-        'a[href^="#"]'
-      )
-      .forEach(
-        (anchor) => {
-
-          anchor.addEventListener(
-            "click",
-            function(event) {
-
-              const target =
-                document.querySelector(
-                  this.getAttribute(
-                    "href"
-                  )
-                );
-
-
-              if (!target) {
-                return;
-              }
-
-
-              event.preventDefault();
-
-
-              const offset = 70;
-
-
-              const targetPosition =
-                target.getBoundingClientRect()
-                  .top
-                +
-                window.scrollY
-                -
-                offset;
-
-
-              window.scrollTo({
-
-                top:
-                  targetPosition,
-
-                behavior:
-                  "smooth"
-
-              });
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =====================================================
-       SCROLL REVEAL
-    ====================================================== */
-
-    const revealElements =
-      document.querySelectorAll(
-        ".reveal, .reveal-left, .reveal-right"
-      );
-
-
-    const observer =
-      new IntersectionObserver(
-
-        (entries) => {
-
-          entries.forEach(
-            (entry) => {
-
-              if (
-                entry.isIntersecting
-              ) {
-
-                entry.target.classList.add(
-                  "active"
-                );
-
-
-                observer.unobserve(
-                  entry.target
-                );
-
-              }
-
-            }
-          );
-
-        },
-
-        {
-          threshold: .12,
-
-          rootMargin:
-            "0px 0px -50px 0px"
-        }
-
-      );
-
-
-    revealElements.forEach(
-      (element) => {
-
-        observer.observe(
-          element
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       MAGNETIC BUTTONS
-    ====================================================== */
-
-    document
-      .querySelectorAll(
-        ".magnetic"
-      )
-      .forEach(
-        (element) => {
-
-          element.addEventListener(
-            "mousemove",
-            (event) => {
-
-              if (
-                window.innerWidth <= 900
-              ) {
-                return;
-              }
-
-
-              const rect =
-                element.getBoundingClientRect();
-
-
-              const x =
-                event.clientX -
-                rect.left -
-                rect.width / 2;
-
-
-              const y =
-                event.clientY -
-                rect.top -
-                rect.height / 2;
-
-
-              element.style.transform =
-                `
-                translate(
-                  ${x * .15}px,
-                  ${y * .15}px
-                )
-                `;
-
-            }
-          );
-
-
-          element.addEventListener(
-            "mouseleave",
-            () => {
-
-              element.style.transform =
-                "translate(0,0)";
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =====================================================
-       TOOL CARD TILT
-    ====================================================== */
-
-    document
-      .querySelectorAll(
-        ".tool-card"
-      )
-      .forEach(
-        (card) => {
-
-          card.addEventListener(
-            "mousemove",
-            (event) => {
-
-              if (
-                window.innerWidth <= 900
-              ) {
-                return;
-              }
-
-
-              const rect =
-                card.getBoundingClientRect();
-
-
-              const x =
-                event.clientX -
-                rect.left;
-
-
-              const y =
-                event.clientY -
-                rect.top;
-
-
-              const rotateX =
-                (
-                  (y - rect.height / 2)
-                  /
-                  (rect.height / 2)
-                )
-                * -2;
-
-
-              const rotateY =
-                (
-                  (x - rect.width / 2)
-                  /
-                  (rect.width / 2)
-                )
-                * 2;
-
-
-              card.style.transform =
-                `
-                perspective(1000px)
-                rotateX(${rotateX}deg)
-                rotateY(${rotateY}deg)
-                translateY(-8px)
-                `;
-
-            }
-          );
-
-
-          card.addEventListener(
-            "mouseleave",
-            () => {
-
-              card.style.transform =
-                `
-                perspective(1000px)
-                rotateX(0deg)
-                rotateY(0deg)
-                translateY(0)
-                `;
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =====================================================
-       HERO MOUSE PARALLAX
-    ====================================================== */
-
-    const heroCore =
-      document.querySelector(
-        ".hero-core"
-      );
-
-    const heroOrbit =
-      document.querySelector(
-        ".hero-orbit"
-      );
-
-
-    window.addEventListener(
-      "mousemove",
-      (event) => {
-
-        if (
-          window.innerWidth <= 900
-        ) {
-          return;
-        }
-
-
-        const x =
-          event.clientX /
-          window.innerWidth -
-          .5;
-
-
-        const y =
-          event.clientY /
-          window.innerHeight -
-          .5;
-
-
-        heroCore.style.transform =
-          `
-          translate(
-            ${x * 20}px,
-            ${y * 20}px
-          )
-          `;
-
-
-        heroOrbit.style.transform =
-          `
-          translate(
-            ${x * -12}px,
-            ${y * -12}px
-          )
-          `;
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    /* =====================================================
-       SCROLL HERO DEPTH
-    ====================================================== */
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        const scroll =
-          window.scrollY;
-
-
-        const heroContent =
-          document.querySelector(
-            ".hero-content"
-          );
-
-
-        if (
-          heroContent &&
-          scroll <
-          window.innerHeight
-        ) {
-
-          heroContent.style.transform =
-            `
-            translateY(
-              ${scroll * .1}px
-            )
-            `;
-
-          heroContent.style.opacity =
-            Math.max(
-              .25,
-              1 -
-              scroll / 700
-            );
-
-        }
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    /* =====================================================
-       YEAR
-    ====================================================== */
-
-    document.getElementById(
-      "copyright"
-    ).textContent =
-      `© ${new Date().getFullYear()} Zentoolo. All rights reserved.`;
-
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
-
-<script src="./pwa.js"></script>
 </body>
 </html>

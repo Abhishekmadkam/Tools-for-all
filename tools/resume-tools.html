@@ -382,6 +382,29 @@
             }
         }
 
+        /* Tablet layout: keep preview readable, with editor beneath the working area. */
+        @media (min-width: 761px) and (max-width: 1100px) {
+            .app { padding: 12px; }
+            .top { align-items: flex-start; flex-wrap: wrap; }
+            .top .actions { width: 100%; justify-content: flex-start; }
+            .layout { grid-template-columns: 180px minmax(0, 1fr); gap: 12px; }
+            .sidebar { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; }
+            .previewWrap { padding: 18px; min-width: 0; }
+            .resume { width: 100%; min-width: 0; padding: 42px 38px; }
+            .editor { grid-column: 1 / -1; width: 100%; position: static; }
+            .field input, .field textarea, .field select { min-width: 0; }
+            .previewWrap, .editor, .sidebar { min-width: 0; }
+            .actions .btn { white-space: nowrap; }
+        }
+
+        @media (min-width: 761px) and (max-width: 900px) {
+            .layout { grid-template-columns: minmax(0, 1fr); }
+            .sidebar { position: static; display: flex; flex-wrap: nowrap; overflow-x: auto; max-height: none; }
+            .navbtn { flex: 0 0 auto; white-space: nowrap; }
+            .previewWrap { order: 2; }
+            .editor { order: 3; }
+        }
+
         @media(max-width:760px) {
             body {
                 background: #fff
@@ -407,6 +430,11 @@
             .top .actions .btn {
                 display: inline-block
             }
+
+            .brand { font-size: 19px; }
+            .top { align-items: flex-start; flex-wrap: wrap; padding: 12px; gap: 10px; }
+            .top .actions { width: 100%; justify-content: flex-start; gap: 6px; }
+            .top .actions .btn { padding: 8px 10px; font-size: 12px; }
 
             .layout {
                 display: flex;
@@ -499,6 +527,34 @@
                 color: #666;
                 font-size: 12px;
                 margin-top: 3px
+            }
+        }
+
+        /* PDF pagination: keep headings with following content and entries intact. */
+        .resume .section h2 {
+            break-after: avoid;
+            page-break-after: avoid;
+        }
+
+        .resume .item {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .resume .chips {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        @media print {
+            .resume .section h2 {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .resume .item {
+                break-inside: avoid;
+                page-break-inside: avoid;
             }
         }
 
@@ -626,7 +682,7 @@
         <header class="top">
             <div class="brand">Resume Studio<small>Live professional resume builder</small></div>
             <div class="actions"><button class="btn" id="undo">↶</button><button class="btn" id="redo">↷</button><button
-                    class="btn" id="sample">Sample</button><button class="btn" id="pdf">PDF</button><button
+                    class="btn" id="sample">Sample</button><button class="btn" id="autoFill">Auto Fill</button><input id="autoFillFile" type="file" accept=".json,.txt,application/json,text/plain" hidden><button class="btn" id="pdf">PDF</button><button
                     class="btn primary" id="pdfTop">Download PDF</button></div>
         </header>
         <div class="layout">
@@ -643,30 +699,54 @@
     </div>
     <div class="toast" id="toast"></div>
     <script>
-        const empty = () => ({ personal: { fullName: "", title: "", email: "", phone: "", location: "", summary: "" }, experience: [], education: [], skills: [], languages: [], certifications: [], template: "modern" });
+        const empty = () => ({ personal: { fullName: "", title: "", email: "", phone: "", location: "", summary: "" }, experience: [], education: [], skills: [], languages: [], certifications: [], projects: [], achievements: [], volunteering: [], publications: [], interests: [], customSections: [], template: "modern" });
         let data = empty(), active = "personal", history = [], hi = -1;
-        const sections = [["personal", "Personal"], ["experience", "Experience"], ["education", "Education"], ["skills", "Skills"], ["languages", "Languages"], ["certifications", "Certifications"], ["templates", "Templates"], ["ats", "ATS Check"]];
+        const sections = [["personal", "Personal"], ["experience", "Experience"], ["education", "Education"], ["skills", "Skills"], ["languages", "Languages"], ["certifications", "Certifications"], ["projects", "Projects"], ["achievements", "Achievements"], ["volunteering", "Volunteering"], ["publications", "Publications"], ["interests", "Interests"], ["customSections", "Custom Sections"], ["templates", "Templates"], ["ats", "ATS Check"]];
         const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
         function toast(t) { let e = document.querySelector("#toast"); e.textContent = t; e.style.display = "block"; setTimeout(() => e.style.display = "none", 2200) }
         function push() { const s = JSON.stringify(data); if (history[hi] === s) return; history = history.slice(0, hi + 1); history.push(s); hi = history.length - 1; buttons() }
         function buttons() { undo.disabled = hi <= 0; redo.disabled = hi >= history.length - 1 }
         function setActive(a) { active = a; renderNav(); renderEditor() }
         function renderNav() { nav.innerHTML = sections.map(([k, n]) => `<button class="navbtn ${k === active ? "active" : ""}" onclick="setActive('${k}')">${n}</button>`).join("") }
-        function field(label, key, type = "text", value) { return `<div class="field"><label>${label}</label>${type === "textarea" ? `<textarea data-path="${key}">${esc(value)}</textarea>` : `<input type="${type}" data-path="${key}" value="${esc(value)}">`}</div>` }
-        function bindInputs() { editor.querySelectorAll("[data-path]").forEach(el => el.oninput = () => { setPath(el.dataset.path, el.value); renderResume(); renderStats() }) }
+        function field(label, key, type = "text", value) {
+            const autocompleteMap = { "personal.fullName": "name", "personal.email": "email", "personal.phone": "tel", "personal.location": "address-level2", "personal.title": "organization-title" };
+            const autocomplete = autocompleteMap[key] || "off";
+            return `<div class="field"><label>${label}</label>${type === "textarea" ? `<textarea data-path="${key}" autocomplete="off">${esc(value)}</textarea>` : `<input type="${type}" data-path="${key}" autocomplete="${autocomplete}" value="${esc(value)}">`}</div>`;
+        }
+        function bindInputs() { editor.querySelectorAll("[data-path]").forEach(el => el.oninput = () => { setPath(el.dataset.path, el.value); renderResume(); renderStats(); if (active === "ats") renderEditor() }) }
         function setPath(path, val) { let p = path.split("."), o = data; for (let i = 0; i < p.length - 1; i++)o = o[p[i]]; o[p.at(-1)] = val }
         function personalEditor() { editor.innerHTML = field("Full name", "personal.fullName", "text", data.personal.fullName) + field("Professional title", "personal.title", "text", data.personal.title) + field("Email", "personal.email", "email", data.personal.email) + field("Phone", "personal.phone", "text", data.personal.phone) + field("Location", "personal.location", "text", data.personal.location) + field("Professional summary", "personal.summary", "textarea", data.personal.summary); bindInputs() }
         function arrayEditor(key, fields) {
             editor.innerHTML = data[key].map((it, i) => `<div class="itemCard"><button class="btn remove" onclick="removeItem('${key}',${i})">Remove</button>${fields.map(([label, k, type = "text"]) => field(label, `${key}.${i}.${k}`, type, it[k])).join("")}</div>`).join("") + `<button class="btn primary add" onclick="addItem('${key}')">+ Add</button>`;
             bindInputs()
         }
-        function skillsEditor() { editor.innerHTML = field("Skills (comma separated)", "skillsText", "textarea", data.skills.join(", ")); editor.querySelector("textarea").oninput = e => { data.skills = e.target.value.split(",").map(x => x.trim()).filter(Boolean); renderResume(); renderStats() } }
+        function skillsEditor() { editor.innerHTML = field("Skills (comma separated)", "skillsText", "textarea", data.skills.join(", ")); editor.querySelector("textarea").oninput = e => { data.skills = e.target.value.split(",").map(x => x.trim()).filter(Boolean); renderResume(); renderStats(); if (active === "ats") renderEditor() } }
         function langsEditor() { arrayEditor("languages", [["Language", "name"], ["Proficiency", "proficiency"]]) }
         function templatesEditor() { editor.innerHTML = `<div class="field"><label>Choose template</label><select id="template">${["modern", "minimal", "elegant", "creative", "executive", "classic", "bold", "slate", "compact", "portfolio"].map(x => `<option ${data.template === x ? "selected" : ""}>${x}</option>`).join("")}</select></div><p class="suggestions">Templates update the preview immediately. Choose from 10 professional layouts.</p>`; template.onchange = e => { data.template = e.target.value; renderResume(); push() } }
-        function atsScore() { let s = 0, p = data.personal; if (p.fullName) s += 10; if (p.email) s += 8; if (p.title) s += 7; if (p.summary.length >= 40) s += 15; if (data.experience.length) s += 20; if (data.education.length) s += 10; if (data.skills.length >= 5) s += 15; if (data.certifications.length) s += 5; if (data.languages.length) s += 5; return Math.min(100, s) }
-        function atsEditor() { let s = atsScore(), a = []; if (!data.personal.summary) a.push("Add a professional summary."); if (data.experience.length < 1) a.push("Add relevant work experience."); if (data.skills.length < 5) a.push("Add at least five relevant skills."); if (!data.personal.email) a.push("Add a professional email address."); editor.innerHTML = `<div class="ats"><div class="score">${s}/100</div><strong>${s >= 85 ? "Excellent" : s >= 65 ? "Good" : "Needs improvement"}</strong></div><div class="suggestions">${a.length ? `<ul>${a.map(x => `<li>${x}</li>`).join("")}</ul>` : "Great coverage. Keep tailoring keywords to each job."}</div>` }
-        function renderEditor() { editorTitle.textContent = sections.find(x => x[0] === active)[1]; if (active === "personal") personalEditor(); else if (active === "experience") arrayEditor("experience", [["Company", "company"], ["Position", "position"], ["Start", "startDate"], ["End", "endDate"], ["Description", "description"]]); else if (active === "education") arrayEditor("education", [["Institution", "institution"], ["Degree", "degree"], ["Specialization (optional)", "specialization"], ["Start", "startDate"], ["End", "endDate"], ["Percentage (optional)", "percentage"], ["CGPA (optional)", "cgpa"]]); else if (active === "skills") skillsEditor(); else if (active === "languages") langsEditor(); else if (active === "certifications") arrayEditor("certifications", [["Certification", "name"], ["Issuer", "issuer"], ["Year", "year"]]); else if (active === "templates") templatesEditor(); else atsEditor() }
-        function addItem(k) { const defs = { experience: { company: "", position: "", startDate: "", endDate: "", description: "" }, education: { institution: "", degree: "", specialization: "", startDate: "", endDate: "", percentage: "", cgpa: "" }, languages: { name: "", proficiency: "" }, certifications: { name: "", issuer: "", year: "" } }; data[k].push(defs[k]); renderEditor(); renderResume(); push() }
+        function atsAudit() {
+            const p = data.personal;
+            const checks = [
+                { label: "Full name", points: 10, ok: !!p.fullName.trim(), fix: "Add your full name." },
+                { label: "Valid professional email", points: 10, ok: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(p.email), fix: "Add a valid professional email address." },
+                { label: "Phone number", points: 5, ok: !!p.phone.trim(), fix: "Add your phone number." },
+                { label: "Target job title", points: 10, ok: !!p.title.trim(), fix: "Add your target professional title." },
+                { label: "Professional summary (40+ characters)", points: 15, ok: p.summary.trim().length >= 40, fix: "Write a focused summary of at least 40 characters." },
+                { label: "Detailed experience", points: 15, ok: data.experience.some(x => x.position.trim() && x.company.trim() && x.description.trim()), fix: "Add a position, company, and description to experience." },
+                { label: "Education details", points: 10, ok: data.education.some(x => x.degree.trim() && x.institution.trim()), fix: "Add degree and institution details." },
+                { label: "Five or more relevant skills", points: 15, ok: data.skills.filter(x => x.trim()).length >= 5, fix: "Add at least five relevant skills." },
+                { label: "Certification (optional)", points: 5, ok: data.certifications.some(x => x.name.trim()), fix: "Add a certification if relevant; otherwise this remains unearned." },
+                { label: "Language (optional)", points: 5, ok: data.languages.some(x => x.name.trim()), fix: "Add language details if relevant; otherwise this remains unearned." }
+            ];
+            const earned = checks.reduce((sum, check) => sum + (check.ok ? check.points : 0), 0);
+            return { checks, earned, total: 100, percent: earned };
+        }
+        function atsScore() { return atsAudit().percent }
+        function atsEditor() {
+            const audit = atsAudit(), missing = audit.checks.filter(check => !check.ok), score = audit.earned;
+            editor.innerHTML = `<div class="ats"><div class="score">${score}<small style="font-size:17px">/100</small></div><strong>${score >= 85 ? "Strong coverage" : score >= 65 ? "Moderate coverage" : "Needs improvement"}</strong><div style="margin-top:8px;font-size:12px;color:#555">${audit.earned} points earned of 100 possible</div><div style="height:8px;background:#e5e7eb;border-radius:99px;margin-top:10px;overflow:hidden"><div style="width:${score}%;height:100%;background:#111;border-radius:99px"></div></div></div><div class="suggestions"><strong>ATS readiness checklist</strong><ul>${audit.checks.map(check => `<li>${check.ok ? "✓" : "○"} ${esc(check.label)} — ${check.ok ? check.points + " pts" : "0/" + check.points + " pts"}</li>`).join("")}</ul>${missing.length ? `<strong>Recommended improvements</strong><ul>${missing.map(check => `<li>${esc(check.fix)}</li>`).join("")}</ul>` : "Checklist complete. Tailor keywords to each job description."}<p style="color:#6b7280;font-size:11px">This is a content-readiness estimate, not a guarantee of ATS parsing, ranking, or hiring.</p></div>`;
+        }
+        function renderEditor() { editorTitle.textContent = sections.find(x => x[0] === active)[1]; if (active === "personal") personalEditor(); else if (active === "experience") arrayEditor("experience", [["Company", "company"], ["Position", "position"], ["Start", "startDate"], ["End", "endDate"], ["Description", "description"]]); else if (active === "education") arrayEditor("education", [["Institution", "institution"], ["Degree", "degree"], ["Specialization (optional)", "specialization"], ["Start", "startDate"], ["End", "endDate"], ["Percentage (optional)", "percentage"], ["CGPA (optional)", "cgpa"]]); else if (active === "skills") skillsEditor(); else if (active === "languages") langsEditor(); else if (active === "certifications") arrayEditor("certifications", [["Certification", "name"], ["Issuer", "issuer"], ["Year", "year"]]); else if (active === "projects") arrayEditor("projects", [["Project name", "name"], ["Role / tools", "role"], ["Link (optional)", "link"], ["Description", "description", "textarea"]]); else if (active === "achievements") arrayEditor("achievements", [["Achievement", "name"], ["Organization (optional)", "issuer"], ["Year (optional)", "year"], ["Details (optional)", "description", "textarea"]]); else if (active === "volunteering") arrayEditor("volunteering", [["Organization", "organization"], ["Role", "role"], ["Dates (optional)", "dates"], ["Details (optional)", "description", "textarea"]]); else if (active === "publications") arrayEditor("publications", [["Title", "title"], ["Publisher / journal", "publisher"], ["Year (optional)", "year"], ["Link (optional)", "link"]]); else if (active === "customSections") arrayEditor("customSections", [["Section heading", "heading"], ["Content", "content", "textarea"]]); else if (active === "interests") { editor.innerHTML = field("Interests (comma separated)", "interestsText", "textarea", data.interests.join(", ")) + `<p class="suggestions">Optional. Include only relevant interests.</p>`; editor.querySelector("textarea").oninput = e => { data.interests = e.target.value.split(",").map(x => x.trim()).filter(Boolean); renderResume(); renderStats(); if (active === "ats") renderEditor() }; } else if (active === "templates") templatesEditor(); else atsEditor() }
+        function addItem(k) { const defs = { experience: { company: "", position: "", startDate: "", endDate: "", description: "" }, education: { institution: "", degree: "", specialization: "", startDate: "", endDate: "", percentage: "", cgpa: "" }, languages: { name: "", proficiency: "" }, certifications: { name: "", issuer: "", year: "" }, projects: { name: "", role: "", link: "", description: "" }, achievements: { name: "", issuer: "", year: "", description: "" }, volunteering: { organization: "", role: "", dates: "", description: "" }, publications: { title: "", publisher: "", year: "", link: "" }, customSections: { heading: "", content: "" } }; data[k].push(defs[k]); renderEditor(); renderResume(); push() }
         function removeItem(k, i) { data[k].splice(i, 1); renderEditor(); renderResume(); push() }
         function renderResume() { const p = data.personal; resume.className = "resume template-" + data.template; let h = `<header><h1>${esc(p.fullName || "Your Name")}</h1><div class="role">${esc(p.title || "Professional Title")}</div><div class="contact">${[p.email, p.phone, p.location].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join("")}</div></header>`; if (p.summary) h += sec("Professional Summary", `<p class="desc">${esc(p.summary)}</p>`); if (data.experience.length) h += sec("Experience", data.experience.map(x => item(x.position, x.startDate && x.endDate ? x.startDate + " — " + x.endDate : "", x.company, x.description)).join("")); if (data.education.length) h += sec("Education", data.education.map(x => {
                 const academic = [
@@ -675,14 +755,85 @@
                     x.cgpa ? `CGPA: ${x.cgpa}` : ""
                 ].filter(Boolean).join(" · ");
                 return item(x.degree, x.startDate && x.endDate ? x.startDate + " — " + x.endDate : "", x.institution, academic);
-            }).join("")); if (data.skills.length) h += sec("Skills", `<div class="chips">${data.skills.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>`); if (data.languages.length) h += sec("Languages", `<div class="chips">${data.languages.map(x => `<span class="chip">${esc(x.name)}${x.proficiency ? " · " + esc(x.proficiency) : ""}</span>`).join("")}</div>`); if (data.certifications.length) h += sec("Certifications", data.certifications.map(x => `<div class="item"><strong>${esc(x.name)}</strong><div class="sub">${esc([x.issuer, x.year].filter(Boolean).join(" · "))}</div></div>`).join("")); resume.innerHTML = h }
+            }).join("")); if (data.skills.length) h += sec("Skills", `<div class="chips">${data.skills.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>`); if (data.languages.length) h += sec("Languages", `<div class="chips">${data.languages.map(x => `<span class="chip">${esc(x.name)}${x.proficiency ? " · " + esc(x.proficiency) : ""}</span>`).join("")}</div>`); if (data.certifications.length) h += sec("Certifications", data.certifications.map(x => `<div class="item"><strong>${esc(x.name)}</strong><div class="sub">${esc([x.issuer, x.year].filter(Boolean).join(" · "))}</div></div>`).join(""));
+            if (data.projects.length) h += sec("Projects", data.projects.map(x => item(x.name, x.role, x.link, x.description)).join(""));
+            if (data.achievements.length) h += sec("Achievements", data.achievements.map(x => item(x.name, x.year, x.issuer, x.description)).join(""));
+            if (data.volunteering.length) h += sec("Volunteering", data.volunteering.map(x => item(x.role, x.dates, x.organization, x.description)).join(""));
+            if (data.publications.length) h += sec("Publications", data.publications.map(x => item(x.title, x.year, x.publisher, x.link)).join(""));
+            if (data.interests.length) h += sec("Interests", `<div class="chips">${data.interests.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>`);
+            if (data.customSections.length) h += data.customSections.filter(x => x.heading || x.content).map(x => sec(esc(x.heading || "Additional Information"), `<p class="desc">${esc(x.content)}</p>`)).join("");
+            resume.innerHTML = h }
         function sec(t, c) { return `<section class="section"><h2>${t}</h2>${c}</section>` } function item(a, b, c, d) { return `<div class="item"><div class="itemtop"><span>${esc(a)}</span><span>${esc(b)}</span></div><div class="sub">${esc(c)}</div>${d ? `<p class="desc">${esc(d)}</p>` : ""}</div>` }
-        function renderStats() { stats.textContent = `${[data.personal.summary, data.experience.length, data.education.length, data.skills.length, data.languages.length, data.certifications.length].filter(Boolean).length} sections · ATS score ${atsScore()}/100` }
+        function renderStats() { stats.textContent = `${[data.personal.summary, data.experience.length, data.education.length, data.skills.length, data.languages.length, data.certifications.length].filter(Boolean).length} sections · ATS readiness ${atsScore()}/100` }
         editor.addEventListener("change", () => { push(); renderStats() }); editor.addEventListener("blur", e => { if (e.target.matches("input,textarea,select")) push() }, true)
         undo.onclick = () => { if (hi > 0) { data = JSON.parse(history[--hi]); renderAll(); buttons() } }; redo.onclick = () => { if (hi < history.length - 1) { data = JSON.parse(history[++hi]); renderAll(); buttons() } }
-        sample.onclick = () => { data = { personal: { fullName: "Alex Morgan", title: "Senior Product Designer", email: "alex@example.com", phone: "+91 90000 00000", location: "Pune, India", summary: "Product designer with experience creating clear, accessible digital products and improving user journeys through research, prototyping, and measurable iteration." }, experience: [{ company: "Northstar Labs", position: "Senior Product Designer", startDate: "2023", endDate: "Present", description: "Led end-to-end product design and improved core workflow completion through iterative research and testing." }], education: [{ institution: "Design University", degree: "B.Des. Interaction Design", specialization: "Interaction Design", startDate: "2017", endDate: "2021", percentage: "", cgpa: "" }], skills: ["Product Design", "Figma", "UX Research", "Prototyping", "Design Systems", "Accessibility"], languages: [{ name: "English", proficiency: "Professional" }], certifications: [{ name: "UX Certification", issuer: "Design Institute", year: "2024" }], template: "modern" }; push(); renderAll(); toast("Sample loaded") }
+        sample.onclick = () => { data = { personal: { fullName: "Alex Morgan", title: "Senior Product Designer", email: "alex@example.com", phone: "+91 90000 00000", location: "Pune, India", summary: "Product designer with experience creating clear, accessible digital products and improving user journeys through research, prototyping, and measurable iteration." }, experience: [{ company: "Northstar Labs", position: "Senior Product Designer", startDate: "2023", endDate: "Present", description: "Led end-to-end product design and improved core workflow completion through iterative research and testing." }], education: [{ institution: "Design University", degree: "B.Des. Interaction Design", specialization: "Interaction Design", startDate: "2017", endDate: "2021", percentage: "", cgpa: "" }], skills: ["Product Design", "Figma", "UX Research", "Prototyping", "Design Systems", "Accessibility"], languages: [{ name: "English", proficiency: "Professional" }], certifications: [{ name: "UX Certification", issuer: "Design Institute", year: "2024" }], projects: [{ name: "Mobile Banking App Redesign", role: "UX Lead · Figma", link: "portfolio.example.com", description: "Redesigned onboarding and key banking flows using research and usability testing." }], achievements: [{ name: "Design Excellence Award", issuer: "Northstar Labs", year: "2024", description: "Recognized for improving product usability." }], volunteering: [], publications: [], interests: ["Accessibility", "Design systems"], customSections: [], template: "modern" }; push(); renderAll(); toast("Sample loaded") }
 
-        function exportPDF() { if (!window.html2pdf) return toast("PDF library failed to load"); toast("Generating PDF…"); html2pdf().set({ margin: 0, filename: (data.personal.fullName || "Resume").replace(/\s+/g, "_") + ".pdf", html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: "mm", format: "a4" } }).from(resume).save() }
+        // Auto Fill supports structured JSON resume data and labeled plain-text profiles.
+        // JSON can use the builder's data shape (personal, experience, education, skills, etc.).
+        const autoFillButton = document.getElementById("autoFill");
+        const autoFillFileInput = document.getElementById("autoFillFile");
+        autoFillButton.addEventListener("click", () => autoFillFileInput.click());
+        autoFillFileInput.onchange = async (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            try {
+                const content = await file.text();
+                let imported;
+                if (file.name.toLowerCase().endsWith(".json")) {
+                    imported = JSON.parse(content);
+                    if (imported.resume && typeof imported.resume === "object") imported = imported.resume;
+                    if (!imported || typeof imported !== "object") throw new Error("The JSON file must contain resume data.");
+                    const base = empty();
+                    data = {
+                        ...base, ...imported,
+                        personal: { ...base.personal, ...(imported.personal || {}) },
+                        experience: Array.isArray(imported.experience) ? imported.experience : base.experience,
+                        education: Array.isArray(imported.education) ? imported.education : base.education,
+                        skills: Array.isArray(imported.skills) ? imported.skills : base.skills,
+                        languages: Array.isArray(imported.languages) ? imported.languages : base.languages,
+                        certifications: Array.isArray(imported.certifications) ? imported.certifications : base.certifications,
+                        projects: Array.isArray(imported.projects) ? imported.projects : base.projects,
+                        achievements: Array.isArray(imported.achievements) ? imported.achievements : base.achievements,
+                        volunteering: Array.isArray(imported.volunteering) ? imported.volunteering : base.volunteering,
+                        publications: Array.isArray(imported.publications) ? imported.publications : base.publications,
+                        interests: Array.isArray(imported.interests) ? imported.interests : base.interests,
+                        customSections: Array.isArray(imported.customSections) ? imported.customSections : base.customSections
+                    };
+                } else {
+                    const parsed = {};
+                    const aliases = {
+                        "full name": "fullName", name: "fullName", "professional title": "title", title: "title", "job title": "title",
+                        email: "email", "email address": "email", phone: "phone", "phone number": "phone", location: "location", city: "location", summary: "summary", "professional summary": "summary"
+                    };
+                    content.split(/\r?\n/).forEach(line => {
+                        const match = line.match(/^\s*([^:]{1,50})\s*:\s*(.*?)\s*$/);
+                        if (match) { const key = aliases[match[1].trim().toLowerCase()]; if (key && match[2]) parsed[key] = match[2]; }
+                    });
+                    if (!Object.keys(parsed).length) throw new Error("No labeled fields found. Use lines such as Full Name: Alex Morgan and Email: alex@example.com, or import a JSON resume.");
+                    data.personal = { ...data.personal, ...parsed };
+                    const skillLine = content.match(/^\s*skills\s*:\s*(.*?)\s*$/im);
+                    if (skillLine) data.skills = skillLine[1].split(/[,;|]/).map(v => v.trim()).filter(Boolean);
+                }
+                push(); renderAll(); toast("Resume autofilled successfully");
+            } catch (error) {
+                toast(error.message || "Could not import this resume file");
+            } finally { autoFillFileInput.value = ""; }
+        };
+
+        function exportPDF() {
+            if (!window.html2pdf) return toast("PDF library failed to load");
+            toast("Generating PDF…");
+            const filename = (data.personal.fullName || "Resume").trim().replace(/\s+/g, "_") || "Resume";
+            html2pdf().set({
+                margin: [7, 7, 7, 7],
+                filename: filename + ".pdf",
+                image: { type: "jpeg", quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+                pagebreak: { mode: ["css", "legacy"], before: [], after: [], avoid: [".item", ".section h2", ".chips", "header"] }
+            }).from(resume).save();
+        }
         pdfTop.onclick = exportPDF;
         function renderAll() { renderNav(); renderEditor(); renderResume(); renderStats() }
         push(); renderAll();

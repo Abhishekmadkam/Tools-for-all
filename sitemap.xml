@@ -1,20 +1,13 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    <!-- Homepage -->
     <url>
         <loc>https://zentoolo.com/</loc>
     </url>
-
-    <!-- Resume Builder -->
     <url>
         <loc>https://zentoolo.com/tools/resume-tools.html</loc>
     </url>
-
-    <!-- Resume Format Article 2026 -->
     <url>
         <loc>https://zentoolo.com/blog/air2026.html</loc>
     </url>
-
 </urlset>
